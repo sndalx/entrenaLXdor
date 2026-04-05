@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fase 1 — Cronología y Plan Diario</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e4e6ef;min-height:100vh;padding-bottom:80px}
+.top-bar{position:sticky;top:0;z-index:100;background:#0f1117;border-bottom:1px solid #2e3345;padding:12px 16px}
+.top-title{font-size:15px;font-weight:700;margin-bottom:4px}
+.top-sub{font-size:11px;color:#8b8fa3}
+.milestone-track{padding:16px;overflow-x:auto;-webkit-overflow-scrolling:touch;border-bottom:1px solid #1a1d27}
+.milestone-line{display:flex;align-items:flex-start;gap:0;min-width:900px;position:relative;padding:8px 0 16px}
+.milestone-line::after{content:'';position:absolute;top:28px;left:0;right:0;height:2px;background:#2e3345}
+.ml-item{flex:1;text-align:center;position:relative;min-width:50px}
+.ml-dot{width:12px;height:12px;border-radius:50%;background:#2e3345;margin:22px auto 6px;position:relative;z-index:2}
+.ml-dot.active{background:#818cf8;box-shadow:0 0 8px rgba(129,140,248,0.4)}
+.ml-dot.done{background:#10b981}
+.ml-dot.milestone{background:#f59e0b;width:16px;height:16px;margin-top:20px}
+.ml-label{font-size:9px;color:#8b8fa3;line-height:1.3}
+.ml-label.highlight{color:#f59e0b;font-weight:600;font-size:10px}
+.week-nav{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:#1a1d27;position:sticky;top:52px;z-index:99;border-bottom:1px solid #2e3345}
+.week-label{font-size:15px;font-weight:600;text-align:center}
+.week-dates{font-size:12px;color:#8b8fa3;text-align:center}
+.week-block{font-size:10px;color:#818cf8;text-align:center;margin-top:2px}
+.nav-btn{width:40px;height:40px;border-radius:10px;background:#232733;border:1px solid #2e3345;color:#e4e6ef;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.nav-btn:active{background:#2e3345;transform:scale(0.95)}
+.nav-btn:disabled{opacity:0.3}
+.days-container{padding:12px 16px}
+.day-card{background:#1a1d27;border:1px solid #2e3345;border-radius:12px;margin-bottom:12px;overflow:hidden}
+.day-header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.day-name{font-size:14px;font-weight:600}
+.day-type{font-size:11px;padding:4px 10px;border-radius:12px;font-weight:500}
+.day-type.gym{background:rgba(16,185,129,0.15);color:#10b981}
+.day-type.bike{background:rgba(129,140,248,0.15);color:#818cf8}
+.day-type.hike{background:rgba(245,158,11,0.15);color:#f59e0b}
+.day-type.rest{background:rgba(139,143,163,0.1);color:#8b8fa3}
+.day-type.tele{background:rgba(236,72,153,0.15);color:#ec4899}
+.day-body{display:none;padding:0 16px 16px;border-top:1px solid #232733}
+.day-body.open{display:block}
+.section-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#8b8fa3;margin:14px 0 8px;font-weight:600}
+.meal-row{display:flex;justify-content:space-between;align-items:baseline;padding:4px 0;font-size:13px;line-height:1.5}
+.meal-item{color:#e4e6ef}
+.meal-qty{color:#f59e0b;font-family:'JetBrains Mono',monospace;font-size:11px;white-space:nowrap;margin-left:8px}
+.train-block{background:#232733;border-radius:8px;padding:10px 12px;margin-bottom:6px}
+.train-name{font-size:13px;font-weight:500;margin-bottom:2px}
+.train-detail{font-size:11px;color:#8b8fa3;line-height:1.4}
+.train-time{font-family:'JetBrains Mono',monospace;font-size:11px;color:#818cf8}
+.supp-row{font-size:12px;color:#8b8fa3;padding:3px 0;display:flex;justify-content:space-between}
+.supp-row .dose{color:#ec4899;font-family:'JetBrains Mono',monospace;font-size:11px}
+.milestone-banner{background:rgba(245,158,11,0.1);border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:10px 12px;margin:12px 0 0}
+.milestone-banner .mb-title{font-size:12px;font-weight:600;color:#f59e0b;margin-bottom:2px}
+.milestone-banner .mb-detail{font-size:11px;color:#8b8fa3;line-height:1.4}
+.night-block{background:rgba(99,102,241,0.08);border:1px solid rgba(99,102,241,0.2);border-radius:8px;padding:10px 12px;margin-top:8px}
+.night-block .nb-title{font-size:12px;font-weight:500;color:#818cf8;margin-bottom:4px}
+.night-block .nb-detail{font-size:11px;color:#8b8fa3}
+.expand-icon{transition:transform 0.2s;color:#8b8fa3;font-size:16px}
+.expand-icon.open{transform:rotate(180deg)}
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <div class="top-title">Fase 1 — Preparación tendinosa y base metabólica</div>
+  <div class="top-sub">Abril – Agosto 2026 · Punto de control: Agosto 2026</div>
+</div>
+
+<div class="milestone-track">
+  <div class="milestone-line" id="mlLine"></div>
+</div>
+
+<div class="week-nav">
+  <button class="nav-btn" id="prevBtn" onclick="changeWeek(-1)">◀</button>
+  <div>
+    <div class="week-label" id="weekLabel">Semana 1</div>
+    <div class="week-dates" id="weekDates">7 – 13 abril</div>
+    <div class="week-block" id="weekBlock">Adaptación</div>
+  </div>
+  <button class="nav-btn" id="nextBtn" onclick="changeWeek(1)">▶</button>
+</div>
+
+<div class="days-container" id="daysContainer"></div>
+
+<script>
+const PHASE_START = new Date(2026, 3, 7);
+const TOTAL_WEEKS = 18;
+
+const MONTHS = ['enero','febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre'];
+
+const MILESTONES = {
+  0: {title:'INICIO Fase 1', detail:'Comienzo protocolo tendinoso. Llamar analítica URGENTE.'},
+  1: {title:'Hablar con entrenador', detail:'Prioridad tendinosa + técnica de barra. Antes del 18 abril.'},
+  4: {title:'AÑADIR CARGA', detail:'12 mayo: mochila 2-5 kg en wall sit y gemelo. Puente monopodal.'},
+  8: {title:'INICIO EXCÉNTRICAS', detail:'2 junio: excéntricas con carga moderada. Dominadas negativas.'},
+  12:{title:'TRANSICIÓN', detail:'30 junio: excéntricas con carga significativa. Prep. criterios de paso.'},
+  16:{title:'EVALUACIÓN', detail:'Agosto: criterios de paso Fase 1. Decisión sobre Fase 1B.'}
+};
+
+const BLOCKS = {
+  adaptacion: 'Adaptación (sem. 1-4)',
+  carga: 'Carga progresiva (sem. 5-8)',
+  integracion: 'Integración (sem. 9-12)',
+  transicion: 'Transición (sem. 13-16)',
+  evaluacion: 'Evaluación (sem. 17-18)'
+};
+
+function getBlock(w) {
+  if (w < 4) return BLOCKS.adaptacion;
+  if (w < 8) return BLOCKS.carga;
+  if (w < 12) return BLOCKS.integracion;
+  if (w < 16) return BLOCKS.transicion;
+  return BLOCKS.evaluacion;
+}
+
+function getTendonLower(w) {
+  if (w < 4) return 'Wall sit 3×30-45s (60-70°, sin carga) · Gemelo isométrico escalón 3×30-45s bilateral · Puente glúteo 3×10 con 5s pausa';
+  if (w < 8) return 'Wall sit 3×30-45s + mochila 2-5 kg · Gemelo isométrico + mochila (monopodal sem. 6+) · Puente glúteo monopodal · Excéntricas lentas sentadilla (bajar 4-5s)';
+  if (w < 12) return 'Sentadilla excéntrica con mancuernas · Gemelo monopodal isométrico con carga · Puente monopodal con carga · Isométricos con carga significativa';
+  return 'Excéntricas con carga significativa · Sentadilla excéntrica 20-25 kg · Isométricos como calentamiento · Preparación criterios de paso';
+}
+
+function getTendonUpper(w) {
+  if (w < 4) return 'Rotación externa hombro banda 3×20-30s · Retracción escapular barra 3×8-10 (3s pausa) · Flexión isométrica pared 3×20-30s';
+  if (w < 8) return 'Rotación externa banda mayor resistencia · Retracción escapular (5s pausa) · Flexión isométrica alejándose de pared';
+  if (w < 12) return 'Dominadas negativas 3×3 (bajar 5s) · Rotaciones con banda pesada · Excéntricas de press con mancuernas';
+  return 'Dominadas negativas con control · Excéntricas tren superior con carga · Isométricos como calentamiento';
+}
+
+function getBikeDuration(w, type) {
+  if (type === 'long') {
+    if (w < 4) return '40-50 min';
+    if (w < 8) return '45-55 min';
+    return '50-60 min';
+  }
+  if (type === 'main') {
+    if (w < 4) return '30-35 min';
+    return '35-40 min';
+  }
+  if (w < 2) return '25-30 min';
+  return '30-35 min';
+}
+
+const BREAKFAST = [
+  {item:'Batido: leche + creatina + colágeno', qty:'250ml + 5g + 12g'},
+  {item:'Vitamina D3 + K2', qty:'2 gotas'},
+  {item:'Tostada integral: tomate + AOVE + jamón', qty:'1 ud'},
+  {item:'Tostada: crema de cacahuete', qty:'1 ud'},
+  {item:'Yogur skyr natural', qty:'100-125g'},
+  {item:'Manzana', qty:'1 ud'},
+];
+
+const LUNCH = [
+  {item:'Legumbres (lentejas/alubias/garbanzos)', qty:'1 ración'},
+  {item:'Pescado en lata (atún/bonito/sardinas)', qty:'2 latas'},
+  {item:'Omega-3 cápsulas', qty:'2-3 cáps'},
+  {item:'Fruta', qty:'1 pieza'},
+  {item:'Salsa: Tabasco o casera', qty:'al gusto'},
+];
+
+const DINNER = [
+  {item:'Merluza o salmón (alternar semanas)', qty:'150-200g'},
+  {item:'Aceite de oliva virgen extra', qty:'generoso'},
+  {item:'Fruta', qty:'1 pieza'},
+];
+
+function mealHTML(title, items) {
+  let h = `<div class="section-label">${title}</div>`;
+  items.forEach(i => {
+    h += `<div class="meal-row"><span class="meal-item">${i.item}</span><span class="meal-qty">${i.qty}</span></div>`;
+  });
+  return h;
+}
+
+function trainHTML(blocks) {
+  let h = '<div class="section-label">Entrenamiento</div>';
+  blocks.forEach(b => {
+    h += `<div class="train-block"><div style="display:flex;justify-content:space-between;align-items:baseline"><div class="train-name">${b.name}</div>${b.time ? `<div class="train-time">${b.time}</div>` : ''}</div>${b.detail ? `<div class="train-detail">${b.detail}</div>` : ''}</div>`;
+  });
+  return h;
+}
+
+function suppHTML(items) {
+  let h = '<div class="section-label">Suplementación extra</div>';
+  items.forEach(i => {
+    h += `<div class="supp-row"><span>${i.name}</span><span class="dose">${i.dose}</span></div>`;
+  });
+  return h;
+}
+
+function nightHTML() {
+  return `<div class="night-block"><div class="nb-title">Protocolo nocturno</div><div class="nb-detail">22:00 Magnesio 300mg + Ducha · 22:30 Alarma corte · 23:00 Cama (fin de semana máx. 00:00)</div></div>`;
+}
+
+function milestoneHTML(w) {
+  if (!MILESTONES[w]) return '';
+  const m = MILESTONES[w];
+  return `<div class="milestone-banner"><div class="mb-title">${m.title}</div><div class="mb-detail">${m.detail}</div></div>`;
+}
+
+function getDayData(dayOfWeek, weekIndex) {
+  const tl = getTendonLower(weekIndex);
+  const tu = getTendonUpper(weekIndex);
+
+  switch(dayOfWeek) {
+    case 0: return {
+      name:'Lunes', type:'bike', typeLabel:'Bici + Tendinoso',
+      training:[
+        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'std'), detail:'105-122 bpm o test de hablar. Cambio de ropa directo, sin sentarse'},
+        {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
+        {name:'Movilidad + Dead hangs', time:'12 min', detail:'Psoas 90s/lado · Rotaciones torácicas 10/lado · Apertura pectoral 60s/lado · Tobillo 90s · Sentadilla profunda 90s · Dead hangs 90-120s total'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[]
+    };
+    case 1: return {
+      name:'Martes', type:'gym', typeLabel:'Gimnasio funcional',
+      training:[
+        {name:'Gimnasio funcional con entrenador', time:'60 min', detail:'Tempo lento, control excéntrico. Prioridad tendinosa'},
+        {name:'Whey post-entreno', time:'', detail:'30g inmediatamente después'},
+        {name:'Protocolo tendinoso tren superior', time:'15 min', detail:tu},
+        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Foco en zonas trabajadas'},
+        {name:'Bici suave (opcional)', time:'15 min', detail:'Solo si hay energía. Zona 1-2 muy ligera'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[{name:'Proteína Whey post-entreno', dose:'30g'}]
+    };
+    case 2: return {
+      name:'Miércoles', type:'bike', typeLabel:'Bici + Tendinoso',
+      training:[
+        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'main'), detail:'Sesión principal aeróbica entre semana'},
+        {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
+        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Rutina estándar'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[]
+    };
+    case 3: return {
+      name:'Jueves', type:'gym', typeLabel:'Gimnasio funcional',
+      training:[
+        {name:'Gimnasio funcional con entrenador', time:'60 min', detail:'Segunda sesión semanal'},
+        {name:'Whey post-entreno', time:'', detail:'30g inmediatamente después'},
+        {name:'Protocolo tendinoso tren superior', time:'15 min', detail:tu},
+        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Dead hangs opcionales'},
+        {name:'Bici suave (opcional)', time:'15 min', detail:'Recuperación activa'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[{name:'Proteína Whey post-entreno', dose:'30g'}]
+    };
+    case 4: return {
+      name:'Viernes', type:'tele', typeLabel:'Teletrabajo + Sesión larga',
+      training:[
+        {name:'Bici estática zona 2 — sesión larga', time:getBikeDuration(weekIndex,'long'), detail:'Mayor impacto en grasa visceral de la semana'},
+        {name:'Protocolo tendinoso completo', time:'25 min', detail:'Tren inferior: ' + tl + ' · Tren superior: ' + tu},
+        {name:'Movilidad extendida + Dead hangs + Bandas', time:'25 min', detail:'Rotaciones hombro, face pulls, Pallof press, glute bridge con banda'},
+        {name:'Foam roller (opcional)', time:'10-15 min', detail:'Cuádriceps, IT band, dorsales, gemelos'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[]
+    };
+    case 5: return {
+      name:'Sábado', type:'hike', typeLabel:'Senderismo GER',
+      training:[
+        {name:'Caminata / senderismo', time:'60-90 min', detail: weekIndex < 8 ? 'Artxanda o ruta suave. Ritmo conversacional. Sin carga' : (weekIndex < 12 ? 'Pagasarri o desnivel moderado. Valorar mochila ligera 2-3 kg' : 'Ruta con desnivel + mochila 3-5 kg si articulaciones OK')},
+        {name:'Movilidad + Dead hangs', time:'12 min', detail:'Post-caminata, cuerpo caliente'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[]
+    };
+    case 6: return {
+      name:'Domingo', type:'rest', typeLabel:'Descanso activo',
+      training:[
+        {name:'Paseo suave', time:'30-40 min', detail:'Tendones se remodelan en reposo. No entrenar duro'},
+        {name:'Movilidad mínima + Dead hangs', time:'8 min', detail:'Psoas + rotaciones torácicas + dead hangs'},
+        {name:'Preparar semana', time:'', detail:'Shaker nocturno · Tupperware · Vitamina D visible · Revisar sueño semanal en Huawei Watch GT 3'}
+      ],
+      meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
+      supps:[]
+    };
+  }
+}
+
+function formatDate(d) {
+  return d.getDate() + ' ' + MONTHS[d.getMonth()];
+}
+
+function getWeekStart(w) {
+  const d = new Date(PHASE_START);
+  d.setDate(d.getDate() + w * 7);
+  return d;
+}
+
+function getWeekEnd(w) {
+  const d = getWeekStart(w);
+  d.setDate(d.getDate() + 6);
+  return d;
+}
+
+let currentWeek = 0;
+
+function renderMilestoneTrack() {
+  const el = document.getElementById('mlLine');
+  let h = '';
+  for (let w = 0; w < TOTAL_WEEKS; w++) {
+    const isM = MILESTONES[w] !== undefined;
+    const isCurrent = w === currentWeek;
+    const isPast = w < currentWeek;
+    const dotClass = isCurrent ? 'active' : (isPast ? 'done' : '');
+    const mClass = isM ? ' milestone' : '';
+    const ws = getWeekStart(w);
+    h += `<div class="ml-item" onclick="goToWeek(${w})" style="cursor:pointer">
+      <div class="ml-label ${isM ? 'highlight' : ''}">${isM ? MILESTONES[w].title : 'S' + (w+1)}</div>
+      <div class="ml-dot ${dotClass}${mClass}"></div>
+      <div class="ml-label">${ws.getDate()}/${ws.getMonth()+1}</div>
+    </div>`;
+  }
+  el.innerHTML = h;
+}
+
+function renderWeek() {
+  const ws = getWeekStart(currentWeek);
+  const we = getWeekEnd(currentWeek);
+  document.getElementById('weekLabel').textContent = 'Semana ' + (currentWeek + 1);
+  document.getElementById('weekDates').textContent = formatDate(ws) + ' – ' + formatDate(we);
+  document.getElementById('weekBlock').textContent = getBlock(currentWeek);
+  document.getElementById('prevBtn').disabled = currentWeek === 0;
+  document.getElementById('nextBtn').disabled = currentWeek === TOTAL_WEEKS - 1;
+
+  const container = document.getElementById('daysContainer');
+  let h = '';
+
+  if (MILESTONES[currentWeek]) {
+    h += milestoneHTML(currentWeek);
+    h += '<div style="height:12px"></div>';
+  }
+
+  for (let d = 0; d < 7; d++) {
+    const day = getDayData(d, currentWeek);
+    const dayDate = new Date(ws);
+    dayDate.setDate(dayDate.getDate() + d);
+    const dateStr = dayDate.getDate() + '/' + (dayDate.getMonth()+1);
+
+    h += `<div class="day-card" id="day${d}">
+      <div class="day-header" onclick="toggleDay(${d})">
+        <div><span class="day-name">${day.name}</span> <span style="font-size:12px;color:#8b8fa3;margin-left:6px">${dateStr}</span></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="day-type ${day.type}">${day.typeLabel}</span>
+          <span class="expand-icon" id="icon${d}">▼</span>
+        </div>
+      </div>
+      <div class="day-body" id="body${d}">
+        ${mealHTML('Desayuno · 7:10', day.meals.b)}
+        ${mealHTML(d === 4 ? 'Comida · 15:00' : 'Comida · 14:30 (tupperware)', day.meals.l)}
+        ${trainHTML(day.training)}
+        ${mealHTML('Cena · 20:30-21:30', day.meals.d)}
+        ${day.supps.length > 0 ? suppHTML(day.supps) : ''}
+        ${nightHTML()}
+      </div>
+    </div>`;
+  }
+
+  container.innerHTML = h;
+  renderMilestoneTrack();
+}
+
+function toggleDay(d) {
+  const body = document.getElementById('body' + d);
+  const icon = document.getElementById('icon' + d);
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.day-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.expand-icon').forEach(i => i.classList.remove('open'));
+  if (!isOpen) {
+    body.classList.add('open');
+    icon.classList.add('open');
+  }
+}
+
+function changeWeek(dir) {
+  const nw = currentWeek + dir;
+  if (nw >= 0 && nw < TOTAL_WEEKS) {
+    currentWeek = nw;
+    renderWeek();
+    window.scrollTo(0, 0);
+  }
+}
+
+function goToWeek(w) {
+  currentWeek = w;
+  renderWeek();
+  window.scrollTo(0, 0);
+}
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowLeft') changeWeek(-1);
+  if (e.key === 'ArrowRight') changeWeek(1);
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  const diff = e.changedTouches[0].screenX - touchStartX;
+  if (Math.abs(diff) > 60) {
+    if (diff > 0) changeWeek(-1);
+    else changeWeek(1);
+  }
+}, {passive:true});
+
+renderWeek();
+</script>
+</body>
+</html>
