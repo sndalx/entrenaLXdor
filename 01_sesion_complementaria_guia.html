@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Sesión Complementaria — Guía</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e4e6ef;min-height:100vh;min-height:100dvh;overflow-x:hidden}
+.screen{min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;display:none}
+.screen.active{display:flex}
+.phase-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#818cf8;margin-bottom:8px;font-weight:600}
+.exercise-name{font-size:28px;font-weight:700;margin-bottom:12px;line-height:1.2}
+.exercise-detail{font-size:15px;color:#8b8fa3;line-height:1.6;margin-bottom:24px;max-width:320px}
+.timer-ring{position:relative;width:220px;height:220px;margin:0 auto 24px}
+.timer-ring svg{transform:rotate(-90deg);width:220px;height:220px}
+.timer-ring circle{fill:none;stroke-width:6}
+.timer-ring .bg{stroke:#2e3345}
+.timer-ring .progress{stroke:#818cf8;stroke-linecap:round;transition:stroke-dashoffset 0.3s linear}
+.timer-ring.rest .progress{stroke:#10b981}
+.timer-ring.exercise .progress{stroke:#f59e0b}
+.timer-ring.warmup .progress{stroke:#ec4899}
+.timer-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center}
+.timer-seconds{font-family:'JetBrains Mono',monospace;font-size:56px;font-weight:700;line-height:1}
+.timer-label{font-size:13px;color:#8b8fa3;margin-top:4px}
+.rep-counter{font-family:'JetBrains Mono',monospace;font-size:72px;font-weight:700;color:#f59e0b;margin:24px 0}
+.rep-label{font-size:15px;color:#8b8fa3;margin-bottom:24px}
+.btn{padding:16px 48px;border:none;border-radius:12px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:600;cursor:pointer;transition:all 0.15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.btn-primary{background:#818cf8;color:#fff}
+.btn-primary:active{background:#6366f1;transform:scale(0.97)}
+.btn-secondary{background:#1a1d27;color:#8b8fa3;border:1px solid #2e3345}
+.btn-secondary:active{background:#232733}
+.btn-done{background:#10b981;color:#fff;width:100%;max-width:320px;padding:20px}
+.btn-done:active{background:#059669;transform:scale(0.97)}
+.btn-skip{background:transparent;color:#8b8fa3;border:1px solid #2e3345;margin-top:12px;font-size:14px;padding:12px 32px}
+.round-badge{display:inline-block;background:#232733;border:1px solid #2e3345;border-radius:20px;padding:6px 16px;font-size:13px;color:#8b8fa3;margin-bottom:16px}
+.round-badge span{color:#818cf8;font-weight:600}
+.progress-bar{width:100%;max-width:360px;height:4px;background:#1a1d27;border-radius:2px;margin-bottom:24px;overflow:hidden}
+.progress-bar .fill{height:100%;background:#818cf8;border-radius:2px;transition:width 0.3s}
+.set-dots{display:flex;gap:8px;justify-content:center;margin-bottom:16px}
+.set-dot{width:10px;height:10px;border-radius:50%;background:#2e3345}
+.set-dot.done{background:#10b981}
+.set-dot.current{background:#818cf8;box-shadow:0 0 8px rgba(129,140,248,0.4)}
+.instruction-box{background:#1a1d27;border:1px solid #2e3345;border-radius:12px;padding:16px 20px;margin-bottom:20px;max-width:320px;text-align:left}
+.instruction-box p{font-size:14px;line-height:1.6;color:#8b8fa3}
+.instruction-box .key{color:#f59e0b;font-weight:500}
+.tempo-display{font-family:'JetBrains Mono',monospace;font-size:18px;color:#f59e0b;margin-bottom:4px}
+.final-stats{text-align:left;max-width:300px;margin:0 auto 32px}
+.final-stats .row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #1a1d27;font-size:14px}
+.final-stats .row .label{color:#8b8fa3}
+.final-stats .row .value{font-weight:600}
+.pulse{animation:pulse 1.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+const CIRCUMFERENCE = 2 * Math.PI * 100;
+
+const WORKOUT = [
+  {type:'intro',name:'Sesión complementaria',detail:'Sustitución de sesión de gimnasio perdida. 3 rondas + movilidad + dead hangs. ~45 minutos.',prepTime:0},
+  
+  // CALENTAMIENTO
+  {type:'warmup-intro',phase:'Calentamiento',name:'Movilidad articular',detail:'Círculos de hombros hacia delante y hacia atrás (10 cada dirección). Rotaciones de muñecas. Rotaciones de cadera.',prepTime:10,duration:60},
+  {type:'warmup-intro',phase:'Calentamiento',name:'Sentadillas sin peso',detail:'Sentadillas lentas y controladas. Baja hasta donde puedas sin perder la postura. Sin prisa.',prepTime:8,duration:60},
+
+  // RONDA 1
+  {type:'round-header',round:1},
+  {type:'exercise-reps',phase:'Ronda 1 de 3',name:'Sentadilla goblet',detail:'Kettlebell contra el pecho. Baja controlado en 3 segundos, pausa 1 segundo abajo, sube en 2 segundos.',reps:10,prepTime:15,tempo:'3-1-2',equipment:'Kettlebell'},
+  {type:'rest',duration:75,next:'Press de hombro'},
+  {type:'exercise-reps',phase:'Ronda 1 de 3',name:'Press de hombro',detail:'De pie (no sentado). Mancuernas desde los hombros, empuja hacia arriba. Controla la bajada.',reps:8,prepTime:12,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Remo a una mano'},
+  {type:'exercise-reps',phase:'Ronda 1 de 3',name:'Remo a una mano',detail:'Apóyate con una mano en silla o mesa. Tira de la mancuerna hacia la cadera. 8 repeticiones POR LADO.',reps:8,prepTime:12,equipment:'1 mancuerna',perSide:true},
+  {type:'rest',duration:75,next:'Peso muerto rumano'},
+  {type:'exercise-reps',phase:'Ronda 1 de 3',name:'Peso muerto rumano',detail:'Las dos mancuernas. Bisagra de cadera, piernas ligeramente flexionadas. Tempo lento bajando. Si la espalda baja protesta, reduce rango.',reps:10,prepTime:12,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Plancha'},
+  {type:'exercise-timed',phase:'Ronda 1 de 3',name:'Plancha',detail:'Antebrazos en el suelo. Activa el core (ombligo hacia dentro sin dejar de respirar). Aguanta hasta temblor o 30 segundos.',duration:30,prepTime:10},
+  {type:'rest',duration:90,next:'Sentadilla goblet — Ronda 2'},
+
+  // RONDA 2
+  {type:'round-header',round:2},
+  {type:'exercise-reps',phase:'Ronda 2 de 3',name:'Sentadilla goblet',detail:'Misma ejecución. Tempo 3-1-2. Controla cada repetición.',reps:10,prepTime:10,tempo:'3-1-2',equipment:'Kettlebell'},
+  {type:'rest',duration:75,next:'Press de hombro'},
+  {type:'exercise-reps',phase:'Ronda 2 de 3',name:'Press de hombro',detail:'De pie. Mancuernas desde los hombros. 8 repeticiones controladas.',reps:8,prepTime:10,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Remo a una mano'},
+  {type:'exercise-reps',phase:'Ronda 2 de 3',name:'Remo a una mano',detail:'8 repeticiones POR LADO. Siente la contracción al final del recorrido.',reps:8,prepTime:10,equipment:'1 mancuerna',perSide:true},
+  {type:'rest',duration:75,next:'Peso muerto rumano'},
+  {type:'exercise-reps',phase:'Ronda 2 de 3',name:'Peso muerto rumano',detail:'Tempo lento. Siente el estiramiento en isquiotibiales al bajar.',reps:10,prepTime:10,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Plancha'},
+  {type:'exercise-timed',phase:'Ronda 2 de 3',name:'Plancha',detail:'Aguanta. Respiración constante. Si el temblor aparece pronto, es normal.',duration:30,prepTime:8},
+  {type:'rest',duration:90,next:'Sentadilla goblet — Ronda 3'},
+
+  // RONDA 3
+  {type:'round-header',round:3},
+  {type:'exercise-reps',phase:'Ronda 3 de 3',name:'Sentadilla goblet',detail:'Última ronda. Misma calidad de movimiento que la primera. No aceleres.',reps:10,prepTime:10,tempo:'3-1-2',equipment:'Kettlebell'},
+  {type:'rest',duration:75,next:'Press de hombro'},
+  {type:'exercise-reps',phase:'Ronda 3 de 3',name:'Press de hombro',detail:'Últimas 8 repeticiones. Mantén la técnica.',reps:8,prepTime:10,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Remo a una mano'},
+  {type:'exercise-reps',phase:'Ronda 3 de 3',name:'Remo a una mano',detail:'8 por lado. Última serie. No sacrifiques forma por velocidad.',reps:8,prepTime:10,equipment:'1 mancuerna',perSide:true},
+  {type:'rest',duration:75,next:'Peso muerto rumano'},
+  {type:'exercise-reps',phase:'Ronda 3 de 3',name:'Peso muerto rumano',detail:'Últimas 10 repeticiones. Tempo lento hasta el final.',reps:10,prepTime:10,equipment:'2 mancuernas'},
+  {type:'rest',duration:75,next:'Plancha'},
+  {type:'exercise-timed',phase:'Ronda 3 de 3',name:'Plancha',detail:'Última plancha. Aguanta lo máximo que puedas con buena forma.',duration:30,prepTime:8},
+  {type:'rest',duration:60,next:'Movilidad'},
+
+  // MOVILIDAD
+  {type:'exercise-timed',phase:'Movilidad',name:'Psoas — lado izquierdo',detail:'Rodilla derecha en el suelo, pie izquierdo adelante. Empuja la cadera hacia delante suavemente.',duration:90,prepTime:10},
+  {type:'exercise-timed',phase:'Movilidad',name:'Psoas — lado derecho',detail:'Cambia de lado. Rodilla izquierda en el suelo, pie derecho adelante.',duration:90,prepTime:8},
+  {type:'exercise-reps',phase:'Movilidad',name:'Rotaciones torácicas',detail:'En cuadrupedia (cuatro apoyos). Mano en la nuca, rota el torso abriendo hacia el techo. 10 por cada lado.',reps:10,prepTime:10,perSide:true},
+  {type:'exercise-timed',phase:'Movilidad',name:'Apertura pectoral izq.',detail:'Brazo izquierdo en el marco de una puerta, gira el cuerpo hacia la derecha. Estiramiento suave en pectoral.',duration:60,prepTime:8},
+  {type:'exercise-timed',phase:'Movilidad',name:'Apertura pectoral der.',detail:'Cambia de lado. Brazo derecho en el marco.',duration:60,prepTime:6},
+  {type:'exercise-timed',phase:'Movilidad',name:'Estiramiento de tobillo',detail:'Pie a 10 cm de la pared. Empuja la rodilla hacia la pared sin levantar el talón. Ambos lados.',duration:90,prepTime:8},
+  {type:'exercise-timed',phase:'Movilidad',name:'Sentadilla profunda',detail:'Baja a sentadilla profunda sin peso. Agárrate a algo si necesitas equilibrio. Mantén la posición.',duration:90,prepTime:8},
+
+  // DEAD HANGS
+  {type:'exercise-timed',phase:'Dead hangs',name:'Dead hang — Serie 1',detail:'Agarra la barra, palmas hacia delante, anchura de hombros. Relaja hombros. Aguanta lo que puedas.',duration:60,prepTime:12,openEnded:true},
+  {type:'rest',duration:90,next:'Dead hang — Serie 2'},
+  {type:'exercise-timed',phase:'Dead hangs',name:'Dead hang — Serie 2',detail:'Segundo agarre. Respira con normalidad. Suelta cuando las manos no aguanten.',duration:60,prepTime:8,openEnded:true},
+  {type:'rest',duration:90,next:'Dead hang — Serie 3'},
+  {type:'exercise-timed',phase:'Dead hangs',name:'Dead hang — Serie 3',detail:'Último agarre. Aguanta todo lo que puedas.',duration:60,prepTime:8,openEnded:true},
+  {type:'rest',duration:60,next:'Dead hang — Serie 4'},
+  {type:'exercise-timed',phase:'Dead hangs',name:'Dead hang — Serie 4',detail:'Serie extra si te queda agarre. Si no, pasa directamente al final.',duration:45,prepTime:8,openEnded:true},
+
+  {type:'finish'}
+];
+
+let currentStep = 0;
+let timerInterval = null;
+let sessionStart = null;
+let totalExerciseTime = 0;
+
+const app = document.getElementById('app');
+
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+let wakeLock = null;
+
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (err) { console.log('Wake lock failed:', err.message); }
+  }
+}
+
+function releaseWakeLock() {
+  if (wakeLock) { wakeLock.release(); wakeLock = null; }
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && sessionStart && !wakeLock) {
+    requestWakeLock();
+  }
+});
+
+function beep(freq, duration, vol) {
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.connect(g); g.connect(audioCtx.destination);
+  o.frequency.value = freq;
+  g.gain.value = vol || 0.15;
+  o.start(); o.stop(audioCtx.currentTime + duration);
+}
+
+function shortBeep() { beep(880, 0.1, 0.12); }
+function longBeep() { beep(660, 0.3, 0.18); }
+function doneBeep() { beep(1100, 0.15, 0.15); setTimeout(()=>beep(1320, 0.2, 0.15), 180); }
+
+function getTotalSteps() {
+  return WORKOUT.filter(s => ['exercise-reps','exercise-timed','warmup-intro'].includes(s.type)).length;
+}
+
+function getCompletedSteps() {
+  let count = 0;
+  for (let i = 0; i < currentStep; i++) {
+    if (['exercise-reps','exercise-timed','warmup-intro'].includes(WORKOUT[i].type)) count++;
+  }
+  return count;
+}
+
+function progressPercent() {
+  return Math.round((getCompletedSteps() / getTotalSteps()) * 100);
+}
+
+function renderIntro() {
+  const step = WORKOUT[currentStep];
+  app.innerHTML = `
+    <div class="screen active">
+      <div style="margin-bottom:32px">
+        <div style="width:64px;height:64px;border-radius:16px;background:#1a1d27;border:1px solid #2e3345;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+          <svg width="28" height="28" fill="none" stroke="#818cf8" stroke-width="2" stroke-linecap="round"><path d="M6 14h4v10H6zM12 8h4v16h-4zM18 11h4v13h-4z"/></svg>
+        </div>
+        <div class="exercise-name">${step.name}</div>
+        <div class="exercise-detail">${step.detail}</div>
+      </div>
+      <button class="btn btn-primary" onclick="startSession()">Comenzar sesión</button>
+    </div>`;
+}
+
+function startSession() {
+  audioCtx.resume();
+  requestWakeLock();
+  if (document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(() => {});
+  }
+  sessionStart = Date.now();
+  currentStep = 1;
+  renderStep();
+}
+
+function renderStep() {
+  if (timerInterval) { clearInterval(timerInterval); timerInterval = null; }
+  const step = WORKOUT[currentStep];
+  if (!step) return;
+
+  if (step.type === 'round-header') {
+    currentStep++;
+    renderStep();
+    return;
+  }
+
+  if (step.type === 'finish') { renderFinish(); return; }
+  if (step.type === 'rest') { renderRest(step); return; }
+
+  renderPrep(step);
+}
+
+function renderPrep(step) {
+  let remaining = step.prepTime || 10;
+  const ringClass = step.phase && step.phase.includes('Ronda') ? 'exercise' : (step.type === 'warmup-intro' ? 'warmup' : 'exercise');
+
+  app.innerHTML = `
+    <div class="screen active">
+      <div class="progress-bar"><div class="fill" style="width:${progressPercent()}%"></div></div>
+      ${step.phase ? `<div class="phase-label">${step.phase}</div>` : ''}
+      <div class="exercise-name">${step.name}</div>
+      ${step.equipment ? `<div style="font-size:13px;color:#f59e0b;margin-bottom:8px">Prepara: ${step.equipment}</div>` : ''}
+      <div class="instruction-box">
+        <p>${step.detail}</p>
+        ${step.tempo ? `<p style="margin-top:8px"><span class="key">Tempo: ${step.tempo}</span></p>` : ''}
+        ${step.perSide ? `<p style="margin-top:4px"><span class="key">Por cada lado</span></p>` : ''}
+        ${step.reps ? `<p style="margin-top:4px;color:#e4e6ef">${step.reps} repeticiones</p>` : ''}
+        ${step.duration && !step.openEnded ? `<p style="margin-top:4px;color:#e4e6ef">${step.duration} segundos</p>` : ''}
+        ${step.openEnded ? `<p style="margin-top:4px;color:#e4e6ef">Aguanta lo que puedas</p>` : ''}
+      </div>
+      <div class="timer-ring ${ringClass}">
+        <svg viewBox="0 0 220 220"><circle class="bg" cx="110" cy="110" r="100"/><circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRCUMFERENCE}" stroke-dashoffset="0" id="prepRing"/></svg>
+        <div class="timer-text"><div class="timer-seconds" id="prepTime">${remaining}</div><div class="timer-label">preparación</div></div>
+      </div>
+      <button class="btn btn-skip" onclick="skipPrep()">Saltar →</button>
+    </div>`;
+
+  const ring = document.getElementById('prepRing');
+  const display = document.getElementById('prepTime');
+  const total = remaining;
+
+  timerInterval = setInterval(() => {
+    remaining--;
+    display.textContent = remaining;
+    ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - remaining / total);
+    if (remaining <= 3 && remaining > 0) shortBeep();
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      longBeep();
+      renderExercise(step);
+    }
+  }, 1000);
+}
+
+function skipPrep() {
+  clearInterval(timerInterval);
+  renderExercise(WORKOUT[currentStep]);
+}
+
+function renderExercise(step) {
+  if (step.type === 'exercise-reps' || step.type === 'warmup-intro' && !step.duration) {
+    renderRepsExercise(step);
+  } else {
+    renderTimedExercise(step);
+  }
+}
+
+function renderRepsExercise(step) {
+  const ringClass = step.phase && step.phase.includes('Ronda') ? 'exercise' : 'warmup';
+  app.innerHTML = `
+    <div class="screen active">
+      <div class="progress-bar"><div class="fill" style="width:${progressPercent()}%"></div></div>
+      ${step.phase ? `<div class="phase-label">${step.phase}</div>` : ''}
+      <div class="exercise-name">${step.name}</div>
+      ${step.tempo ? `<div class="tempo-display">Tempo: ${step.tempo}</div>` : ''}
+      <div class="rep-counter">${step.reps}${step.perSide ? '×2' : ''}</div>
+      <div class="rep-label">${step.perSide ? 'repeticiones por lado' : 'repeticiones'}</div>
+      <div style="font-size:14px;color:#8b8fa3;margin-bottom:24px" class="pulse">Ejecuta a tu ritmo</div>
+      <button class="btn btn-done" onclick="exerciseDone()">Hecho</button>
+    </div>`;
+}
+
+function renderTimedExercise(step) {
+  let remaining = step.duration;
+  const isOpenEnded = step.openEnded;
+  const ringClass = step.phase === 'Dead hangs' ? 'exercise' : (step.phase === 'Movilidad' ? 'warmup' : (step.type === 'warmup-intro' ? 'warmup' : 'exercise'));
+  let elapsed = 0;
+
+  app.innerHTML = `
+    <div class="screen active">
+      <div class="progress-bar"><div class="fill" style="width:${progressPercent()}%"></div></div>
+      ${step.phase ? `<div class="phase-label">${step.phase}</div>` : ''}
+      <div class="exercise-name">${step.name}</div>
+      <div class="timer-ring ${ringClass}">
+        <svg viewBox="0 0 220 220"><circle class="bg" cx="110" cy="110" r="100"/><circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRCUMFERENCE}" stroke-dashoffset="${CIRCUMFERENCE}" id="exRing"/></svg>
+        <div class="timer-text"><div class="timer-seconds" id="exTime">${remaining}</div><div class="timer-label" id="exLabel">${isOpenEnded ? 'aguanta' : 'segundos'}</div></div>
+      </div>
+      ${isOpenEnded ? '<button class="btn btn-done" onclick="exerciseDone()" style="margin-bottom:8px">Soltar</button>' : ''}
+      <button class="btn btn-skip" onclick="exerciseDone()">Saltar →</button>
+    </div>`;
+
+  const ring = document.getElementById('exRing');
+  const display = document.getElementById('exTime');
+  const label = document.getElementById('exLabel');
+  const total = remaining;
+
+  timerInterval = setInterval(() => {
+    elapsed++;
+    remaining--;
+    
+    if (isOpenEnded) {
+      display.textContent = elapsed;
+      ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - Math.min(elapsed / total, 1));
+      if (elapsed % 15 === 0) shortBeep();
+    } else {
+      display.textContent = Math.max(remaining, 0);
+      ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - elapsed / total);
+      if (remaining <= 3 && remaining > 0) shortBeep();
+      if (remaining <= 0) {
+        clearInterval(timerInterval);
+        doneBeep();
+        totalExerciseTime += elapsed;
+        currentStep++;
+        renderStep();
+        return;
+      }
+    }
+  }, 1000);
+}
+
+function renderRest(step) {
+  let remaining = step.duration;
+
+  app.innerHTML = `
+    <div class="screen active">
+      <div class="progress-bar"><div class="fill" style="width:${progressPercent()}%"></div></div>
+      <div class="phase-label">Descanso</div>
+      <div style="font-size:15px;color:#8b8fa3;margin-bottom:8px">Siguiente: ${step.next}</div>
+      <div class="timer-ring rest">
+        <svg viewBox="0 0 220 220"><circle class="bg" cx="110" cy="110" r="100"/><circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRCUMFERENCE}" stroke-dashoffset="${CIRCUMFERENCE}" id="restRing"/></svg>
+        <div class="timer-text"><div class="timer-seconds" id="restTime">${remaining}</div><div class="timer-label">descanso</div></div>
+      </div>
+      <button class="btn btn-skip" onclick="skipRest()">Saltar descanso →</button>
+    </div>`;
+
+  const ring = document.getElementById('restRing');
+  const display = document.getElementById('restTime');
+  const total = remaining;
+
+  timerInterval = setInterval(() => {
+    remaining--;
+    display.textContent = remaining;
+    ring.style.strokeDashoffset = CIRCUMFERENCE * (1 - (total - remaining) / total);
+    if (remaining <= 3 && remaining > 0) shortBeep();
+    if (remaining <= 0) {
+      clearInterval(timerInterval);
+      longBeep();
+      currentStep++;
+      renderStep();
+    }
+  }, 1000);
+}
+
+function skipRest() {
+  clearInterval(timerInterval);
+  currentStep++;
+  renderStep();
+}
+
+function exerciseDone() {
+  clearInterval(timerInterval);
+  doneBeep();
+  currentStep++;
+  renderStep();
+}
+
+function renderFinish() {
+  releaseWakeLock();
+  if (document.fullscreenElement) {
+    document.exitFullscreen().catch(() => {});
+  }
+  const totalTime = Math.round((Date.now() - sessionStart) / 60000);
+  app.innerHTML = `
+    <div class="screen active">
+      <div style="width:64px;height:64px;border-radius:50%;background:#10b981;display:flex;align-items:center;justify-content:center;margin:0 auto 20px">
+        <svg width="28" height="28" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M6 14l6 6L22 8"/></svg>
+      </div>
+      <div class="exercise-name">Sesión completada</div>
+      <div class="exercise-detail">Buen trabajo. Mañana lunes: bici zona 2 + protocolo tendinoso tren inferior.</div>
+      <div class="final-stats">
+        <div class="row"><span class="label">Duración total</span><span class="value">${totalTime} min</span></div>
+        <div class="row"><span class="label">Ejercicios</span><span class="value">${getTotalSteps()}</span></div>
+        <div class="row"><span class="label">Rondas de fuerza</span><span class="value">3</span></div>
+      </div>
+      <div style="font-size:13px;color:#8b8fa3;max-width:280px;line-height:1.6">
+        Prepara el shaker para mañana. Tupperware listo. Vitamina D visible en la encimera.
+      </div>
+    </div>`;
+}
+
+renderIntro();
+</script>
+</body>
+</html>
