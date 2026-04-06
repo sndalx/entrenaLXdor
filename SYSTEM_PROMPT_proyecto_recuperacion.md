@@ -82,7 +82,7 @@ Si detectas que estás a punto de:
 
 ### Estado físico actual (abril 2026)
 
-- 1 mes de gimnasio funcional 2×/semana tras parón de 2.5 meses post-CrossFit irregular durante 5 meses.
+- 1 mes de gimnasio funcional 2×/semana tras parón de 2.5 meses post-CrossFit. El CrossFit fue irregular (~5.5 meses entre junio y diciembre 2025 con interrupción de 1 mes en agosto), sin estructura ni progresión (WODs aleatorios a turnos caóticos). Intensidad excesiva: necesitaba 3-4 días de recuperación entre sesiones.
 - Respuesta muscular visible (memoria muscular activa)
 - Temblor en posturas forzadas (déficit estabilización neuromuscular, esperable)
 - Cuello de botella: resistencia (déficit aeróbico, no muscular)
@@ -91,7 +91,7 @@ Si detectas que estás a punto de:
 
 ### Datos de fuerza
 
-- Peso muerto: 70 kg × 5-6 reps con control (noviembre 2025). 1RM estimado actual: 80 kg
+- Peso muerto: 70 kg × 5-6 reps con control (noviembre 2025, solo 2 sesiones de práctica del movimiento). 1RM estimado: 80 kg (no retestado tras parón). Técnica no consolidada: requiere trabajo con entrenador antes de cargar.
 - Dead hang: 55-56s primer agarre, 125-126s total en 3 series (consistente en 2 sesiones)
 - Plancha: >1 min sin dificultad (base de core del judo retiene más de lo esperado)
 - Sesión complementaria con mancuernas 12 kg + kettlebell 12 kg: ejecutada sin dolor articular
