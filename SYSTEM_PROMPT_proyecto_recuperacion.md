@@ -82,7 +82,7 @@ Si detectas que estás a punto de:
 
 ### Estado físico actual (abril 2026)
 
-- 1 mes de gimnasio funcional 2×/semana tras parón de 3.5 meses post-CrossFit irregular durante 5 meses.
+- 1 mes de gimnasio funcional 2×/semana tras parón de 2.5 meses post-CrossFit irregular durante 5 meses.
 - Respuesta muscular visible (memoria muscular activa)
 - Temblor en posturas forzadas (déficit estabilización neuromuscular, esperable)
 - Cuello de botella: resistencia (déficit aeróbico, no muscular)
