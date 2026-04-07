@@ -58,6 +58,15 @@ body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e4e6ef;min-heigh
 .night-block .nb-detail{font-size:11px;color:#8b8fa3}
 .expand-icon{transition:transform 0.2s;color:#8b8fa3;font-size:16px}
 .expand-icon.open{transform:rotate(180deg)}
+.rules-banner{background:#1a1d27;border-bottom:1px solid #2e3345;border-left:3px solid #f59e0b;margin:0;padding:0}
+.rules-header{padding:10px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.rules-title{font-size:11px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;color:#f59e0b}
+.rules-body{display:none;padding:0 16px 14px;font-size:12px;line-height:1.5;color:#8b8fa3}
+.rules-body.open{display:block}
+.rules-body strong{color:#e4e6ef;font-weight:600}
+.rules-body .rule{margin-bottom:8px;padding-left:10px;border-left:1px solid #2e3345}
+.rules-body .rule.critical{border-left-color:#ef4444}
+.rules-body .rule.warn{border-left-color:#f59e0b}
 </style>
 </head>
 <body>
@@ -65,6 +74,21 @@ body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e4e6ef;min-heigh
 <div class="top-bar">
   <div class="top-title">Fase 1 — Preparación tendinosa y base metabólica</div>
   <div class="top-sub">Abril – Agosto 2026 · Punto de control: Agosto 2026</div>
+</div>
+
+<div class="rules-banner">
+  <div class="rules-header" onclick="document.getElementById('rulesBody').classList.toggle('open');this.querySelector('.expand-icon').classList.toggle('open')">
+    <div class="rules-title">⚠ Reglas operativas de protección tendinosa</div>
+    <div class="expand-icon">▼</div>
+  </div>
+  <div class="rules-body" id="rulesBody">
+    <div class="rule critical"><strong>Dead hangs:</strong> máximo 2 sesiones/semana (lunes y miércoles). NUNCA diariamente. Frecuencia mayor interrumpe el ciclo de adaptación tendinosa (48-72h), no lo acelera.</div>
+    <div class="rule critical"><strong>Estado actual (07/04/2026):</strong> dead hangs SUSPENDIDOS hasta nuevo aviso por molestia leve en hombro izquierdo. Reincorporación condicional a 7 días sin molestia matutina.</div>
+    <div class="rule warn"><strong>Retirada de carga:</strong> cualquier molestia (incluso 1-2/10) en codo, hombro, muñeca, rodilla o tendón rotuliano = retirada inmediata mínimo 5-7 días sobre esa estructura. No "observar a ver si pasa".</div>
+    <div class="rule warn"><strong>Domingo:</strong> descanso completo real. Cero entrenamiento, cero movilidad programada, cero "preparación activa". No negociable.</div>
+    <div class="rule"><strong>Indicador clave:</strong> molestia matutina al despertar al iniciar movimiento = señal tendinosa temprana. Activa retirada inmediata.</div>
+    <div class="rule"><strong>Principio operativo:</strong> la sensación de bienestar muscular no es información sobre los tendones. La carga tendinosa se regula por calendario y reglas, no por sensación.</div>
+  </div>
 </div>
 
 <div class="milestone-track">
@@ -209,7 +233,8 @@ function getDayData(dayOfWeek, weekIndex) {
       training:[
         {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'std'), detail:'105-122 bpm o test de hablar. Cambio de ropa directo, sin sentarse'},
         {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
-        {name:'Movilidad + Dead hangs', time:'12 min', detail:'Psoas 90s/lado · Rotaciones torácicas 10/lado · Apertura pectoral 60s/lado · Tobillo 90s · Sentadilla profunda 90s · Dead hangs 90-120s total'}
+        {name:'Movilidad', time:'10 min', detail:'Psoas 90s/lado · Rotaciones torácicas 10/lado · Apertura pectoral 60s/lado · Tobillo 90s · Sentadilla profunda 90s'},
+        {name:'Dead hangs (día asignado 1/2)', time:'4 min', detail:'90-120s total en 2-3 series. SUSPENDIDOS hasta resolución del episodio del 07/04/2026 (hombro izq). Reincorporar solo tras 7 días sin molestia matutina'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
@@ -220,7 +245,7 @@ function getDayData(dayOfWeek, weekIndex) {
         {name:'Gimnasio funcional con entrenador', time:'60 min', detail:'Tempo lento, control excéntrico. Prioridad tendinosa'},
         {name:'Whey post-entreno', time:'', detail:'30g inmediatamente después'},
         {name:'Protocolo tendinoso tren superior', time:'15 min', detail:tu},
-        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Foco en zonas trabajadas'},
+        {name:'Movilidad', time:'10 min', detail:'Foco en zonas trabajadas. SIN dead hangs (no es día asignado)'},
         {name:'Bici suave (opcional)', time:'15 min', detail:'Solo si hay energía. Zona 1-2 muy ligera'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
@@ -231,7 +256,8 @@ function getDayData(dayOfWeek, weekIndex) {
       training:[
         {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'main'), detail:'Sesión principal aeróbica entre semana'},
         {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
-        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Rutina estándar'}
+        {name:'Movilidad', time:'8 min', detail:'Rutina estándar'},
+        {name:'Dead hangs (día asignado 2/2)', time:'4 min', detail:'90-120s total en 2-3 series. SUSPENDIDOS hasta resolución del episodio del 07/04/2026 (hombro izq). Reincorporar solo tras 7 días sin molestia matutina'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
@@ -242,18 +268,18 @@ function getDayData(dayOfWeek, weekIndex) {
         {name:'Gimnasio funcional con entrenador', time:'60 min', detail:'Segunda sesión semanal'},
         {name:'Whey post-entreno', time:'', detail:'30g inmediatamente después'},
         {name:'Protocolo tendinoso tren superior', time:'15 min', detail:tu},
-        {name:'Movilidad + Dead hangs', time:'10 min', detail:'Dead hangs opcionales'},
+        {name:'Movilidad', time:'10 min', detail:'Foco en zonas trabajadas. SIN dead hangs (no es día asignado)'},
         {name:'Bici suave (opcional)', time:'15 min', detail:'Recuperación activa'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[{name:'Proteína Whey post-entreno', dose:'30g'}]
     };
     case 4: return {
-      name:'Viernes', type:'tele', typeLabel:'Teletrabajo + Sesión larga',
+      name:'Viernes', type:'tele', typeLabel:'Teletrabajo + Sesión completa',
       training:[
-        {name:'Bici estática zona 2 — sesión larga', time:getBikeDuration(weekIndex,'long'), detail:'Mayor impacto en grasa visceral de la semana'},
+        {name:'Bici estática zona 2 — sesión corta', time:getBikeDuration(weekIndex,'std'), detail:'Bici corta para no acumular carga con senderismo del sábado'},
         {name:'Protocolo tendinoso completo', time:'25 min', detail:'Tren inferior: ' + tl + ' · Tren superior: ' + tu},
-        {name:'Movilidad extendida + Dead hangs + Bandas', time:'25 min', detail:'Rotaciones hombro, face pulls, Pallof press, glute bridge con banda'},
+        {name:'Movilidad extendida + Bandas', time:'25 min', detail:'Rotaciones hombro, face pulls, Pallof press, glute bridge con banda. SIN dead hangs (no es día asignado)'},
         {name:'Foam roller (opcional)', time:'10-15 min', detail:'Cuádriceps, IT band, dorsales, gemelos'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
@@ -263,17 +289,16 @@ function getDayData(dayOfWeek, weekIndex) {
       name:'Sábado', type:'hike', typeLabel:'Senderismo GER',
       training:[
         {name:'Caminata / senderismo', time:'60-90 min', detail: weekIndex < 8 ? 'Artxanda o ruta suave. Ritmo conversacional. Sin carga' : (weekIndex < 12 ? 'Pagasarri o desnivel moderado. Valorar mochila ligera 2-3 kg' : 'Ruta con desnivel + mochila 3-5 kg si articulaciones OK')},
-        {name:'Movilidad + Dead hangs', time:'12 min', detail:'Post-caminata, cuerpo caliente'}
+        {name:'Movilidad ligera post-actividad', time:'10 min', detail:'Cuerpo caliente. Estiramientos suaves de cadena posterior. SIN dead hangs (no es día asignado)'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
     };
     case 6: return {
-      name:'Domingo', type:'rest', typeLabel:'Descanso activo',
+      name:'Domingo', type:'rest', typeLabel:'DESCANSO COMPLETO',
       training:[
-        {name:'Paseo suave', time:'30-40 min', detail:'Tendones se remodelan en reposo. No entrenar duro'},
-        {name:'Movilidad mínima + Dead hangs', time:'8 min', detail:'Psoas + rotaciones torácicas + dead hangs'},
-        {name:'Preparar semana', time:'', detail:'Shaker nocturno · Tupperware · Vitamina D visible · Revisar sueño semanal en Huawei Watch GT 3'}
+        {name:'Cero entrenamiento', time:'', detail:'Sin entrenamiento, sin movilidad programada, sin "preparación activa". Vida cotidiana normal. La supercompensación tendinosa, articular y del SNC ocurre en ausencia de estímulo, no con estímulo de baja intensidad. NO NEGOCIABLE.'},
+        {name:'Verificación sueño semanal', time:'2 min', detail:'Revisar Huawei Watch GT 3 durante el día. Sin que cuente como tarea programada. Umbral: 80% (6/7 noches ≥7h)'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
