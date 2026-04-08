@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Protocolo Tendinoso Inferior + Movilidad</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #0f1117;
+      color: #e4e6ef;
+      overflow: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #app {
+      width: 100%;
+      height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      position: relative;
+    }
+
+    /* Progress bar */
+    .progress-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: #1a1d27;
+    }
+    .progress-bar .fill {
+      height: 100%;
+      background: #818cf8;
+      transition: width 0.4s ease;
+    }
+
+    /* Time estimate */
+    .time-estimate {
+      position: absolute;
+      top: 10px;
+      left: 16px;
+      right: 16px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #8b8fa3;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Phase label */
+    .phase-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #818cf8;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-bottom: 8px;
+    }
+
+    /* Exercise name */
+    .exercise-name {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 16px;
+      line-height: 1.2;
+    }
+
+    /* Timer ring */
+    .timer-ring {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      margin: 16px auto;
+    }
+    .timer-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .timer-ring circle {
+      fill: none;
+      stroke-width: 8;
+      stroke-linecap: round;
+    }
+    .timer-ring .bg { stroke: #2e3345; }
+    .timer-ring .progress { stroke: #818cf8; transition: stroke-dashoffset 0.3s linear; }
+    .timer-ring.exercise .progress { stroke: #f59e0b; }
+    .timer-ring.rest .progress { stroke: #10b981; }
+    .timer-ring.warmup .progress { stroke: #ec4899; }
+    .timer-text {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+    .timer-seconds {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1;
+    }
+    .timer-label {
+      font-size: 13px;
+      color: #8b8fa3;
+      margin-top: 4px;
+    }
+
+    /* Instruction box */
+    .instruction-box {
+      background: #1a1d27;
+      border: 1px solid #2e3345;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 12px 0;
+      max-width: 340px;
+      width: 100%;
+    }
+    .instruction-box p {
+      font-size: 14px;
+      color: #8b8fa3;
+      line-height: 1.5;
+      margin-bottom: 6px;
+    }
+    .instruction-box p:last-child { margin-bottom: 0; }
+    .instruction-box .key {
+      color: #f59e0b;
+      font-weight: 600;
+    }
+
+    /* Reps counter */
+    .reps-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 64px;
+      font-weight: 700;
+      color: #f59e0b;
+      margin: 20px 0 4px;
+    }
+    .reps-label {
+      font-size: 14px;
+      color: #8b8fa3;
+      margin-bottom: 16px;
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 16px 48px;
+      border: none;
+      border-radius: 12px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: transform 0.1s;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn-primary { background: #818cf8; color: #fff; }
+    .btn-done {
+      background: #10b981;
+      color: #fff;
+      width: 100%;
+      max-width: 320px;
+      padding: 20px;
+    }
+    .btn-skip {
+      background: transparent;
+      color: #8b8fa3;
+      border: 1px solid #2e3345;
+      font-size: 14px;
+      padding: 12px 32px;
+    }
+    .btn-release {
+      background: #f59e0b;
+      color: #0f1117;
+      width: 100%;
+      max-width: 320px;
+      padding: 20px;
+      font-size: 18px;
+    }
+
+    /* Next exercise indicator */
+    .next-exercise {
+      font-size: 13px;
+      color: #8b8fa3;
+      margin-top: 12px;
+      text-align: center;
+    }
+    .next-exercise span { color: #e4e6ef; font-weight: 600; }
+
+    /* Intro screen */
+    .intro-title {
+      font-size: 28px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .intro-subtitle {
+      font-size: 15px;
+      color: #8b8fa3;
+      text-align: center;
+      margin-bottom: 32px;
+      line-height: 1.5;
+      max-width: 300px;
+    }
+    .intro-meta {
+      display: flex;
+      gap: 24px;
+      margin-bottom: 32px;
+    }
+    .intro-meta-item {
+      text-align: center;
+    }
+    .intro-meta-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: #818cf8;
+    }
+    .intro-meta-label {
+      font-size: 12px;
+      color: #8b8fa3;
+      margin-top: 2px;
+    }
+
+    /* Finish screen */
+    .finish-icon { font-size: 48px; margin-bottom: 16px; }
+    .finish-title {
+      font-size: 24px;
+      font-weight: 700;
+      margin-bottom: 24px;
+    }
+    .stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      max-width: 300px;
+      width: 100%;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: #1a1d27;
+      border: 1px solid #2e3345;
+      border-radius: 12px;
+      padding: 14px;
+      text-align: center;
+    }
+    .stat-value {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: #10b981;
+    }
+    .stat-label {
+      font-size: 12px;
+      color: #8b8fa3;
+      margin-top: 4px;
+    }
+    .finish-next {
+      background: #1a1d27;
+      border: 1px solid #2e3345;
+      border-radius: 12px;
+      padding: 14px 20px;
+      max-width: 300px;
+      width: 100%;
+      text-align: center;
+    }
+    .finish-next-label {
+      font-size: 12px;
+      color: #8b8fa3;
+      margin-bottom: 4px;
+    }
+    .finish-next-text {
+      font-size: 14px;
+      font-weight: 600;
+      color: #818cf8;
+    }
+
+    /* Buttons container */
+    .btn-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 16px;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <script>
+    // ===== WORKOUT DEFINITION =====
+    const WORKOUT = [
+      { type: 'intro', name: 'Protocolo Tendinoso Inferior', detail: 'Isométricos sin carga + Movilidad', prepTime: 0 },
+
+      // === PROTOCOLO TENDINOSO — WALL SIT ===
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 1/3', name: 'Wall Sit', detail: 'Espalda completamente apoyada en la pared. Rodillas a 60-70° de flexión. Pies separados a la anchura de caderas. Sin carga. Ombligo hacia dentro. Si sientes molestia en rodillas, sube ligeramente.', duration: 30, prepTime: 15, estExtra: 15 },
+      { type: 'rest', duration: 60, next: 'Wall Sit — Set 2' },
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 2/3', name: 'Wall Sit', detail: 'Misma posición. 60-70° de flexión. Respira con normalidad. Si 30s ha sido fácil, intenta aguantar hasta 40-45s.', duration: 35, prepTime: 8, estExtra: 0 },
+      { type: 'rest', duration: 60, next: 'Wall Sit — Set 3' },
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 3/3', name: 'Wall Sit', detail: 'Última serie. Mantén la posición completa. Objetivo: igualar o superar la serie anterior.', duration: 40, prepTime: 8, estExtra: 0 },
+      { type: 'rest', duration: 60, next: 'Gemelo Isométrico en Escalón' },
+
+      // === PROTOCOLO TENDINOSO — GEMELO ISOMÉTRICO ===
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 1/3', name: 'Gemelo Isométrico en Escalón', detail: 'De pie sobre un escalón con las puntas en el borde. Sube hasta ponerte de puntillas (bilateral). Mantén la posición arriba. Agárrate a la pared para equilibrio. No rebotes.', duration: 30, prepTime: 12, estExtra: 0 },
+      { type: 'rest', duration: 60, next: 'Gemelo Isométrico — Set 2' },
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 2/3', name: 'Gemelo Isométrico en Escalón', detail: 'Misma posición. Bilateral. Mantén arriba. Si notas temblor, es normal en las primeras semanas.', duration: 35, prepTime: 8, estExtra: 0 },
+      { type: 'rest', duration: 60, next: 'Gemelo Isométrico — Set 3' },
+      { type: 'exercise-timed', phase: 'Tendinoso · Set 3/3', name: 'Gemelo Isométrico en Escalón', detail: 'Última serie. Si 30-35s es controlable, intenta mantener hasta 45s.', duration: 40, prepTime: 8, estExtra: 0 },
+      { type: 'rest', duration: 60, next: 'Puente de Glúteo' },
+
+      // === PROTOCOLO TENDINOSO — PUENTE DE GLÚTEO ===
+      { type: 'exercise-reps', phase: 'Tendinoso · Set 1/3', name: 'Puente de Glúteo', detail: 'Tumbado boca arriba, rodillas flexionadas, pies apoyados. Sube la cadera apretando glúteos. Mantén 5 segundos arriba en cada repetición. Baja controlado. Espalda neutra: no arquees la lumbar.', reps: 10, prepTime: 12, tempo: '2s subir · 5s pausa · 2s bajar', estSeconds: 80 },
+      { type: 'rest', duration: 60, next: 'Puente de Glúteo — Set 2' },
+      { type: 'exercise-reps', phase: 'Tendinoso · Set 2/3', name: 'Puente de Glúteo', detail: 'Misma ejecución. 5 segundos completos de pausa arriba en cada rep. Aprieta glúteos activamente.', reps: 10, prepTime: 8, tempo: '2s subir · 5s pausa · 2s bajar', estSeconds: 80 },
+      { type: 'rest', duration: 60, next: 'Puente de Glúteo — Set 3' },
+      { type: 'exercise-reps', phase: 'Tendinoso · Set 3/3', name: 'Puente de Glúteo', detail: 'Última serie. Mantén la calidad: 5 segundos completos de pausa en cada rep. No sacrifiques pausa por velocidad.', reps: 10, prepTime: 8, tempo: '2s subir · 5s pausa · 2s bajar', estSeconds: 80 },
+
+      // === MOVILIDAD ===
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Estiramiento de Psoas — Izquierdo', detail: 'Rodilla derecha en el suelo, pierna izquierda delante a 90°. Adelanta la cadera suavemente sin arquear la espalda. Aprieta el glúteo derecho. Mantén la posición respirando profundo.', duration: 90, prepTime: 10, ringType: 'warmup' },
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Estiramiento de Psoas — Derecho', detail: 'Cambia de lado. Rodilla izquierda en el suelo, pierna derecha delante. Glúteo izquierdo activo. Cadera adelantada, espalda neutra.', duration: 90, prepTime: 8, ringType: 'warmup' },
+      { type: 'exercise-reps', phase: 'Movilidad', name: 'Rotaciones Torácicas', detail: 'En cuadrupedia. Coloca una mano detrás de la cabeza. Rota el torso abriendo el codo hacia el techo. Controla el movimiento en ambas direcciones. Exhala al abrir.', reps: 10, prepTime: 8, perSide: true, estSeconds: 50 },
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Apertura Pectoral — Izquierdo', detail: 'Brazo izquierdo apoyado en pared o marco de puerta a 90°. Gira el cuerpo hacia la derecha hasta sentir estiramiento en pectoral. Mantén sin forzar.', duration: 60, prepTime: 8, ringType: 'warmup' },
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Apertura Pectoral — Derecho', detail: 'Cambia de lado. Brazo derecho apoyado. Gira hacia la izquierda. Estiramiento suave y sostenido.', duration: 60, prepTime: 8, ringType: 'warmup' },
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Movilidad de Tobillo', detail: 'De pie frente a la pared, un pie adelantado. Lleva la rodilla hacia la pared sin levantar el talón. Alterna lados o mantén en el más rígido. 90 segundos totales.', duration: 90, prepTime: 8, ringType: 'warmup' },
+      { type: 'exercise-timed', phase: 'Movilidad', name: 'Sentadilla Profunda', detail: 'Baja a sentadilla profunda con talones apoyados. Usa un soporte si necesitas (marco de puerta, poste). Separa las rodillas con los codos. Respira y relaja en la posición. Si no llegas abajo del todo, quédate donde puedas sin dolor.', duration: 90, prepTime: 8, ringType: 'warmup' },
+
+      { type: 'finish' }
+    ];
+
+    // ===== STATE =====
+    let currentStep = 0;
+    let timer = null;
+    let sessionStart = null;
+    let wakeLock = null;
+    let audioCtx = null;
+    let elapsed = 0;
+
+    const CIRC = 2 * Math.PI * 100; // 628.318
+
+    // ===== AUDIO =====
+    function initAudio() {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+
+    function playTone(freq, dur, type = 'sine') {
+      if (!audioCtx) return;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = freq;
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + dur);
+    }
+
+    function shortBeep() { playTone(880, 0.1); }
+    function longBeep() { playTone(660, 0.3); }
+    function doneBeep() { playTone(1100, 0.2); setTimeout(() => playTone(1320, 0.25), 150); }
+
+    // ===== WAKE LOCK =====
+    async function requestWakeLock() {
+      if ('wakeLock' in navigator) {
+        try {
+          wakeLock = await navigator.wakeLock.request('screen');
+          wakeLock.addEventListener('release', () => { wakeLock = null; });
+        } catch (err) { console.log('Wake lock failed:', err.message); }
+      }
+    }
+
+    function releaseWakeLock() {
+      if (wakeLock) { wakeLock.release(); wakeLock = null; }
+    }
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible' && sessionStart && !wakeLock) {
+        requestWakeLock();
+      }
+    });
+
+    // ===== PROGRESS & TIME ESTIMATION =====
+    function isExercise(step) {
+      return ['exercise-reps', 'exercise-timed', 'warmup-intro'].includes(step.type);
+    }
+
+    function getTotalSteps() {
+      return WORKOUT.filter(s => isExercise(s)).length;
+    }
+
+    function getCompletedSteps() {
+      let count = 0;
+      for (let i = 0; i < currentStep; i++) {
+        if (isExercise(WORKOUT[i])) count++;
+      }
+      return count;
+    }
+
+    function progressPercent() {
+      return Math.round((getCompletedSteps() / getTotalSteps()) * 100);
+    }
+
+    function estimateStepDuration(step) {
+      switch (step.type) {
+        case 'exercise-timed':
+          return (step.prepTime || 0) + (step.openEnded ? 45 : step.duration);
+        case 'exercise-reps':
+          return (step.prepTime || 0) + (step.estSeconds || 50);
+        case 'warmup-intro':
+          return (step.prepTime || 0) + step.duration;
+        case 'rest':
+          return step.duration;
+        default:
+          return 0;
+      }
+    }
+
+    function getRemainingSeconds() {
+      let total = 0;
+      for (let i = currentStep; i < WORKOUT.length; i++) {
+        total += estimateStepDuration(WORKOUT[i]);
+      }
+      return total;
+    }
+
+    function formatRemainingTime(secs) {
+      const m = Math.ceil(secs / 60);
+      return `~${m}min`;
+    }
+
+    function getEstimatedFinishTime() {
+      const remaining = getRemainingSeconds();
+      const finish = new Date(Date.now() + remaining * 1000);
+      return finish.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+    }
+
+    function renderProgressBar() {
+      const pct = progressPercent();
+      const remaining = formatRemainingTime(getRemainingSeconds());
+      const finishTime = getEstimatedFinishTime();
+      return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+              <div class="time-estimate"><span>${remaining} restantes</span><span>Fin ~${finishTime}</span></div>`;
+    }
+
+    // ===== RENDER FUNCTIONS =====
+    const app = document.getElementById('app');
+
+    function renderIntro() {
+      const step = WORKOUT[currentStep];
+      const totalExercises = getTotalSteps();
+      const estMinutes = Math.ceil(getRemainingSeconds() / 60);
+      app.innerHTML = `
+        <div class="intro-title">${step.name}</div>
+        <div class="intro-subtitle">${step.detail}</div>
+        <div class="intro-meta">
+          <div class="intro-meta-item">
+            <div class="intro-meta-value">${totalExercises}</div>
+            <div class="intro-meta-label">ejercicios</div>
+          </div>
+          <div class="intro-meta-item">
+            <div class="intro-meta-value">~${estMinutes}</div>
+            <div class="intro-meta-label">minutos</div>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="startSession()">Comenzar sesi\u00f3n</button>
+      `;
+    }
+
+    function startSession() {
+      sessionStart = Date.now();
+      initAudio();
+      if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+      requestWakeLock();
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      }
+      currentStep = 1;
+      renderStep();
+    }
+
+    function renderStep() {
+      clearInterval(timer);
+      const step = WORKOUT[currentStep];
+      if (!step) return;
+
+      switch (step.type) {
+        case 'round-header':
+          currentStep++;
+          renderStep();
+          break;
+        case 'exercise-timed':
+        case 'warmup-intro':
+          if (step.prepTime > 0) renderPrep(step);
+          else startExerciseTimed(step);
+          break;
+        case 'exercise-reps':
+          if (step.prepTime > 0) renderPrep(step);
+          else renderReps(step);
+          break;
+        case 'rest':
+          renderRest(step);
+          break;
+        case 'finish':
+          renderFinish();
+          break;
+        default:
+          currentStep++;
+          renderStep();
+      }
+    }
+
+    function renderPrep(step) {
+      let remaining = step.prepTime;
+      const ringType = step.ringType || (step.phase && step.phase.includes('Movilidad') ? 'warmup' : '');
+      app.innerHTML = `
+        ${renderProgressBar()}
+        <div class="phase-label">${step.phase || ''}</div>
+        <div class="exercise-name">${step.name}</div>
+        <div class="timer-ring">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text">
+            <div class="timer-seconds" style="font-size:36px">${remaining}</div>
+            <div class="timer-label">Prep\u00e1rate</div>
+          </div>
+        </div>
+        <div class="instruction-box">
+          <p>${step.detail}</p>
+          ${step.tempo ? `<p><span class="key">${step.tempo}</span></p>` : ''}
+          ${step.perSide ? '<p><span class="key">Por cada lado</span></p>' : ''}
+          ${step.equipment ? `<p><span class="key">${step.equipment}</span></p>` : ''}
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-skip" onclick="skipPrep()">Saltar</button>
+        </div>
+      `;
+
+      const total = step.prepTime;
+      timer = setInterval(() => {
+        remaining--;
+        const progress = document.querySelector('.timer-ring .progress');
+        const text = document.querySelector('.timer-seconds');
+        if (progress) progress.setAttribute('stroke-dashoffset', (1 - remaining / total) * CIRC);
+        if (text) text.textContent = remaining;
+        if (remaining <= 3 && remaining > 0) shortBeep();
+        if (remaining <= 0) {
+          clearInterval(timer);
+          longBeep();
+          if (step.type === 'exercise-timed' || step.type === 'warmup-intro') startExerciseTimed(step);
+          else renderReps(step);
+        }
+      }, 1000);
+    }
+
+    function skipPrep() {
+      clearInterval(timer);
+      const step = WORKOUT[currentStep];
+      longBeep();
+      if (step.type === 'exercise-timed' || step.type === 'warmup-intro') startExerciseTimed(step);
+      else renderReps(step);
+    }
+
+    function startExerciseTimed(step) {
+      const ringClass = step.ringType || (step.phase && step.phase.includes('Movilidad') ? 'warmup' : 'exercise');
+      if (step.openEnded) {
+        elapsed = 0;
+        app.innerHTML = `
+          ${renderProgressBar()}
+          <div class="phase-label">${step.phase || ''}</div>
+          <div class="exercise-name">${step.name}</div>
+          <div class="timer-ring ${ringClass}">
+            <svg viewBox="0 0 220 220">
+              <circle class="bg" cx="110" cy="110" r="100"/>
+              <circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRC}" stroke-dashoffset="${CIRC}"/>
+            </svg>
+            <div class="timer-text">
+              <div class="timer-seconds">0</div>
+              <div class="timer-label">segundos</div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-release" onclick="releaseHang()">Soltar</button>
+          </div>
+        `;
+
+        const maxDur = step.duration || 120;
+        timer = setInterval(() => {
+          elapsed++;
+          const text = document.querySelector('.timer-seconds');
+          const progress = document.querySelector('.timer-ring .progress');
+          if (text) text.textContent = elapsed;
+          if (progress) progress.setAttribute('stroke-dashoffset', CIRC - (elapsed / maxDur) * CIRC);
+          if (elapsed % 15 === 0) shortBeep();
+        }, 1000);
+      } else {
+        let remaining = step.duration;
+        app.innerHTML = `
+          ${renderProgressBar()}
+          <div class="phase-label">${step.phase || ''}</div>
+          <div class="exercise-name">${step.name}</div>
+          <div class="timer-ring ${ringClass}">
+            <svg viewBox="0 0 220 220">
+              <circle class="bg" cx="110" cy="110" r="100"/>
+              <circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/>
+            </svg>
+            <div class="timer-text">
+              <div class="timer-seconds">${remaining}</div>
+              <div class="timer-label">segundos</div>
+            </div>
+          </div>
+          <div class="btn-group">
+            <button class="btn btn-skip" onclick="finishExercise()">Saltar</button>
+          </div>
+        `;
+
+        const total = step.duration;
+        timer = setInterval(() => {
+          remaining--;
+          const progress = document.querySelector('.timer-ring .progress');
+          const text = document.querySelector('.timer-seconds');
+          if (progress) progress.setAttribute('stroke-dashoffset', (1 - remaining / total) * CIRC);
+          if (text) text.textContent = remaining;
+          if (remaining <= 3 && remaining > 0) shortBeep();
+          if (remaining <= 0) {
+            clearInterval(timer);
+            doneBeep();
+            finishExercise();
+          }
+        }, 1000);
+      }
+    }
+
+    function releaseHang() {
+      clearInterval(timer);
+      doneBeep();
+      finishExercise();
+    }
+
+    function renderReps(step) {
+      const ringClass = step.phase && step.phase.includes('Movilidad') ? 'warmup' : 'exercise';
+      app.innerHTML = `
+        ${renderProgressBar()}
+        <div class="phase-label">${step.phase || ''}</div>
+        <div class="exercise-name">${step.name}</div>
+        <div class="reps-display">${step.reps}</div>
+        <div class="reps-label">repeticiones${step.perSide ? ' por lado' : ''}</div>
+        ${step.tempo ? `<div style="margin-bottom:12px"><span style="color:#f59e0b;font-weight:600;font-size:14px">${step.tempo}</span></div>` : ''}
+        <div class="instruction-box">
+          <p>${step.detail}</p>
+        </div>
+        <div class="btn-group">
+          <button class="btn btn-done" onclick="finishExercise()">Hecho</button>
+        </div>
+      `;
+    }
+
+    function finishExercise() {
+      clearInterval(timer);
+      currentStep++;
+      renderStep();
+    }
+
+    function renderRest(step) {
+      let remaining = step.duration;
+      app.innerHTML = `
+        ${renderProgressBar()}
+        <div class="phase-label" style="color:#10b981">Descanso</div>
+        <div class="timer-ring rest">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" cx="110" cy="110" r="100" stroke-dasharray="${CIRC}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text">
+            <div class="timer-seconds">${remaining}</div>
+            <div class="timer-label">segundos</div>
+          </div>
+        </div>
+        <div class="next-exercise">Siguiente: <span>${step.next || ''}</span></div>
+        <div class="btn-group">
+          <button class="btn btn-skip" onclick="skipRest()">Saltar descanso</button>
+        </div>
+      `;
+
+      const total = step.duration;
+      timer = setInterval(() => {
+        remaining--;
+        const progress = document.querySelector('.timer-ring .progress');
+        const text = document.querySelector('.timer-seconds');
+        if (progress) progress.setAttribute('stroke-dashoffset', (1 - remaining / total) * CIRC);
+        if (text) text.textContent = remaining;
+        if (remaining <= 3 && remaining > 0) shortBeep();
+        if (remaining <= 0) {
+          clearInterval(timer);
+          longBeep();
+          currentStep++;
+          renderStep();
+        }
+      }, 1000);
+    }
+
+    function skipRest() {
+      clearInterval(timer);
+      longBeep();
+      currentStep++;
+      renderStep();
+    }
+
+    function renderFinish() {
+      clearInterval(timer);
+      releaseWakeLock();
+      if (document.fullscreenElement) {
+        document.exitFullscreen().catch(() => {});
+      }
+
+      const duration = Math.round((Date.now() - sessionStart) / 1000);
+      const minutes = Math.floor(duration / 60);
+      const seconds = duration % 60;
+      const totalEx = getTotalSteps();
+
+      // Determine next day activity based on day of week
+      const today = new Date().getDay(); // 0=Sun, 1=Mon...
+      let nextActivity = '';
+      switch (today) {
+        case 1: // Monday → Tuesday is gym
+          nextActivity = 'Ma\u00f1ana: Gimnasio funcional + Tendinoso tren superior';
+          break;
+        case 3: // Wednesday → Thursday is gym
+          nextActivity = 'Ma\u00f1ana: Gimnasio funcional + Tendinoso tren superior';
+          break;
+        case 5: // Friday
+          nextActivity = 'Ma\u00f1ana: Senderismo (Artxanda/Pagasarri) + Movilidad';
+          break;
+        case 2: // Tuesday → Wednesday same as Monday
+          nextActivity = 'Ma\u00f1ana: Bici zona 2 + Tendinoso inferior + Movilidad';
+          break;
+        case 4: // Thursday → Friday
+          nextActivity = 'Ma\u00f1ana: Bici larga + Tendinoso completo + Bandas';
+          break;
+        case 6: // Saturday
+          nextActivity = 'Ma\u00f1ana: Descanso activo + Preparar semana';
+          break;
+        case 0: // Sunday
+          nextActivity = 'Ma\u00f1ana: Bici zona 2 + Tendinoso inferior + Movilidad';
+          break;
+      }
+
+      app.innerHTML = `
+        <div class="finish-icon">\u2705</div>
+        <div class="finish-title">Sesi\u00f3n completada</div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value">${minutes}:${seconds.toString().padStart(2, '0')}</div>
+            <div class="stat-label">duraci\u00f3n</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">${totalEx}</div>
+            <div class="stat-label">ejercicios</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">3</div>
+            <div class="stat-label">sets tendinoso</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value">6</div>
+            <div class="stat-label">movilidad</div>
+          </div>
+        </div>
+        <div class="finish-next">
+          <div class="finish-next-label">Pr\u00f3xima actividad</div>
+          <div class="finish-next-text">${nextActivity}</div>
+        </div>
+      `;
+    }
+
+    // ===== INIT =====
+    renderIntro();
+  </script>
+</body>
+</html>
