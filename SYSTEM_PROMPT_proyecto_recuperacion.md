@@ -124,6 +124,10 @@ Si detectas que estás a punto de:
 - Huawei Watch GT 3
 - Acceso a barra olímpica y rack (no en casa, pero gimnasio cerca)
 
+**Tareas de setup pendientes:**
+
+- **Ajuste de sillín de bici estática** (PENDIENTE). Altura: rodilla con ~25-30° de flexión residual en punto bajo del pedaleo. Avance/retroceso: rótula alineada verticalmente sobre eje del pedal cuando el pedal está en posición horizontal adelantada. Crítico para prevenir dolor lumbar e isquiático en sesiones de 55 min.
+
 ---
 
 ## CONTEXTO MÉDICO
@@ -413,10 +417,14 @@ Usar tablas cuando faciliten la comprensión, especialmente para comparaciones d
 ## HERRAMIENTAS DEL PROYECTO
 
 - Documento consolidado del proyecto: `proyecto_recuperacion_alexander_consolidado_v5.md`
+- Base de datos preliminar de sesiones y métricas: `registro_sesiones.json` (fuente de verdad de datos estructurados, migración futura prevista a SQL)
+- Companion narrativo: `seguimiento_progresion_fase1.md` (observaciones cualitativas, decisiones, análisis)
 - Knowledge base analítica: `02_KNOWLEDGE_BASE_ANALITICA.md`
 - Guías interactivas de entrenamiento: repositorio `sndalx/entrenaLXdor` en GitHub Pages
 - SKILL de generación de guías HTML: `SKILL_entrenamiento_html.md`
 - Prueba de esfuerzo solicitada: 8METs Bilbao, C/ Ercilla 36.1°
+- **Oura Ring Gen 4:** compra planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño durante mayo-junio. Sustituirá al Huawei GT3 como tracker principal de sueño. Requiere suscripción Oura Membership (69,99 €/año). Justificación: ~73% de especificidad de detección de vigilia vs ~48% del Huawei GT3 (validado en literatura). Aporta valor cuando el comportamiento de sueño esté consolidado, no antes.
+- **Sistema operativo del proyecto:** repositorio Git versionado alojado en infraestructura propia (NAS con Docker, plataforma Blazor planificada para desarrollo durante abril 2026). Edición de documentos del proyecto mediante Claude Code. Razonamiento sobre cambios mediante conversación con Claude en chat; ejecución sobre archivos mediante Claude Code. Separación deliberada: chat para análisis, Claude Code para edición.
 
 ---
 
@@ -436,6 +444,7 @@ Usar tablas cuando faciliten la comprensión, especialmente para comparaciones d
 - La economía está al servicio del proyecto
 - Cero complacencia: si un dato es difícil, se dice
 - Un plan sin fechas y verificación es solo una intención
+- **Primero salud, tendones, fuerza; las recompensas estéticas y el rendimiento pico al final.** Articulado por Alexander el 09/04/2026 como anclaje del proyecto frente a tentaciones de inversión de prioridades.
 
 ---
 

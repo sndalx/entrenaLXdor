@@ -769,9 +769,23 @@ Documentados para cuando los criterios de paso se cumplan:
 - Thermomix
 - Acceso a barra olímpica y rack (confirmado para Fase 1B/2)
 
+### Tareas de setup pendientes
+
+- **Ajuste de sillín de bici estática.** Altura: rodilla con ~25-30° de flexión residual en punto bajo del pedaleo. Avance/retroceso: rótula alineada verticalmente sobre eje del pedal en posición horizontal adelantada. Crítico para prevenir dolor lumbar e isquiático en sesiones de 55 min.
+
+### Equipamiento planificado
+
+- **Oura Ring Gen 4** — compra planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño durante mayo-junio. Sustituirá al Huawei GT3 como tracker principal de sueño. Requiere suscripción Oura Membership (69,99 €/año). Justificación: ~73% de especificidad de detección de vigilia vs ~48% del Huawei GT3 (validado en literatura). Aporta valor cuando el comportamiento de sueño esté consolidado, no antes.
+
 ---
 
 ## Herramientas digitales del proyecto
+
+### Sistema operativo del proyecto (desde v4.0)
+
+Repositorio Git versionado alojado en infraestructura propia (NAS con Docker, plataforma Blazor planificada para desarrollo durante abril 2026). Edición de documentos del proyecto mediante **Claude Code**. Razonamiento sobre cambios mediante conversación con Claude en chat; ejecución sobre archivos mediante Claude Code. Separación deliberada de roles: chat para análisis, Claude Code para edición.
+
+Fuente de verdad de datos estructurados: `registro_sesiones.json` (sesiones, métricas, episodios tendinosos, con migración futura prevista a SQL). Companion narrativo: `seguimiento_progresion_fase1.md` (observaciones cualitativas).
 
 ### Guías de entrenamiento interactivas
 
@@ -822,6 +836,9 @@ Documentados para cuando los criterios de paso se cumplan:
 ### Antes del 18 de abril
 
 - [ ] Hablar con entrenador: prioridad tendinosa + preparación técnica de barra para Fase 1B
+- [ ] **Ajuste de sillín de bici estática** (altura rodilla ~25-30° flexión residual, rótula vertical sobre eje del pedal). Crítico antes de alcanzar sesiones de 55 min.
+- [ ] **Reincorporación escalonada de dead hangs desde 15/04/2026** (1 serie × 20-25s, protocolo post-episodio hombro izquierdo cerrado 09/04)
+- [ ] Reevaluación del episodio de aquiles bilateral (11/04/2026, abierto): si al 18/04 sigue presente, escalar a fisioterapeuta deportivo
 
 ### Pendientes (sin fecha límite inmediata)
 
@@ -834,6 +851,7 @@ Documentados para cuando los criterios de paso se cumplan:
 - [ ] Comprar avena (medio plazo)
 - [ ] Comprar pipas sin sal
 - [ ] Preparar salsa picante casera (Thermomix)
+- [ ] Compra de Oura Ring Gen 4 (planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño en mayo-junio)
 
 ### Sistema continuo (cada domingo)
 
@@ -854,6 +872,7 @@ Documentados para cuando los criterios de paso se cumplan:
 - La economía está al servicio del proyecto
 - Cero complacencia: si un dato es difícil, se dice
 - Un plan sin fechas y verificación es solo una intención
+- **Primero salud, tendones, fuerza; las recompensas estéticas y el rendimiento pico al final.** Articulado por Alexander el 09/04/2026 como anclaje del proyecto frente a tentaciones de inversión de prioridades.
 
 ---
 
