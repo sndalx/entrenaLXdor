@@ -68,17 +68,21 @@ Recuperación física con visión a largo plazo (30 años):
 
 ### Comida (en el trabajo, tupperware)
 
-**Primer plato**
+**Primer plato (legumbres rotando)**
 - Lentejas  
 - Alubias  
-- Arroz con tomate  
+- Garbanzos  
 
-**Segundo plato**
-- Bonito en lata  
-- Anchoas  
-- Pechuga de pollo (microondas)  
-- Tortilla de patata  
-- Merluza  
+**Segundo plato (rotación semanal)**
+- Lunes: pescado (bonito, anchoas, sardinas)  
+- Martes: pechuga de pollo al microondas + AOVE añadido en frío  
+- Miércoles: pescado  
+- Jueves: pechuga de pollo al microondas + AOVE añadido en frío  
+- Viernes: pescado  
+- 1-2 veces/semana (sustituye al segundo del día o en cena): hamburguesa Gutbio 99% vacuno (Aldi), cocción al punto medio, evitar carbonización (transaminasas elevadas)  
+
+**Acompañamiento (2-4 veces/semana)**
+- Arroz blanco congelado Hacendado (Mercadona), combinar con proteína magra y verdura. NO combinar con legumbres en la misma comida (redundancia de almidón).
 
 **Postre**
 - Yogur  

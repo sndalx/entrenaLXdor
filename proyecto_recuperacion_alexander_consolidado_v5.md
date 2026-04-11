@@ -628,10 +628,17 @@ Versión rápida (15 min): batido + tostadas + manzana. Plan C (2 min): solo bat
 
 **NO usar:** Yogur "al estilo griego" (3.9g proteína, mucha grasa), yogur de bebé azucarado, yogur con azúcar añadido.
 
-**Comida (tupperware):**
-- Legumbres rotando (lentejas/alubias/garbanzos, enjuagar si de bote para reducir sodio 40%)
-- 2 latas pescado rotando (atún/bonito/sardinas/caballa, no atún todos los días por mercurio)
-- Preferencia: aceite de oliva > al natural (añadir AOVE) > aceite de girasol (escurrir bien)
+**Comida (tupperware) — rotación semanal:**
+- **Primer plato:** legumbres rotando (lentejas/alubias/garbanzos, enjuagar si de bote para reducir sodio 40%)
+- **Segundo plato rotado:**
+  - Lunes: pescado (2 latas — bonito/sardinas/caballa; no atún todos los días por mercurio)
+  - Martes: pechuga de pollo cocinada al microondas + AOVE añadido en frío
+  - Miércoles: pescado
+  - Jueves: pechuga de pollo al microondas + AOVE en frío
+  - Viernes: pescado
+- **Incorporación 1-2 veces/semana:** hamburguesa Gutbio 99% vacuno (Aldi) como segundo plato del trabajo o cena. Cocción al punto medio en sartén con poco AOVE; **evitar carbonización** (relevante con transaminasas elevadas).
+- **Acompañamiento 2-4 veces/semana:** arroz blanco congelado Hacendado (Mercadona), combinar con proteína magra y verdura. **NO combinar con legumbres** en la misma comida (redundancia de almidón).
+- Preferencia en pescado: aceite de oliva > al natural (añadir AOVE) > aceite de girasol (escurrir bien)
 - Omega-3 cápsulas con la comida
 - Fruta (manzana — no necesita refrigeración)
 - Salsa: Tabasco (sin azúcar) o salsa picante casera Thermomix (guindillas + vinagre + ajo + sal + AOVE)
@@ -675,7 +682,7 @@ No tolerada en pieza. Soluciones con Thermomix:
 | Desayuno | Creatina monohidrato | 5 g | Activo (irregular por fallos de desayuno) |
 | Desayuno | Vitamina D3 + K2 | 2 gotas | Activo (irregular por fallos de desayuno) |
 | Desayuno | Colágeno hidrolizado | 12 g | Activo (irregular por fallos de desayuno) |
-| Post-entreno | Proteína Whey | 30 g | Activo (días de gimnasio o sesión complementaria) |
+| Post-entreno | Proteína Whey | 30 g | Activo **SOLO en días con componente de fuerza real** (martes y jueves). NO tras bici zona 2 ni tras protocolo tendinoso aislado. Justificación: sin microtraumatismo muscular, añade carga proteica innecesaria sobre función renal (creatinina baseline 1.27 mg/dl). |
 | Cena | NAC (N-acetilcisteína) | cada 3 días | Activo |
 
 ### Reincorporados (30/03/2026)

@@ -296,14 +296,20 @@ Fuente de verdad estructurada: `registro_sesiones.json` → `episodios_tendinoso
 
 **Desayuno:** Batido (leche desnatada 250ml + creatina 5g + colágeno 12g + cacao puro 1 cucharada). Vitamina D3+K2 con tostada AOVE. Tostada integral tomate + AOVE + jamón. Tostada crema cacahuete 100%. Skyr natural 100-125g. Manzana.
 
-**Comida:** Legumbres rotando + 2 latas pescado rotando (no atún a diario) + omega-3 cápsulas + fruta. Salsa: Tabasco o casera.
+**Comida:** Legumbres rotando + segundo plato proteico rotado (lunes pescado, martes pollo cocinado al microondas + AOVE añadido en frío, miércoles pescado, jueves pollo, viernes pescado) + omega-3 cápsulas + fruta. Salsa: Tabasco o casera.
 
 **Cena:** Merluza o salmón 150-200g (alternar semanas) + AOVE generoso + fruta. 20:30-21:30.
+
+**Incorporaciones (abril 2026):**
+
+- **Pollo cocinado al microondas + AOVE en frío:** integrado como segundo plato rotado del trabajo, alternando con pescado (ver rotación arriba).
+- **Hamburguesa Gutbio 99% vacuno (Aldi):** 1-2 veces/semana como segundo plato del trabajo o cena. Cocción al punto medio en sartén con poco AOVE; evitar carbonización (relevante en contexto de transaminasas elevadas).
+- **Arroz blanco congelado Hacendado (Mercadona):** 2-4 veces/semana como acompañamiento, no como base diaria. Combinar con proteína magra y verdura. NO combinar con legumbres en la misma comida (redundancia de almidón).
 
 ### Suplementación
 
 - Desayuno: creatina 5g, colágeno 12g, vitamina D3+K2 2 gotas (con AOVE)
-- Post-entreno: whey 30g (días gimnasio o sesión sustitutoria)
+- Post-entreno: whey 30g **ÚNICAMENTE en días con componente de fuerza real** (martes y jueves actualmente). NO tras bici zona 2 ni tras protocolo tendinoso aislado. Justificación: la whey aporta valor en la ventana post-estímulo muscular con microtraumatismo; sin ese contexto añade carga proteica innecesaria sobre función renal (creatinina baseline 1.27 mg/dl, vigilar).
 - Comida: omega-3 2-3 cápsulas
 - Cena: NAC cada 3 días
 - 22:00: magnesio lisinato-glicinato 300mg (3 comprimidos Doctor's Best)
