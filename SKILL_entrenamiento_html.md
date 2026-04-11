@@ -513,6 +513,19 @@ Oculta la barra del navegador para experiencia inmersiva.
 - Indicar lateralidad explícitamente cuando aplique ("8 repeticiones POR LADO")
 - Para ejercicios con tempo, especificar formato "X-Y-Z" (bajada-pausa-subida)
 
+**Completitud del campo `detail`:**
+
+El detalle del ejercicio debe ser lo más completo posible porque se muestra de forma permanente durante la ejecución (ver §Componentes → Detalle visible durante ejecución). El usuario debe poder leerlo mientras entrena para consultar cues sin detener la sesión. Incluir, cuando aplique:
+
+1. **Setup de la posición inicial**: de pie / tumbado / en cuadrupedia, orientación corporal, posición de manos y pies, alineación articular.
+2. **Cues posturales específicos**: activación de músculos clave ("glúteo activo", "ombligo hacia dentro"), alineación ("rodillas sobre los pies", "espalda neutra"), respiración ("exhala al abrir").
+3. **Movimiento exacto**: qué se mueve, qué se mantiene fijo, rango de movimiento, tempo si aplica.
+4. **Señales de parada específicas del contexto**: condiciones en las que se debe interrumpir el ejercicio (ej. "si aparece sensación en aquiles, salta este ejercicio"). Siempre incluir estas señales cuando hay una incidencia activa relacionada con la estructura trabajada.
+5. **Material con especificación precisa**: cuando un ejercicio usa material con variantes de peso/fuerza (bandas elásticas de distintas resistencias, mancuernas de distintos kilos, kettlebells), **especificar siempre qué versión usar**. No escribir "con banda" a secas — escribir "con banda de 5kg" o "con banda de 15kg". Para mancuernas: "mancuerna de 12 kg". Es información esencial que evita tener que interrumpir el cronómetro para decidir qué coger.
+6. **Contexto del episodio abierto** si el ejercicio está relacionado con una incidencia: mencionar explícitamente el estado (ej. "hombro izquierdo asintomático: rango completo"; "retracción escapular, NO es dead hang — los dead hangs están suspendidos hasta el 15/04").
+
+El umbral es: si el usuario necesitara consultar otra fuente durante el ejercicio, el `detail` no está completo. Si el campo excede los ~28vh visibles (rango útil con scroll interno de la caja), considerar dividir el ejercicio en dos steps más cortos o reescribir de forma más concisa sin perder información crítica.
+
 ### Tiempos de preparación
 
 | Tipo de transición | Tiempo prep |
