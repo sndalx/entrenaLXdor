@@ -1,5 +1,15 @@
 # SKILL — Generador de guías interactivas de entrenamiento HTML
 
+## Versión 2.0 — Abril 2026
+
+Cambios respecto a v1.0:
+- Diferenciación entre tiempos de preparación intra-bloque e inter-bloque
+- Detalle del ejercicio expandible durante la ejecución
+- Indicador visual de bloque actual y progreso intra-bloque
+- Pantalla de transición de 3 segundos entre cambios de bloque
+
+---
+
 ## Propósito
 
 Generar archivos HTML autocontenidos que funcionan como guías de entrenamiento interactivas en móvil. El usuario abre el archivo en el navegador, pulsa "Comenzar", y el sistema le guía paso a paso por toda la sesión: preparación, ejecución, descansos y vuelta a la calma, con cronómetros, señales sonoras y pantalla siempre encendida.
@@ -47,6 +57,7 @@ La app muestra UNA sola pantalla a la vez. Cada pantalla ocupa el 100% del viewp
 4. **Ejercicio cronometrado** — Nombre, cronómetro circular animado (cuenta atrás o cuenta arriba para open-ended). Botón "Soltar" para open-ended
 5. **Descanso** — Cronómetro circular, indicación del siguiente ejercicio. Botón "Saltar descanso"
 6. **Final** — Resumen con estadísticas, mensaje del siguiente día del plan
+7. **Transición de bloque** — Pantalla cognitiva de 3 segundos que avisa del cambio entre bloques. Muestra "Comenzando: [nombre del nuevo bloque]" con cuenta atrás visual 3 → 2 → 1. Sin cronómetro interactivo ni botón. Sonido `longBeep` al iniciar. No se cuenta como ejercicio en el progreso global. Se inserta automáticamente cuando el campo `block` cambia entre dos steps consecutivos (ver §Modelo de datos y §Flujo de pantallas).
 
 ---
 
@@ -155,6 +166,105 @@ Fondo `#1a1d27`, borde `#2e3345`, border-radius 12px, texto `#8b8fa3`, highlight
 </div>
 ```
 
+#### Detalle expandible durante ejecución
+
+El detalle completo del ejercicio (campo `detail` del modelo de datos) debe estar accesible durante la pantalla de ejecución (cronometrado o de repeticiones), no solo en la pantalla de preparación previa. Esto permite consulta rápida del cue postural o del tempo sin interrumpir el cronómetro.
+
+```html
+<button class="btn-detail-toggle" onclick="toggleExerciseDetail()">
+  <span class="info-icon">ⓘ</span> Ver técnica
+</button>
+
+<div class="exercise-detail-panel" id="exerciseDetailPanel">
+  <p>[texto completo del detail]</p>
+  <p><span class="key">Tempo: 3-1-2</span></p>
+</div>
+```
+
+**Posición:** el botón aparece debajo del nombre del ejercicio y por encima del cronómetro/contador. Discreto, sin competir visualmente con el cronómetro.
+
+**Estilo del botón:**
+
+```css
+.btn-detail-toggle {
+  background: #232733;
+  color: #8b8fa3;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-family: 'DM Sans';
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.btn-detail-toggle .info-icon {
+  font-size: 14px;
+  margin-right: 4px;
+}
+```
+
+**Estilo del panel desplegable:**
+
+```css
+.exercise-detail-panel {
+  position: fixed;
+  left: 16px;
+  right: 16px;
+  bottom: 16px;
+  max-height: 50vh;
+  overflow-y: auto;
+  background: #1a1d27;
+  border: 1px solid #2e3345;
+  border-radius: 12px;
+  padding: 16px;
+  color: #e4e6ef;
+  display: none;
+  z-index: 100;
+}
+.exercise-detail-panel.open { display: block; }
+```
+
+**Comportamiento:**
+- El panel se despliega sobre la mitad inferior de la pantalla al pulsar el botón. La mitad superior con el cronómetro queda visible y el cronómetro **no se pausa**. La función del panel es consulta rápida, no interrupción del ejercicio.
+- Se oculta con un nuevo toque al botón o tocando fuera del panel.
+- Si el detalle es largo, permite scroll vertical dentro del panel.
+- Para ejercicios con tempo (ej. "3-1-2"), mostrar el tempo destacado con el componente `.key` ya definido.
+
+#### Indicador de progreso de bloque
+
+En la parte superior de la pantalla de ejercicio, debajo de la barra de progreso global, se muestra el bloque actual y el progreso dentro del bloque. Permite al usuario saber qué está entrenando y cuánto falta del bloque sin perder la noción de la sesión completa.
+
+```html
+<div class="block-indicator">
+  <div class="block-name">Tendinoso · Tren inferior</div>
+  <div class="block-progress">Ejercicio 2 de 3 · Set 1 de 3</div>
+</div>
+```
+
+```css
+.block-indicator {
+  background: transparent;
+  padding: 8px 16px;
+  border-bottom: 1px solid #232733;
+}
+.block-name {
+  font-size: 11px;
+  color: #818cf8;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.block-progress {
+  font-size: 10px;
+  color: #8b8fa3;
+  font-family: 'JetBrains Mono', monospace;
+  margin-top: 2px;
+}
+```
+
+**Compatibilidad hacia atrás:** si el step actual no tiene el campo `block` definido, el indicador no se renderiza para ese step. HTMLs antiguos generados con v1.0 siguen funcionando sin cambios.
+
 ### Imágenes/GIFs de ejercicios
 
 Si hay material multimedia disponible en la carpeta `img/`:
@@ -187,16 +297,16 @@ El entrenamiento se define como un array de objetos `WORKOUT` con los siguientes
 { type: 'round-header', round: 1 }
 
 // Ejercicio de calentamiento cronometrado
-{ type: 'warmup-intro', phase: 'Calentamiento', name: 'Nombre', detail: 'Instrucciones', prepTime: 10, duration: 60 }
+{ type: 'warmup-intro', phase: 'Calentamiento', name: 'Nombre', detail: 'Instrucciones', prepTime: 10, duration: 60, block: 'Calentamiento dinámico' }
 
 // Ejercicio con repeticiones
-{ type: 'exercise-reps', phase: 'Ronda 1 de 3', name: 'Nombre', detail: 'Instrucciones', reps: 10, prepTime: 15, tempo: '3-1-2', equipment: 'Kettlebell', perSide: false }
+{ type: 'exercise-reps', phase: 'Ronda 1 de 3', name: 'Nombre', detail: 'Instrucciones', reps: 10, prepTime: 15, tempo: '3-1-2', equipment: 'Kettlebell', perSide: false, block: 'Tendinoso · Tren inferior' }
 
 // Ejercicio cronometrado (duración fija)
-{ type: 'exercise-timed', phase: 'Movilidad', name: 'Nombre', detail: 'Instrucciones', duration: 90, prepTime: 10 }
+{ type: 'exercise-timed', phase: 'Movilidad', name: 'Nombre', detail: 'Instrucciones', duration: 90, prepTime: 10, block: 'Movilidad' }
 
 // Ejercicio cronometrado open-ended (cuenta arriba, el usuario decide cuándo parar)
-{ type: 'exercise-timed', phase: 'Dead hangs', name: 'Nombre', detail: 'Instrucciones', duration: 60, prepTime: 12, openEnded: true }
+{ type: 'exercise-timed', phase: 'Dead hangs', name: 'Nombre', detail: 'Instrucciones', duration: 60, prepTime: 12, openEnded: true, block: 'Tendinoso · Tren superior' }
 
 // Descanso
 { type: 'rest', duration: 75, next: 'Nombre del siguiente ejercicio' }
@@ -222,6 +332,7 @@ El entrenamiento se define como un array de objetos `WORKOUT` con los siguientes
 | `openEnded` | boolean | Si el cronómetro cuenta arriba en lugar de abajo (opcional) |
 | `next` | string | Nombre del siguiente ejercicio (solo rest) |
 | `round` | number | Número de ronda (solo round-header) |
+| `block` | string | Nombre del bloque al que pertenece el ejercicio (opcional). Valores típicos: `"Calentamiento dinámico"`, `"Tendinoso · Tren inferior"`, `"Tendinoso · Tren superior"`, `"Movilidad"`, `"Bandas"`, `"Bici zona 2"`. Si no está presente, el indicador de bloque no se muestra. Cuando el valor cambia entre dos steps consecutivos, se inserta pantalla de transición de 3 segundos (ver §Tipos de pantalla y §Flujo de pantallas). |
 
 ### Flujo de pantallas
 
@@ -233,6 +344,7 @@ Para cada ejercicio:
 1. Se muestra la pantalla de preparación con cuenta atrás
 2. Al terminar la cuenta atrás (o al pulsar "Saltar"), se muestra la pantalla de ejecución
 3. Al completar la ejecución (cronómetro a 0, o pulsar "Hecho"/"Soltar"), se pasa al siguiente step
+4. **Detección de cambio de bloque:** antes de renderizar la preparación del siguiente ejercicio, el sistema compara `steps[current].block` con `steps[next].block`. Si difieren y ambos están definidos, se renderiza la pantalla de transición de bloque (3 segundos, ver §Tipos de pantalla §7) antes de continuar con la preparación. Si coinciden o el campo `block` está ausente en alguno de los dos steps, no se inserta pantalla de transición.
 
 Los `round-header` se saltan automáticamente (no generan pantalla).
 
@@ -346,11 +458,14 @@ Oculta la barra del navegador para experiencia inmersiva.
 
 | Tipo de transición | Tiempo prep |
 |---|---|
-| Primer ejercicio de la sesión | 15 segundos |
-| Cambio de ejercicio con mismo material | 8-10 segundos |
-| Cambio de ejercicio con material diferente | 12-15 segundos |
-| Primer ejercicio de nueva ronda | 10 segundos |
-| Ejercicio de movilidad | 8-10 segundos |
+| Primer ejercicio de la sesión | 12-15 segundos |
+| Cambio de ejercicio dentro del mismo bloque (mismo material, misma posición general) | 5-8 segundos |
+| Cambio de ejercicio dentro del mismo bloque con material diferente | 8-10 segundos |
+| Cambio entre bloques completos (ej. tendinoso → movilidad → bici) | 10-12 segundos |
+| Primer ejercicio de nueva ronda (cuando aplica) | 8 segundos |
+| Ejercicio de movilidad dentro del bloque de movilidad | 5-8 segundos |
+
+Los tiempos de preparación se han reducido respecto a la versión inicial del SKILL. Justificación: el tiempo de preparación es logístico (cambio de posición, ajuste de material, lectura de instrucción), no fisiológico. Reducir prep time NO compromete la recuperación porque los descansos fisiológicos entre series del mismo ejercicio se mantienen en 60-90 segundos. La reducción aplica a transiciones entre ejercicios distintos, no a descansos entre series del mismo ejercicio.
 
 ### Tiempos de descanso
 
@@ -407,6 +522,11 @@ Antes de entregar un HTML de entrenamiento, verificar:
 - [ ] La barra de progreso refleja ejercicios completados / total
 - [ ] Señales sonoras en los momentos correctos
 - [ ] Probado mentalmente el flujo completo de inicio a fin
+- [ ] Cada step del WORKOUT tiene asignado el campo `block` correspondiente
+- [ ] Los tiempos de prep siguen la nueva tabla diferenciada (5-15s según tipo de transición)
+- [ ] El detalle completo del ejercicio está disponible durante la ejecución mediante botón "Ver técnica"
+- [ ] El indicador de bloque y progreso intra-bloque se muestra en cada ejercicio
+- [ ] Los cambios de bloque incluyen pantalla de transición de 3 segundos
 
 ---
 
