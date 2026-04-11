@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Sábado 11/04 — Traslado del viernes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #232733;
+    --border: #2e3345;
+    --text: #e4e6ef;
+    --text-dim: #8b8fa3;
+    --accent: #818cf8;
+    --exercise: #f59e0b;
+    --rest: #10b981;
+    --warmup: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+  body { min-height: 100dvh; }
+  #app { width: 100vw; height: 100dvh; display: flex; flex-direction: column; }
+
+  /* Screens */
+  .screen { flex: 1; display: flex; flex-direction: column; padding: 20px; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  /* Progress bar */
+  .progress-bar { width: 100%; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+
+  /* Block indicator */
+  .block-indicator { padding: 8px 4px 10px; border-bottom: 1px solid #232733; margin-bottom: 16px; }
+  .block-name { font-size: 11px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .block-progress { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+  /* Phase / name */
+  .phase { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; text-align: center; }
+  .name { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 12px; line-height: 1.2; }
+  .intro-title { font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+
+  /* Detail box */
+  .instruction-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text-dim); font-size: 15px; line-height: 1.5; max-width: 400px; width: 100%; margin: 0 auto 16px; }
+  .instruction-box p { margin-bottom: 8px; }
+  .instruction-box p:last-child { margin-bottom: 0; }
+  .key { background: var(--surface-2); color: var(--exercise); padding: 3px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; display: inline-block; }
+  .key.warn { color: var(--warmup); }
+  .key.rest { color: var(--rest); }
+
+  /* Ver técnica button + panel */
+  .btn-detail-toggle { background: var(--surface-2); color: var(--text-dim); border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-family: 'DM Sans'; cursor: pointer; touch-action: manipulation; margin: 8px auto 0; display: flex; align-items: center; gap: 6px; }
+  .btn-detail-toggle .info-icon { font-size: 14px; }
+  .btn-detail-toggle:active { transform: scale(0.97); }
+  .exercise-detail-panel { position: fixed; left: 16px; right: 16px; bottom: 16px; max-height: 50vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); display: none; z-index: 100; box-shadow: 0 -8px 24px rgba(0,0,0,0.5); }
+  .exercise-detail-panel.open { display: block; animation: slideUp 0.2s ease; }
+  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .exercise-detail-panel p { margin-bottom: 10px; font-size: 14px; line-height: 1.5; color: var(--text); }
+  .exercise-detail-panel p:last-child { margin-bottom: 0; }
+  .panel-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px 8px; }
+
+  /* Timer ring */
+  .timer-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-ring { position: relative; width: 220px; height: 220px; margin: 8px auto; }
+  .timer-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+  .timer-ring .bg { fill: none; stroke: var(--border); stroke-width: 10; }
+  .timer-ring .progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .timer-ring.warmup .progress { stroke: var(--warmup); }
+  .timer-ring.exercise .progress { stroke: var(--exercise); }
+  .timer-ring.rest .progress { stroke: var(--rest); }
+  .timer-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-seconds { font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 700; color: var(--text); }
+  .timer-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+
+  /* Reps display */
+  .reps-display { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .reps-number { font-family: 'JetBrains Mono', monospace; font-size: 110px; font-weight: 700; color: var(--exercise); line-height: 1; }
+  .reps-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
+  .tempo-badge { background: var(--surface-2); color: var(--exercise); padding: 6px 14px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; margin-top: 10px; }
+  .per-side { color: var(--exercise); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+  /* Rest screen next */
+  .rest-next { margin-top: 12px; font-size: 13px; color: var(--text-dim); text-align: center; padding: 0 20px; }
+  .rest-next strong { color: var(--rest); }
+
+  /* Buttons */
+  .btn-row { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px 0 4px; }
+  .btn { padding: 16px 48px; border: none; border-radius: 12px; font-family: 'DM Sans'; font-size: 16px; font-weight: 600; cursor: pointer; touch-action: manipulation; }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; min-width: 220px; }
+  .btn-done { background: var(--rest); color: #fff; width: 100%; max-width: 320px; padding: 20px; }
+  .btn-skip { background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-size: 14px; padding: 12px 32px; }
+  .btn-continue { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); font-size: 15px; padding: 14px 36px; }
+
+  /* Intro */
+  .intro-banner { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--warmup); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .intro-banner strong { color: var(--warmup); font-weight: 600; }
+  .intro-list { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+  .intro-list .no { color: var(--warmup); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  /* Info screen */
+  .info-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+  .info-icon-big { font-size: 40px; color: var(--warmup); }
+  .info-title { font-size: 20px; font-weight: 700; color: var(--text); }
+  .info-body { max-width: 360px; font-size: 15px; color: var(--text-dim); line-height: 1.5; padding: 0 20px; }
+
+  /* Transition screen */
+  .transition-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
+  .transition-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+  .transition-block { font-size: 24px; font-weight: 700; color: var(--accent); padding: 0 20px; }
+  .transition-count { font-family: 'JetBrains Mono', monospace; font-size: 80px; font-weight: 700; color: var(--text); line-height: 1; margin-top: 12px; }
+
+  /* Finish */
+  .finish-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; }
+  .finish-title { font-size: 28px; font-weight: 700; text-align: center; }
+  .finish-stats { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; max-width: 360px; width: 100%; }
+  .finish-stats .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: var(--text-dim); }
+  .finish-stats .row strong { color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  .finish-next { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--rest); border-radius: 10px; padding: 14px 16px; max-width: 360px; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .finish-next strong { color: var(--rest); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =========================================================
+   WORKOUT — Sábado 11/04/2026 (traslado del viernes, lluvia)
+   ========================================================= */
+const WORKOUT = [
+  { type:'intro', name:'Sesión Sábado 11/04', subtitle:'Traslado del viernes', prepTime:0 },
+
+  /* ---------- BLOQUE 1 · Calentamiento dinámico ---------- */
+  { type:'exercise-reps', phase:'Calentamiento', name:'Sentadillas al aire', reps:12, prepTime:12, block:'Calentamiento dinámico',
+    detail:'Sin carga. Baja controlado hasta paralelo, sube con energía. Sin tempo forzado. Pies a la anchura de caderas. Ombligo hacia dentro. 12 repeticiones.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de cadera', reps:8, prepTime:5, perSide:true, block:'Calentamiento dinámico',
+    detail:'De pie, manos en caderas. Dibuja círculos con la cadera. 8 repeticiones por lado. Movimiento controlado, activa musculatura profunda.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones tobillo izquierdo', reps:10, prepTime:5, block:'Calentamiento dinámico',
+    detail:'Apoyado o con ayuda, rota el tobillo izquierdo. 10 repeticiones en cada dirección. Lado menos rígido.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones tobillo derecho', reps:12, prepTime:5, block:'Calentamiento dinámico',
+    detail:'Rota el tobillo derecho. 12 repeticiones en cada dirección. Lado rígido, prioridad por asimetría documentada (08/04). Calidad del movimiento por encima de la velocidad.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Elevación de talones suave', reps:8, prepTime:5, block:'Calentamiento dinámico',
+    detail:'De pie, sube a puntillas controladamente. 8 repeticiones bilaterales sin pausa, sin carga. SUAVE. ⚠ Si aparece sensación en aquiles, SALTA este ejercicio — episodio bilateral activo.' },
+
+  /* ---------- BLOQUE 2 · Tendinoso · Tren inferior ---------- */
+  { type:'exercise-timed', phase:'Wall sit · Set 1 de 3', name:'Wall sit', duration:30, prepTime:10, block:'Tendinoso · Tren inferior',
+    detail:'Espalda completamente apoyada en la pared. Rodillas a 60-70° de flexión. Pies a la anchura de caderas. Sin carga. Ombligo hacia dentro. Si sientes molestia en rodillas, sube ligeramente.' },
+  { type:'rest', duration:60, next:'Wall sit · Set 2' },
+  { type:'exercise-timed', phase:'Wall sit · Set 2 de 3', name:'Wall sit', duration:35, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Mismo setup. Mantén la postura 35 segundos. No dejes que las rodillas caigan hacia dentro.' },
+  { type:'rest', duration:60, next:'Wall sit · Set 3' },
+  { type:'exercise-timed', phase:'Wall sit · Set 3 de 3', name:'Wall sit', duration:40, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Último set. 40 segundos. Mantén la respiración estable, no contengas.' },
+
+  { type:'info', title:'Gemelo isométrico — OMITIDO', icon:'⚠',
+    body:'Gemelo isométrico en escalón SUSPENDIDO hoy por episodio de aquiles bilateral activo (apertura 11/04). Reincorporación condicional a resolución del episodio. Se pasa directo al puente de glúteo.' },
+
+  { type:'exercise-reps', phase:'Puente glúteo · Set 1 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:10, block:'Tendinoso · Tren inferior',
+    detail:'Tumbado boca arriba, rodillas flexionadas, pies apoyados. Sube la cadera apretando glúteos. Mantén 5 segundos arriba en cada repetición. Baja controlado. Espalda neutra: no arquees la lumbar. 10 repeticiones con pausa 5s arriba.' },
+  { type:'rest', duration:60, next:'Puente glúteo · Set 2' },
+  { type:'exercise-reps', phase:'Puente glúteo · Set 2 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Mismo gesto. Activa glúteos en el tope. 5 segundos de pausa en cada rep. 10 repeticiones.' },
+  { type:'rest', duration:60, next:'Puente glúteo · Set 3' },
+  { type:'exercise-reps', phase:'Puente glúteo · Set 3 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Último set del bloque inferior. Control en la bajada. 10 repeticiones con pausa 5s.' },
+
+  /* ---------- BLOQUE 3 · Tendinoso · Tren superior ---------- */
+  { type:'exercise-timed', phase:'Rotación externa · Set 1 de 3', name:'Rotación externa hombro con banda', duration:30, prepTime:12, block:'Tendinoso · Tren superior',
+    detail:'De pie, codo pegado al costado y flexionado a 90°. Banda en mano, tensión hacia el centro. Mantén el codo fijo y rota el antebrazo hacia fuera. Posición isométrica 30 segundos. Hombros lejos de las orejas. Hombro izquierdo asintomático: rango completo sin modificación.' },
+  { type:'rest', duration:45, next:'Rotación externa · Set 2' },
+  { type:'exercise-timed', phase:'Rotación externa · Set 2 de 3', name:'Rotación externa hombro con banda', duration:30, prepTime:8, block:'Tendinoso · Tren superior',
+    detail:'Mismo setup. 30 segundos isométrico. Codo anclado al costado, sin que se mueva.' },
+  { type:'rest', duration:45, next:'Rotación externa · Set 3' },
+  { type:'exercise-timed', phase:'Rotación externa · Set 3 de 3', name:'Rotación externa hombro con banda', duration:30, prepTime:8, block:'Tendinoso · Tren superior',
+    detail:'Último set. 30 segundos. Si la banda afloja, no compenses con hombro — recoloca.' },
+
+  { type:'exercise-reps', phase:'Retracción escapular · Set 1 de 3', name:'Retracción escapular en barra', reps:10, prepTime:12, block:'Tendinoso · Tren superior',
+    detail:'Cuelga de la barra con brazos completamente extendidos. SIN flexionar codos. Activa la espalda alta retrayendo y deprimiendo las escápulas. Mantén la posición 3 segundos. Suelta y repite. ⚠ ESTO NO ES UN DEAD HANG — los dead hangs están SUSPENDIDOS hasta el 15/04 por protocolo de reincorporación del episodio de hombro izquierdo. 10 repeticiones con pausa 3s arriba.' },
+  { type:'rest', duration:60, next:'Retracción escapular · Set 2' },
+  { type:'exercise-reps', phase:'Retracción escapular · Set 2 de 3', name:'Retracción escapular en barra', reps:10, prepTime:8, block:'Tendinoso · Tren superior',
+    detail:'Mismo gesto. Codos rectos todo el tiempo. Si los codos se doblan, es dominada negativa — frena.' },
+  { type:'rest', duration:60, next:'Retracción escapular · Set 3' },
+  { type:'exercise-reps', phase:'Retracción escapular · Set 3 de 3', name:'Retracción escapular en barra', reps:10, prepTime:8, block:'Tendinoso · Tren superior',
+    detail:'Último set. 10 repeticiones con pausa 3s. Suelta entre reps si pierdes activación escapular.' },
+
+  { type:'exercise-timed', phase:'Flexión isométrica · Set 1 de 3', name:'Flexión isométrica en pared', duration:30, prepTime:10, block:'Tendinoso · Tren superior',
+    detail:'Manos a la pared a la altura del pecho, codos a 45°. Cuerpo en línea recta desde tobillos hasta cabeza. Mantén la posición isométrica 30 segundos. Activa pectoral y tríceps.' },
+  { type:'rest', duration:45, next:'Flexión isométrica · Set 2' },
+  { type:'exercise-timed', phase:'Flexión isométrica · Set 2 de 3', name:'Flexión isométrica en pared', duration:30, prepTime:6, block:'Tendinoso · Tren superior',
+    detail:'Mismo setup. 30 segundos. Cuerpo rígido, sin que la cadera se hunda.' },
+  { type:'rest', duration:45, next:'Flexión isométrica · Set 3' },
+  { type:'exercise-timed', phase:'Flexión isométrica · Set 3 de 3', name:'Flexión isométrica en pared', duration:30, prepTime:6, block:'Tendinoso · Tren superior',
+    detail:'Último set del bloque superior. 30 segundos.' },
+
+  /* ---------- BLOQUE 4 · Bandas ---------- */
+  { type:'exercise-reps', phase:'Face pulls · Set 1 de 3', name:'Face pulls con banda', reps:12, prepTime:12, block:'Bandas',
+    detail:'Banda anclada a altura de la cara. Tira hacia la cara separando las manos. Codos altos. Aprieta omóplatos al final del recorrido. 12 repeticiones.' },
+  { type:'rest', duration:45, next:'Face pulls · Set 2' },
+  { type:'exercise-reps', phase:'Face pulls · Set 2 de 3', name:'Face pulls con banda', reps:12, prepTime:6, block:'Bandas',
+    detail:'Mismo gesto. Mantén los codos altos durante todo el recorrido.' },
+  { type:'rest', duration:45, next:'Face pulls · Set 3' },
+  { type:'exercise-reps', phase:'Face pulls · Set 3 de 3', name:'Face pulls con banda', reps:12, prepTime:6, block:'Bandas',
+    detail:'Último set de face pulls. Aprieta omóplatos 1 segundo en el tope de cada repetición.' },
+
+  { type:'exercise-timed', phase:'Pallof derecha · Set 1 de 3', name:'Pallof press · lado derecho', duration:30, prepTime:10, block:'Bandas',
+    detail:'Banda anclada a la derecha, agarrada con ambas manos a la altura del esternón. Extiende los brazos al frente resistiendo la rotación hacia la banda. Core activo. Mantén 30 segundos.' },
+  { type:'rest', duration:45, next:'Pallof derecha · Set 2' },
+  { type:'exercise-timed', phase:'Pallof derecha · Set 2 de 3', name:'Pallof press · lado derecho', duration:30, prepTime:5, block:'Bandas',
+    detail:'Mismo setup. Resiste la rotación sin desplazarte. 30 segundos.' },
+  { type:'rest', duration:45, next:'Pallof derecha · Set 3' },
+  { type:'exercise-timed', phase:'Pallof derecha · Set 3 de 3', name:'Pallof press · lado derecho', duration:30, prepTime:5, block:'Bandas',
+    detail:'Último set del lado derecho. 30 segundos.' },
+
+  { type:'exercise-timed', phase:'Pallof izquierda · Set 1 de 3', name:'Pallof press · lado izquierdo', duration:30, prepTime:8, block:'Bandas',
+    detail:'Cambia de lado. Banda anclada a la izquierda. Mismo gesto, resistiendo la rotación opuesta. Core activo. 30 segundos.' },
+  { type:'rest', duration:45, next:'Pallof izquierda · Set 2' },
+  { type:'exercise-timed', phase:'Pallof izquierda · Set 2 de 3', name:'Pallof press · lado izquierdo', duration:30, prepTime:5, block:'Bandas',
+    detail:'Mismo gesto. 30 segundos.' },
+  { type:'rest', duration:45, next:'Pallof izquierda · Set 3' },
+  { type:'exercise-timed', phase:'Pallof izquierda · Set 3 de 3', name:'Pallof press · lado izquierdo', duration:30, prepTime:5, block:'Bandas',
+    detail:'Último set del bloque bandas. 30 segundos.' },
+
+  /* ---------- BLOQUE 5 · Movilidad ---------- */
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · izquierdo', duration:90, prepTime:10, block:'Movilidad',
+    detail:'Rodilla derecha en el suelo, pierna izquierda delante a 90°. Adelanta la cadera suavemente sin arquear la espalda. Aprieta el glúteo derecho. Respira profundo. 90 segundos.' },
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · derecho', duration:90, prepTime:6, block:'Movilidad',
+    detail:'Cambia de lado. Rodilla izquierda en el suelo, pierna derecha delante. Glúteo izquierdo activo. Cadera adelantada, espalda neutra. 90 segundos.' },
+
+  { type:'exercise-reps', phase:'Movilidad', name:'Rotaciones torácicas en cuadrupedia', reps:10, prepTime:6, perSide:true, block:'Movilidad',
+    detail:'En cuadrupedia. Mano detrás de la cabeza. Rota el torso abriendo el codo hacia el techo. Controla el movimiento. Exhala al abrir. 10 repeticiones por lado.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Apertura pectoral · izquierda', duration:60, prepTime:6, block:'Movilidad',
+    detail:'Brazo izquierdo apoyado en pared o marco a 90°. Gira el cuerpo hacia la derecha hasta sentir estiramiento. Mantén sin forzar. Rango completo — hombro asintomático. 60 segundos.' },
+  { type:'exercise-timed', phase:'Movilidad', name:'Apertura pectoral · derecha', duration:60, prepTime:6, block:'Movilidad',
+    detail:'Cambia de lado. Brazo derecho apoyado. Gira hacia la izquierda. Estiramiento suave y sostenido. 60 segundos.' },
+
+  { type:'exercise-timed', phase:'Movilidad · Prioridad asimetría', name:'Movilidad tobillo derecho', duration:90, prepTime:8, block:'Movilidad',
+    detail:'De pie frente a la pared, pie derecho adelantado. Lleva la rodilla hacia la pared SIN levantar el talón. 90 segundos completos al lado rígido por priorización documentada de la asimetría de dorsiflexión (08/04).' },
+  { type:'exercise-timed', phase:'Movilidad', name:'Movilidad tobillo izquierdo', duration:30, prepTime:5, block:'Movilidad',
+    detail:'Mismo gesto en el lado menos rígido. Tiempo reducido (30s) porque la asimetría prioriza el derecho.' },
+
+  { type:'exercise-timed', phase:'Movilidad · Reducida', name:'Sentadilla profunda', duration:30, prepTime:8, block:'Movilidad',
+    detail:'Baja a sentadilla profunda con talones apoyados. ⚠ Solo 30 segundos en lugar de los 90 habituales por episodio de aquiles bilateral activo (la posición carga el aquiles en estiramiento). Si aparece sensación en aquiles, SAL antes de los 30s.' },
+
+  { type:'info', title:'Estiramiento de sóleo y gemelo — OMITIDO', icon:'⚠',
+    body:'Estirar agresivamente una estructura con señal temprana es contraproducente. Episodio de aquiles bilateral activo (11/04). Se omite el estiramiento específico de gemelo y sóleo en esta sesión.' },
+
+  { type:'finish' }
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let currentStep = 0;
+let lastBlockShown = null;
+let transitionShownFor = -1;
+let timerInterval = null;
+let timerStart = 0;
+let timerDuration = 0;
+let audioCtx = null;
+let wakeLock = null;
+let sessionStart = null;
+let detailPanelOpen = false;
+
+const app = document.getElementById('app');
+
+/* =========================================================
+   AUDIO
+   ========================================================= */
+function initAudio() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} } }
+function beep(freq, duration, volume = 0.15) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration);
+}
+function shortBeep() { beep(880, 0.1); }
+function longBeep()  { beep(660, 0.3); }
+function doneBeep()  { beep(1100, 0.15); setTimeout(() => beep(1320, 0.2), 100); }
+
+/* =========================================================
+   WAKE LOCK
+   ========================================================= */
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (err) { console.log('Wake lock failed:', err.message); }
+  }
+}
+function releaseWakeLock() { if (wakeLock) { wakeLock.release(); wakeLock = null; } }
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && sessionStart && !wakeLock) { requestWakeLock(); }
+});
+
+/* =========================================================
+   PROGRESS
+   ========================================================= */
+function isRealExercise(step) { return step && (step.type === 'exercise-reps' || step.type === 'exercise-timed' || step.type === 'warmup-intro'); }
+function getTotalSteps() { return WORKOUT.filter(isRealExercise).length; }
+function getCompletedSteps() {
+  let n = 0;
+  for (let i = 0; i < currentStep; i++) if (isRealExercise(WORKOUT[i])) n++;
+  return n;
+}
+function progressPercent() { return Math.round((getCompletedSteps() / getTotalSteps()) * 100); }
+
+/* Intra-block progress: Ejercicio X de Y · Set A de B (simplificado: solo ejercicio n/n del bloque) */
+function getBlockProgress(step) {
+  if (!step || !step.block) return '';
+  // Count exercises in the same block up to and including current
+  const block = step.block;
+  let total = 0, pos = 0;
+  WORKOUT.forEach((s, i) => {
+    if (s.block === block && isRealExercise(s)) {
+      total++;
+      if (i <= currentStep) pos++;
+    }
+  });
+  if (total === 0) return '';
+  return `Ejercicio ${pos} de ${total}`;
+}
+
+/* =========================================================
+   RENDER DISPATCHER
+   ========================================================= */
+function render() {
+  detailPanelOpen = false;
+  const step = WORKOUT[currentStep];
+  if (!step) return;
+
+  // Transition check: block change between consecutive exercises
+  if (step.block && lastBlockShown && step.block !== lastBlockShown && transitionShownFor !== currentStep) {
+    transitionShownFor = currentStep;
+    renderTransition(step.block);
+    return;
+  }
+  if (step.block) lastBlockShown = step.block;
+
+  switch (step.type) {
+    case 'intro':          renderIntro(step); break;
+    case 'exercise-reps':  renderPrep(step, () => renderExerciseReps(step)); break;
+    case 'exercise-timed': renderPrep(step, () => renderExerciseTimed(step)); break;
+    case 'rest':           renderRest(step); break;
+    case 'info':           renderInfo(step); break;
+    case 'finish':         renderFinish(); break;
+  }
+}
+
+function advance() { currentStep++; render(); }
+
+/* =========================================================
+   SCREENS
+   ========================================================= */
+function headerHTML(step) {
+  const pct = progressPercent();
+  let blockBlock = '';
+  if (step && step.block) {
+    blockBlock = `<div class="block-indicator"><div class="block-name">${step.block}</div><div class="block-progress">${getBlockProgress(step)}</div></div>`;
+  }
+  return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>${blockBlock}`;
+}
+
+function renderIntro(step) {
+  app.innerHTML = `
+    <div class="screen">
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 20px 0;">
+        <div class="phase">Sábado 11 · Abril 2026</div>
+        <div class="intro-title">Sesión Sábado 11/04</div>
+        <div class="phase" style="margin-bottom:20px">Traslado del viernes</div>
+
+        <div class="intro-banner">
+          <strong>Adaptaciones activas:</strong><br>
+          · Episodio aquiles bilateral ABIERTO (11/04)<br>
+          · Reincorporación dead hangs día 4/7 (suspendidos hasta 15/04)
+        </div>
+
+        <div class="intro-list">
+          <span class="no">NO</span> bici zona 2 &nbsp;·&nbsp; <span class="no">NO</span> dead hangs<br>
+          <span class="no">NO</span> gemelo isométrico &nbsp;·&nbsp; <span class="no">NO</span> senderismo<br>
+          <span class="no">NO</span> sentadilla profunda completa &nbsp;·&nbsp; <span class="no">NO</span> sóleo agresivo
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="startSession()">Comenzar sesión</button></div>
+    </div>`;
+}
+
+function renderPrep(step, onComplete) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase} · Preparación</div>
+      <div class="name">${step.name}</div>
+      <div class="instruction-box"><p>${step.detail}</p>${step.equipment ? `<p><span class="key">Material: ${step.equipment}</span></p>` : ''}${step.tempo ? `<p><span class="key">Tempo: ${step.tempo}</span></p>` : ''}${step.perSide ? `<p><span class="key">Por cada lado</span></p>` : ''}</div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="prepRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="prepSec">${step.prepTime}</div><div class="timer-label">Preparación</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipPrep()">Saltar preparación</button></div>
+    </div>`;
+  startCountdown(step.prepTime, 'prepSec', 'prepRing', circumference, () => { longBeep(); onComplete(); });
+}
+window.skipPrep = () => { clearInterval(timerInterval); const step = WORKOUT[currentStep]; if (step.type === 'exercise-reps') renderExerciseReps(step); else if (step.type === 'exercise-timed') renderExerciseTimed(step); };
+
+function detailPanelHTML(step) {
+  return `<button class="btn-detail-toggle" onclick="toggleDetailPanel()"><span class="info-icon">ⓘ</span> Ver técnica</button>
+    <div class="exercise-detail-panel" id="detailPanel">
+      <button class="panel-close" onclick="toggleDetailPanel()">×</button>
+      <p>${step.detail}</p>
+      ${step.tempo ? `<p><span class="key">Tempo: ${step.tempo}</span></p>` : ''}
+      ${step.perSide ? `<p><span class="key">Por cada lado</span></p>` : ''}
+    </div>`;
+}
+window.toggleDetailPanel = () => {
+  const p = document.getElementById('detailPanel');
+  if (!p) return;
+  detailPanelOpen = !detailPanelOpen;
+  p.classList.toggle('open', detailPanelOpen);
+};
+
+function renderExerciseReps(step) {
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${detailPanelHTML(step)}
+      <div class="reps-display">
+        <div class="reps-number">${step.reps}</div>
+        <div class="reps-label">Repeticiones</div>
+        ${step.tempo ? `<div class="tempo-badge">Tempo ${step.tempo}</div>` : ''}
+        ${step.perSide ? `<div class="per-side">Por cada lado</div>` : ''}
+      </div>
+      <div class="btn-row"><button class="btn btn-done" onclick="doneExercise()">Hecho</button></div>
+    </div>`;
+}
+window.doneExercise = () => { doneBeep(); advance(); };
+
+function renderExerciseTimed(step) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  const ringClass = step.block && step.block.toLowerCase().includes('movilidad') ? 'warmup' :
+                    step.block && step.block.toLowerCase().includes('calentamiento') ? 'warmup' : 'exercise';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${detailPanelHTML(step)}
+      <div class="timer-wrap">
+        <div class="timer-ring ${ringClass}">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="exRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="exSec">${step.duration}</div><div class="timer-label">Segundos</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipExercise()">Terminar antes</button></div>
+    </div>`;
+  startCountdown(step.duration, 'exSec', 'exRing', circumference, () => { doneBeep(); advance(); });
+}
+window.skipExercise = () => { clearInterval(timerInterval); doneBeep(); advance(); };
+
+function renderRest(step) {
+  const circumference = 628.318;
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(WORKOUT[currentStep - 1])}
+      <div class="phase">Descanso</div>
+      <div class="name" style="color: var(--rest)">Recupera</div>
+      <div class="timer-wrap">
+        <div class="timer-ring rest">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="restRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="restSec">${step.duration}</div><div class="timer-label">Descanso</div></div>
+        </div>
+        <div class="rest-next">Siguiente: <strong>${step.next}</strong></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipRest()">Saltar descanso</button></div>
+    </div>`;
+  startCountdown(step.duration, 'restSec', 'restRing', circumference, () => { longBeep(); advance(); });
+}
+window.skipRest = () => { clearInterval(timerInterval); advance(); };
+
+function renderInfo(step) {
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(null)}
+      <div class="info-screen">
+        <div class="info-icon-big">${step.icon || 'ⓘ'}</div>
+        <div class="info-title">${step.title}</div>
+        <div class="info-body">${step.body}</div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="advance()">Continuar</button></div>
+    </div>`;
+}
+
+function renderTransition(blockName) {
+  let count = 3;
+  app.innerHTML = `
+    <div class="screen">
+      <div class="transition-screen">
+        <div class="transition-label">Comenzando</div>
+        <div class="transition-block">${blockName}</div>
+        <div class="transition-count" id="transCount">${count}</div>
+      </div>
+    </div>`;
+  longBeep();
+  const el = document.getElementById('transCount');
+  const tick = setInterval(() => {
+    count--;
+    if (count >= 1) { el.textContent = count; shortBeep(); }
+    else { clearInterval(tick); render(); }
+  }, 1000);
+}
+
+function renderFinish() {
+  releaseWakeLock();
+  if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+  const totalMin = sessionStart ? Math.round((Date.now() - sessionStart) / 60000) : 0;
+  const totalEx = getTotalSteps();
+  app.innerHTML = `
+    <div class="screen">
+      <div class="finish-screen">
+        <div class="finish-title">Sesión completada</div>
+        <div class="finish-stats">
+          <div class="row"><span>Duración</span><strong>${totalMin} min</strong></div>
+          <div class="row"><span>Ejercicios</span><strong>${totalEx}</strong></div>
+          <div class="row"><span>Bloques</span><strong>5</strong></div>
+          <div class="row"><span>Omisiones</span><strong>Gemelo iso · Sóleo</strong></div>
+        </div>
+        <div class="finish-next">
+          <strong>Mañana domingo:</strong> DESCANSO COMPLETO REAL. Cero entrenamiento. Cero movilidad programada. Evaluación matutina del aquiles al despertar (dato crítico: rigidez al primer paso).
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="location.reload()">Volver al inicio</button></div>
+    </div>`;
+}
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+function startCountdown(seconds, secEl, ringEl, circumference, onDone) {
+  clearInterval(timerInterval);
+  timerStart = Date.now();
+  timerDuration = seconds;
+  let beeped = {3:false, 2:false, 1:false};
+  const sec = document.getElementById(secEl);
+  const ring = document.getElementById(ringEl);
+  if (ring) ring.style.strokeDashoffset = 0;
+  timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - timerStart) / 1000;
+    const remaining = Math.max(0, seconds - elapsed);
+    const display = Math.ceil(remaining);
+    if (sec) sec.textContent = display;
+    if (ring) {
+      const pct = remaining / seconds;
+      ring.style.strokeDashoffset = circumference * (1 - pct);
+    }
+    if (display === 3 && !beeped[3]) { beeped[3] = true; shortBeep(); }
+    if (display === 2 && !beeped[2]) { beeped[2] = true; shortBeep(); }
+    if (display === 1 && !beeped[1]) { beeped[1] = true; shortBeep(); }
+    if (remaining <= 0) { clearInterval(timerInterval); onDone(); }
+  }, 100);
+}
+
+/* =========================================================
+   SESSION LIFECYCLE
+   ========================================================= */
+function startSession() {
+  initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  sessionStart = Date.now();
+  requestWakeLock();
+  if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(()=>{}); }
+  currentStep = 1;
+  render();
+}
+window.startSession = startSession;
+window.advance = advance;
+
+/* Boot */
+render();
+</script>
+</body>
+</html>
