@@ -88,8 +88,9 @@ Si detectas que estás a punto de:
 - Respuesta muscular visible (memoria muscular activa)
 - Temblor en posturas forzadas (déficit estabilización neuromuscular, esperable)
 - Cuello de botella: resistencia (déficit aeróbico, no muscular)
-- Porcentaje graso estimado: 22-28% (zona media-alta probable, pendiente DEXA/bioimpedancia)
+- **Porcentaje graso baseline: 28%** como punto de partida conservador del rango estimado previo (22-28%). Decisión operativa: asumir el extremo alto del rango hasta disponer de medición precisa (bioimpedancia o DEXA). Justificación: las proyecciones se diseñan para el escenario realista; partir del extremo alto del rango evita inflar el punto de partida y las ganancias aparentes de las primeras semanas. Dato a verificar antes de optimizar proyecciones.
 - Distribución grasa: androide (central/abdominal), patrón correlacionado con grasa visceral
+- **Asimetría de dorsiflexión documentada (08/04/2026):** tobillo derecho más rígido que izquierdo. Causa no identificada. Sin impacto funcional actual. Priorizado dentro del bloque de movilidad existente (90s completos al lado rígido en lugar de alternar).
 
 ### Datos de fuerza
 
@@ -100,9 +101,10 @@ Si detectas que estás a punto de:
 
 ### Datos cardiovasculares baseline
 
-- Sesión de referencia calibrada (04/04/2026): bici estática 40 min, media 120 ppm, máx. 130, 31 min aeróbica, 7 min quema de grasa, 0 min anaeróbico. Esta sesión es la REFERENCIA para evaluar futuras capturas
+- Sesión de referencia calibrada (04/04/2026): bici estática 40 min, media 120 ppm, máx. 130, 31 min aeróbica, 7 min quema de grasa, 0 min anaeróbico. REFERENCIA principal para evaluar futuras capturas.
+- Segunda sesión de referencia calibrada (10/04/2026): bici estática 45:18 min, FC media 118 ppm, FC máx 131, 34 min aeróbico + 9 min quema de grasa, 0 min anaeróbico, HR recovery 1-min: 11 ppm, estrés aeróbico 1.6 (recuperación), tiempo recuperación estimado 4h. Coherente con el rol del viernes (sesión corta preparatoria).
 - Sesión previa (03/04/2026): media 132 ppm, 22 min anaeróbico. Demasiado intensa, pero Alexander podía hablar sin dificultad → sugiere FC máxima real >175 (pendiente confirmar en 8METs)
-- VO2max estimado actual: ~28-33 ml/kg/min (sin medir, inferido por historial)
+- **VO2max estimado inicial: 34 ml/kg/min** (10/04/2026, Huawei Watch GT 3, estimación de wearable de muñeca, no medición clínica). Primer dato de serie. Re-estimar trimestralmente para detectar tendencia. (Anterior estimación ~28-33 por historial queda sustituida por este dato medido.)
 
 ### Restricciones alimentarias
 
@@ -325,11 +327,11 @@ Prioridad máxima. 7h30 efectivas. Protocolo: magnesio 22:00 → ducha 22:00-22:
 | Capacidad                      | Actual   | Conservador     | Realista         | Optimista      |
 | ------------------------------ | -------- | --------------- | ---------------- | -------------- |
 | Ganancia muscular (24 meses)   | —        | 2-3 kg          | 3-4 kg           | 5-6 kg         |
-| Porcentaje graso               | 22-28%   | 20%             | 18%              | 16%            |
+| Porcentaje graso               | 28% (baseline conservador) | 20%             | 18%              | 16%            |
 | Peso muerto 1RM                | 70-80 kg | 100-110 kg      | 120-140 kg       | 140-160 kg     |
 | Dead hang                      | 55s      | 75-90s          | 90-110s          | 110-120s+      |
 | Dominadas                      | 0        | 5-7             | 8-12             | 12-15          |
-| VO2max                         | ~30      | 35-37           | 38-40            | 40-42          |
+| VO2max                         | 34 (Huawei GT3, 10/04/2026) | 35-37           | 38-40            | 40-42          |
 | Ventana operativa GER          | —        | 6-8 años        | 8 años           | 8-10 años      |
 | Equivalencia funcional 75 años | —        | 8-10 años menor | 10-12 años menor | 12+ años menor |
 

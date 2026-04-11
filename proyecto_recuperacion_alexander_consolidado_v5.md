@@ -113,9 +113,9 @@ Requisitos específicos del GER no publicados. Acción pendiente: contactar DYA 
 
 ## Evaluación de composición corporal (abril 2026)
 
-### Estimación de porcentaje graso: 22-28% (probablemente zona media-alta)
+### Porcentaje graso baseline: 28% (extremo alto conservador, pendiente medición precisa)
 
-Estimación visual con margen de error de 3-5 puntos. No confirmada hasta bioimpedancia o DEXA.
+Decisión operativa (abril 2026): se adopta el **extremo alto del rango estimado previo 22-28%** como punto de partida, hasta disponer de medición con bioimpedancia o DEXA. Justificación: las proyecciones se diseñan para el escenario realista, y partir del extremo alto del rango evita inflar artificialmente el punto de partida y las ganancias aparentes de las primeras semanas. Estimación visual con margen de error de 3-5 puntos.
 
 **Indicadores de acumulación:** grasa abdominal inferior y flancos (patrón androide), pérdida de definición en línea media, pectorales con poco tono y grasa subcutánea inferior.
 
@@ -149,7 +149,7 @@ El plan se diseña para el escenario realista. El optimista requiere adherencia 
 | Peso muerto 1RM | 70-80 kg | 100-110 kg | 120-140 kg | 140-160 kg |
 | Dead hang | 55s | 75-90s | 90-110s | 110-120s+ |
 | Dominadas | 0 | 5-7 | 8-12 | 12-15 |
-| VO2max | ~30 | 35-37 | 38-40 | 40-42 |
+| VO2max | 34 (Huawei GT3, 10/04/2026) | 35-37 | 38-40 | 40-42 |
 | Ventana operativa GER | — | 6-8 años | 8 años | 8-10 años |
 | Equivalencia funcional a los 75 | — | 8-10 años menor | 10-12 años menor | 12+ años menor |
 
@@ -489,7 +489,15 @@ Zona 2: 105-122 bpm según fórmula (puede ser más alto si FC máxima real > 17
 
 ### Sesión de referencia calibrada (04/04/2026)
 
-Media 120 ppm, máx. 130, 31 min aeróbica, 7 min quema de grasa, 0 min anaeróbico. CORRECTA. Esta es la intensidad de referencia.
+Media 120 ppm, máx. 130, 31 min aeróbica, 7 min quema de grasa, 0 min anaeróbico. CORRECTA. Esta es la intensidad de referencia principal.
+
+### Segunda referencia calibrada (10/04/2026)
+
+Bici estática 45:18 min, FC media 118 ppm, FC máx 131, 34 min aeróbico + 9 min quema de grasa, 0 min anaeróbico, HR recovery 1-min: 11 ppm, estrés aeróbico 1.6 (recuperación), tiempo recuperación estimado 4h. Coherente con el rol del viernes (sesión corta preparatoria). Confirma que la zona correcta es sostenida entre sesiones.
+
+### VO2max estimado inicial
+
+**34 ml/kg/min** (10/04/2026, Huawei Watch GT3, estimación de wearable de muñeca, no medición clínica). Primer dato de serie. Re-estimar trimestralmente para detectar tendencia. Nota: las estimaciones de wearable tienen sesgo y varianza significativos respecto a medición directa; el valor útil es la tendencia, no el número absoluto.
 
 ### Sesión previa (03/04/2026) — Demasiado intensa
 
@@ -509,6 +517,10 @@ Media 132 ppm, máx. 145, 22 min anaeróbico. Test de hablar indicaba zona corre
 - Mínimo innegociable: 10 minutos
 - No subir más de 10 min/semana. Mes 2+: hasta 60-75 min si rodillas OK
 - Distancia mínima a comida: 1h tras comida completa, 30 min tras comida ligera
+
+### Recalibración postural durante la sesión
+
+Cada 10 min durante sesiones de bici (minutos 10, 20, 30, 40, 50): 15 segundos sin pausar pedaleo — enderezar columna, retraer escápulas, alejar orejas de hombros, dos respiraciones profundas, continuar. Previene colapso postural progresivo en sesiones largas (55 min).
 
 ### Sensor
 
