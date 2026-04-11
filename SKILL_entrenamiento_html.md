@@ -1,8 +1,11 @@
 # SKILL — Generador de guías interactivas de entrenamiento HTML
 
-## Versión 2.0 — Abril 2026
+## Versión 2.1 — Abril 2026
 
-Cambios respecto a v1.0:
+Cambios respecto a v2.0:
+- Hora estimada de finalización visible junto a la barra de progreso global
+
+Cambios de v1.0 → v2.0:
 - Diferenciación entre tiempos de preparación intra-bloque e inter-bloque
 - Detalle del ejercicio expandible durante la ejecución
 - Indicador visual de bloque actual y progreso intra-bloque
@@ -132,11 +135,86 @@ El SVG se rota -90° para que el progreso empiece desde las 12 en punto:
 
 #### Barra de progreso global
 
-Barra horizontal en la parte superior de cada pantalla que muestra el porcentaje de ejercicios completados sobre el total.
+Barra horizontal en la parte superior de cada pantalla que muestra el porcentaje de ejercicios completados sobre el total, con una fila meta debajo que incluye el porcentaje numérico a la izquierda y la hora estimada de finalización a la derecha.
 
 ```html
 <div class="progress-bar"><div class="fill" style="width:[X]%"></div></div>
+<div class="progress-meta">
+  <span class="progress-pct">[X]%</span>
+  <span class="progress-eta">≈ [HH:MM]</span>
+</div>
 ```
+
+```css
+.progress-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #8b8fa3;
+  margin-top: 4px;
+  padding: 0 2px;
+}
+```
+
+#### Hora estimada de finalización
+
+La fila meta de la barra de progreso muestra a la derecha la hora real (formato `HH:MM` en 24h) en la que la sesión terminará si se mantiene el ritmo previsto. Se actualiza al entrar en cada nuevo step, no en tiempo real segundo a segundo (para evitar ruido visual).
+
+**Cálculo del tiempo restante:**
+
+```javascript
+function estimateRemainingSeconds() {
+  let sec = 0;
+  for (let i = currentStep; i < WORKOUT.length; i++) {
+    const s = WORKOUT[i];
+    if (s.prepTime) sec += s.prepTime;
+    if (s.type === 'exercise-timed' || s.type === 'warmup-intro') {
+      sec += s.duration || 0;
+    } else if (s.type === 'exercise-reps') {
+      sec += estimateRepsTime(s);
+    } else if (s.type === 'rest') {
+      sec += s.duration || 0;
+    } else if (s.type === 'info') {
+      sec += 10; // estimación para pantalla informativa
+    }
+    // Transición de bloque (3s) si el siguiente step pertenece a otro bloque
+    const next = WORKOUT[i + 1];
+    if (next && s.block && next.block && s.block !== next.block) sec += 3;
+  }
+  return sec;
+}
+
+function estimateRepsTime(step) {
+  const perRep = step.tempo ? parseTempoSeconds(step.tempo) : 3;
+  const reps = step.reps || 10;
+  const multiplier = step.perSide ? 2 : 1;
+  return perRep * reps * multiplier;
+}
+
+function parseTempoSeconds(tempo) {
+  const parts = tempo.split('-').map(Number);
+  const sum = parts.reduce((a, b) => a + b, 0);
+  return sum || 3;
+}
+
+function formatETA(remainingSec) {
+  const end = new Date(Date.now() + remainingSec * 1000);
+  return end.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+```
+
+**Heurísticas de estimación:**
+
+- **exercise-timed / warmup-intro:** se usa `duration` tal cual.
+- **exercise-reps:** se usa `tempo` si está definido (suma de los números, ej. "3-1-2" = 6s por rep), o 3s por defecto. Si `perSide: true`, se multiplica por 2.
+- **rest:** se usa `duration` tal cual.
+- **info:** 10 segundos estimados (el usuario lee y pulsa "Continuar").
+- **Transición de bloque:** 3s extra cuando el step actual y el siguiente pertenecen a bloques diferentes.
+- **openEnded:** se usa `duration` como referencia (el usuario puede acabar antes o después).
+
+**Importante:** la hora estimada se recalcula en cada llamada a `render()`, no con un interval. Si el usuario tarda más o menos de lo previsto, la hora se reajusta al avanzar al siguiente step. No intentar reflejar el desvío en tiempo real: el objetivo es orientativo, no métrico.
 
 #### Caja de instrucciones
 
@@ -520,6 +598,7 @@ Antes de entregar un HTML de entrenamiento, verificar:
 - [ ] La pantalla final libera wake lock y sale de fullscreen
 - [ ] La pantalla final indica la actividad del día siguiente
 - [ ] La barra de progreso refleja ejercicios completados / total
+- [ ] La fila meta de la barra de progreso muestra porcentaje y hora estimada de finalización (formato `≈ HH:MM`)
 - [ ] Señales sonoras en los momentos correctos
 - [ ] Probado mentalmente el flujo completo de inicio a fin
 - [ ] Cada step del WORKOUT tiene asignado el campo `block` correspondiente

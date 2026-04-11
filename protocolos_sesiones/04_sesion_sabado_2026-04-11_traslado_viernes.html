@@ -29,8 +29,11 @@
   @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
   /* Progress bar */
-  .progress-bar { width: 100%; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-bottom: 8px; }
+  .progress-bar { width: 100%; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
   .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 8px; padding: 0 2px; }
+  .progress-pct { color: var(--text-dim); }
+  .progress-eta { color: var(--text-dim); }
 
   /* Block indicator */
   .block-indicator { padding: 8px 4px 10px; border-bottom: 1px solid #232733; margin-bottom: 16px; }
@@ -315,6 +318,37 @@ function getCompletedSteps() {
 }
 function progressPercent() { return Math.round((getCompletedSteps() / getTotalSteps()) * 100); }
 
+/* ETA — hora estimada de finalización */
+function parseTempoSeconds(tempo) {
+  const parts = tempo.split('-').map(Number);
+  const sum = parts.reduce((a, b) => a + b, 0);
+  return sum || 3;
+}
+function estimateRepsTime(step) {
+  const perRep = step.tempo ? parseTempoSeconds(step.tempo) : 3;
+  const reps = step.reps || 10;
+  const multiplier = step.perSide ? 2 : 1;
+  return perRep * reps * multiplier;
+}
+function estimateRemainingSeconds() {
+  let sec = 0;
+  for (let i = currentStep; i < WORKOUT.length; i++) {
+    const s = WORKOUT[i];
+    if (s.prepTime) sec += s.prepTime;
+    if (s.type === 'exercise-timed' || s.type === 'warmup-intro') sec += s.duration || 0;
+    else if (s.type === 'exercise-reps') sec += estimateRepsTime(s);
+    else if (s.type === 'rest') sec += s.duration || 0;
+    else if (s.type === 'info') sec += 10;
+    const next = WORKOUT[i + 1];
+    if (next && s.block && next.block && s.block !== next.block) sec += 3;
+  }
+  return sec;
+}
+function formatETA(remainingSec) {
+  const end = new Date(Date.now() + remainingSec * 1000);
+  return end.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
 /* Intra-block progress: Ejercicio X de Y · Set A de B (simplificado: solo ejercicio n/n del bloque) */
 function getBlockProgress(step) {
   if (!step || !step.block) return '';
@@ -364,11 +398,14 @@ function advance() { currentStep++; render(); }
    ========================================================= */
 function headerHTML(step) {
   const pct = progressPercent();
+  const eta = sessionStart ? formatETA(estimateRemainingSeconds()) : formatETA(estimateRemainingSeconds());
   let blockBlock = '';
   if (step && step.block) {
     blockBlock = `<div class="block-indicator"><div class="block-name">${step.block}</div><div class="block-progress">${getBlockProgress(step)}</div></div>`;
   }
-  return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>${blockBlock}`;
+  return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+    <div class="progress-meta"><span class="progress-pct">${pct}%</span><span class="progress-eta">≈ ${eta}</span></div>
+    ${blockBlock}`;
 }
 
 function renderIntro(step) {
