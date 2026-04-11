@@ -52,7 +52,8 @@ Recuperación física con visión a largo plazo (30 años):
 2. **Desayuno irregular**: Arrastra fallos en suplementación matutina (creatina, colágeno, vitamina D3+K2) y déficit proteico.
 3. **Sobreestimulación laboral**: Trabajo estimulante que invade horario libre.
 4. **Analítica de control pendiente**: URGENTE programar. ~10 meses desde baseline sin control.
-5. **Riesgo activo de exceso de carga autodirigida**: Tendencia documentada a añadir entrenamiento por cuenta propia (bici diaria + peso autodirigido + dead hangs frecuentes durante semana de vacaciones del funcional, abril 2026). Episodio de molestia en hombro izquierdo el 07/04/2026 confirma activación del riesgo #1 (lesión por exceso de confianza). Plan reforzado con reglas operativas de protección tendinosa (ver SYSTEM_PROMPT v3.2).
+5. **Riesgo activo de exceso de carga autodirigida**: Tendencia documentada a añadir entrenamiento por cuenta propia (bici diaria + peso autodirigido + dead hangs frecuentes durante semana de vacaciones del funcional, abril 2026). Episodio de molestia en hombro izquierdo el 07/04/2026 (cerrado 09/04/2026 como DOMS retrospectivo) confirmó la activación del riesgo #1 (lesión por exceso de confianza). Plan reforzado con reglas operativas de protección tendinosa (ver SYSTEM_PROMPT v4.0).
+6. **Episodio de aquiles bilateral abierto (11/04/2026)**: Sensación tipo palpitación bilateral ~18-20h post caminata con desnivel no planificada (10/04/2026). Gestión activa según reglas operativas v4.0: gemelo isométrico y senderismo con desnivel suspendidos mínimo 5-7 días; bici zona 2 mantenida; evaluación matutina diaria. Pendiente fecha de cierre.
 
 ---
 

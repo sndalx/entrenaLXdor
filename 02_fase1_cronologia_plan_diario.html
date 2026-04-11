@@ -83,7 +83,8 @@ body{font-family:'DM Sans',sans-serif;background:#0f1117;color:#e4e6ef;min-heigh
   </div>
   <div class="rules-body" id="rulesBody">
     <div class="rule critical"><strong>Dead hangs:</strong> máximo 2 sesiones/semana (lunes y miércoles). NUNCA diariamente. Frecuencia mayor interrumpe el ciclo de adaptación tendinosa (48-72h), no lo acelera.</div>
-    <div class="rule critical"><strong>Estado actual (07/04/2026):</strong> dead hangs SUSPENDIDOS hasta nuevo aviso por molestia leve en hombro izquierdo. Reincorporación condicional a 7 días sin molestia matutina.</div>
+    <div class="rule critical"><strong>Hombro izquierdo (07/04/2026, CERRADO 09/04):</strong> episodio resuelto como DOMS retrospectivo de trapecio/elevador de la escápula. Reincorporación escalonada de dead hangs desde 15/04/2026 (1 serie × 20-25s, NO al nivel previo).</div>
+    <div class="rule critical"><strong>Aquiles bilateral (11/04/2026, ABIERTO):</strong> suspendido gemelo isométrico y senderismo con desnivel mínimo 5-7 días. Bici zona 2 mantenida (no carga aquiles significativamente). Evaluación matutina diaria.</div>
     <div class="rule warn"><strong>Retirada de carga:</strong> cualquier molestia (incluso 1-2/10) en codo, hombro, muñeca, rodilla o tendón rotuliano = retirada inmediata mínimo 5-7 días sobre esa estructura. No "observar a ver si pasa".</div>
     <div class="rule warn"><strong>Domingo:</strong> descanso completo real. Cero entrenamiento, cero movilidad programada, cero "preparación activa". No negociable.</div>
     <div class="rule"><strong>Indicador clave:</strong> molestia matutina al despertar al iniciar movimiento = señal tendinosa temprana. Activa retirada inmediata.</div>
@@ -288,7 +289,7 @@ function getDayData(dayOfWeek, weekIndex) {
     case 5: return {
       name:'Sábado', type:'hike', typeLabel:'Senderismo GER',
       training:[
-        {name:'Caminata / senderismo', time:'60-90 min', detail: weekIndex < 8 ? 'Artxanda o ruta suave. Ritmo conversacional. Sin carga' : (weekIndex < 12 ? 'Pagasarri o desnivel moderado. Valorar mochila ligera 2-3 kg' : 'Ruta con desnivel + mochila 3-5 kg si articulaciones OK')},
+        {name:'Caminata / senderismo', time:'60-90 min', detail: (weekIndex < 8 ? 'Artxanda o ruta suave. Ritmo conversacional. Sin carga' : (weekIndex < 12 ? 'Pagasarri o desnivel moderado. Valorar mochila ligera 2-3 kg' : 'Ruta con desnivel + mochila 3-5 kg si articulaciones OK')) + ' · NOTA 11/04/2026: senderismo con desnivel SUSPENDIDO mientras el episodio de aquiles bilateral esté abierto. Caminata urbana llana permitida como alternativa.'},
         {name:'Movilidad ligera post-actividad', time:'10 min', detail:'Cuerpo caliente. Estiramientos suaves de cadena posterior. SIN dead hangs (no es día asignado)'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},

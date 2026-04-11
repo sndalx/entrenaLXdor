@@ -245,9 +245,12 @@ La sensación subjetiva de bienestar durante o tras el entrenamiento es informac
 
 ### Episodios tendinosos / articulares registrados
 
+Fuente de verdad estructurada: `registro_sesiones.json` → `episodios_tendinosos`. Esta tabla es un resumen legible, no la fuente canónica.
+
 | Fecha | Estructura | Intensidad | Contexto | Resolución |
 |-------|------------|------------|----------|------------|
-| 07/04/2026 | Hombro izquierdo | 1-2/10, sensación no muscular | Post-funcional martes, tras semana de bici diaria + entrenamiento autodirigido + dead hangs frecuentes durante vacaciones del funcional | Remitió en 30 min. Suspensión dead hangs hasta nuevo aviso. Evaluación matutina del 08/04 pendiente. |
+| 07/04/2026 | Hombro izquierdo | 1-2/10, sensación no muscular | Post-funcional martes, tras semana de bici diaria + entrenamiento autodirigido + dead hangs frecuentes durante vacaciones del funcional | **CERRADO 09/04/2026.** Diagnóstico retrospectivo: DOMS localizado en trapecio superior / elevador de la escápula. Resolución espontánea en ~48h tras retirada de carga. Lecciones: confirmación operativa del riesgo #1 y del valor del protocolo conservador. Reincorporación de dead hangs prevista 15/04/2026 con protocolo escalonado (1 serie × 20-25s, NO al nivel previo). |
+| 11/04/2026 | Tendón de Aquiles bilateral | Sensación tipo "palpitación" (no dolor) localizada sobre la estructura | ~18-20h post caminata de 45 min con 95 m de desnivel positivo (10/04/2026 tarde, no planificada en estructura semanal) | **ABIERTO.** Retirada de carga activa: suspendido gemelo isométrico mínimo 5-7 días · suspendido senderismo con desnivel · bici zona 2 mantenida (no carga aquiles significativamente) · evaluación matutina diaria. |
 
 ### Nutrición
 

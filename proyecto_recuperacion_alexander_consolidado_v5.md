@@ -561,6 +561,13 @@ Si un bloque no se completa en fecha, NO se salta al siguiente. Se extiende el b
 
 Dead hangs → retracción escapular activa → dominadas negativas (bajar en 5s) → dominadas completas. No antes de 4-6 semanas de dead hangs, >45s por serie sin molestia, aprobación del entrenador.
 
+### Episodios tendinosos registrados
+
+Resumen cronológico. Fuente de verdad estructurada: `registro_sesiones.json` → `episodios_tendinosos`. Tabla canónica en `SYSTEM_PROMPT_proyecto_recuperacion.md`.
+
+- **07/04/2026 — Hombro izquierdo (CERRADO 09/04/2026).** Sensación 1-2/10 no muscular post-funcional martes, tras semana de bici diaria + entrenamiento autodirigido + dead hangs frecuentes durante vacaciones del funcional. Diagnóstico retrospectivo: DOMS localizado en trapecio superior / elevador de la escápula. Resolución espontánea en ~48h tras retirada de carga. Confirmación operativa del riesgo #1 y del valor del protocolo conservador. Reincorporación de dead hangs prevista 15/04/2026 con protocolo escalonado (1 serie × 20-25s, NO al nivel previo).
+- **11/04/2026 — Aquiles bilateral (ABIERTO).** Sensación tipo "palpitación" (no dolor) localizada sobre la estructura, bilateral. Contexto: ~18-20h post caminata de 45 min con 95 m de desnivel positivo (10/04/2026 tarde, no planificada en estructura semanal). Retirada de carga activa: suspendido gemelo isométrico mínimo 5-7 días · suspendido senderismo con desnivel · bici zona 2 mantenida (no carga aquiles significativamente) · evaluación matutina diaria.
+
 ---
 
 ## Criterios de paso a Fase 1B / Fase 2
