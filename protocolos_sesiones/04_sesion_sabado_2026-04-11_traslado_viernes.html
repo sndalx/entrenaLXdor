@@ -53,16 +53,10 @@
   .key.warn { color: var(--warmup); }
   .key.rest { color: var(--rest); }
 
-  /* Ver técnica button + panel */
-  .btn-detail-toggle { background: var(--surface-2); color: var(--text-dim); border: none; border-radius: 8px; padding: 8px 14px; font-size: 13px; font-family: 'DM Sans'; cursor: pointer; touch-action: manipulation; margin: 8px auto 0; display: flex; align-items: center; gap: 6px; }
-  .btn-detail-toggle .info-icon { font-size: 14px; }
-  .btn-detail-toggle:active { transform: scale(0.97); }
-  .exercise-detail-panel { position: fixed; left: 16px; right: 16px; bottom: 16px; max-height: 50vh; overflow-y: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); display: none; z-index: 100; box-shadow: 0 -8px 24px rgba(0,0,0,0.5); }
-  .exercise-detail-panel.open { display: block; animation: slideUp 0.2s ease; }
-  @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-  .exercise-detail-panel p { margin-bottom: 10px; font-size: 14px; line-height: 1.5; color: var(--text); }
-  .exercise-detail-panel p:last-child { margin-bottom: 0; }
-  .panel-close { position: absolute; top: 10px; right: 12px; background: transparent; border: none; color: var(--text-dim); font-size: 20px; cursor: pointer; line-height: 1; padding: 4px 8px; }
+  /* Detalle visible permanente durante ejecución */
+  .exercise-detail { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text-dim); font-size: 13px; line-height: 1.45; max-width: 420px; width: 100%; margin: 0 auto 12px; max-height: 28vh; overflow-y: auto; }
+  .exercise-detail p { margin-bottom: 6px; }
+  .exercise-detail p:last-child { margin-bottom: 0; }
 
   /* Timer ring */
   .timer-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
@@ -268,7 +262,6 @@ let timerDuration = 0;
 let audioCtx = null;
 let wakeLock = null;
 let sessionStart = null;
-let detailPanelOpen = false;
 
 const app = document.getElementById('app');
 
@@ -369,7 +362,6 @@ function getBlockProgress(step) {
    RENDER DISPATCHER
    ========================================================= */
 function render() {
-  detailPanelOpen = false;
   const step = WORKOUT[currentStep];
   if (!step) return;
 
@@ -456,21 +448,14 @@ function renderPrep(step, onComplete) {
 }
 window.skipPrep = () => { clearInterval(timerInterval); const step = WORKOUT[currentStep]; if (step.type === 'exercise-reps') renderExerciseReps(step); else if (step.type === 'exercise-timed') renderExerciseTimed(step); };
 
-function detailPanelHTML(step) {
-  return `<button class="btn-detail-toggle" onclick="toggleDetailPanel()"><span class="info-icon">ⓘ</span> Ver técnica</button>
-    <div class="exercise-detail-panel" id="detailPanel">
-      <button class="panel-close" onclick="toggleDetailPanel()">×</button>
+function exerciseDetailHTML(step) {
+  return `<div class="exercise-detail">
       <p>${step.detail}</p>
       ${step.tempo ? `<p><span class="key">Tempo: ${step.tempo}</span></p>` : ''}
       ${step.perSide ? `<p><span class="key">Por cada lado</span></p>` : ''}
+      ${step.equipment ? `<p><span class="key">Material: ${step.equipment}</span></p>` : ''}
     </div>`;
 }
-window.toggleDetailPanel = () => {
-  const p = document.getElementById('detailPanel');
-  if (!p) return;
-  detailPanelOpen = !detailPanelOpen;
-  p.classList.toggle('open', detailPanelOpen);
-};
 
 function renderExerciseReps(step) {
   const phase = step.phase || '';
@@ -479,7 +464,7 @@ function renderExerciseReps(step) {
       ${headerHTML(step)}
       <div class="phase">${phase}</div>
       <div class="name">${step.name}</div>
-      ${detailPanelHTML(step)}
+      ${exerciseDetailHTML(step)}
       <div class="reps-display">
         <div class="reps-number">${step.reps}</div>
         <div class="reps-label">Repeticiones</div>
@@ -501,7 +486,7 @@ function renderExerciseTimed(step) {
       ${headerHTML(step)}
       <div class="phase">${phase}</div>
       <div class="name">${step.name}</div>
-      ${detailPanelHTML(step)}
+      ${exerciseDetailHTML(step)}
       <div class="timer-wrap">
         <div class="timer-ring ${ringClass}">
           <svg viewBox="0 0 220 220">

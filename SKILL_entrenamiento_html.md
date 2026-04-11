@@ -1,13 +1,16 @@
 # SKILL — Generador de guías interactivas de entrenamiento HTML
 
-## Versión 2.1 — Abril 2026
+## Versión 2.2 — Abril 2026
 
-Cambios respecto a v2.0:
+Cambios respecto a v2.1:
+- El detalle del ejercicio pasa de panel expandible (botón "Ver técnica" + toast) a caja fija visible permanentemente entre el nombre del ejercicio y el cronómetro/contador. Se retira el componente expandible porque la consulta rápida es más eficiente con la información siempre visible que tras un toque.
+
+Cambios de v2.0 → v2.1:
 - Hora estimada de finalización visible junto a la barra de progreso global
 
 Cambios de v1.0 → v2.0:
 - Diferenciación entre tiempos de preparación intra-bloque e inter-bloque
-- Detalle del ejercicio expandible durante la ejecución
+- Detalle del ejercicio visible durante la ejecución
 - Indicador visual de bloque actual y progreso intra-bloque
 - Pantalla de transición de 3 segundos entre cambios de bloque
 
@@ -244,70 +247,48 @@ Fondo `#1a1d27`, borde `#2e3345`, border-radius 12px, texto `#8b8fa3`, highlight
 </div>
 ```
 
-#### Detalle expandible durante ejecución
+#### Detalle visible durante ejecución
 
-El detalle completo del ejercicio (campo `detail` del modelo de datos) debe estar accesible durante la pantalla de ejecución (cronometrado o de repeticiones), no solo en la pantalla de preparación previa. Esto permite consulta rápida del cue postural o del tempo sin interrumpir el cronómetro.
+El detalle completo del ejercicio (campo `detail` del modelo de datos) se muestra de forma permanente durante la pantalla de ejecución (cronometrado o de repeticiones), en una caja fija entre el nombre del ejercicio y el cronómetro/contador. No hay botón ni panel expandible: la información está siempre visible para consulta inmediata sin interacción.
 
 ```html
-<button class="btn-detail-toggle" onclick="toggleExerciseDetail()">
-  <span class="info-icon">ⓘ</span> Ver técnica
-</button>
-
-<div class="exercise-detail-panel" id="exerciseDetailPanel">
+<div class="exercise-detail">
   <p>[texto completo del detail]</p>
   <p><span class="key">Tempo: 3-1-2</span></p>
+  <p><span class="key">Por cada lado</span></p>
 </div>
 ```
 
-**Posición:** el botón aparece debajo del nombre del ejercicio y por encima del cronómetro/contador. Discreto, sin competir visualmente con el cronómetro.
+**Posición:** entre el nombre del ejercicio y la zona central de ejecución (cronómetro o contador de repeticiones). Compacta verticalmente para no desplazar el cronómetro fuera de la vista.
 
-**Estilo del botón:**
-
-```css
-.btn-detail-toggle {
-  background: #232733;
-  color: #8b8fa3;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 13px;
-  font-family: 'DM Sans';
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-.btn-detail-toggle .info-icon {
-  font-size: 14px;
-  margin-right: 4px;
-}
-```
-
-**Estilo del panel desplegable:**
+**Estilo:**
 
 ```css
-.exercise-detail-panel {
-  position: fixed;
-  left: 16px;
-  right: 16px;
-  bottom: 16px;
-  max-height: 50vh;
-  overflow-y: auto;
+.exercise-detail {
   background: #1a1d27;
   border: 1px solid #2e3345;
-  border-radius: 12px;
-  padding: 16px;
-  color: #e4e6ef;
-  display: none;
-  z-index: 100;
+  border-radius: 10px;
+  padding: 12px 14px;
+  color: #8b8fa3;
+  font-size: 13px;
+  line-height: 1.45;
+  max-width: 420px;
+  width: 100%;
+  margin: 0 auto 12px;
+  max-height: 28vh;
+  overflow-y: auto;
 }
-.exercise-detail-panel.open { display: block; }
+.exercise-detail p { margin-bottom: 6px; }
+.exercise-detail p:last-child { margin-bottom: 0; }
 ```
 
 **Comportamiento:**
-- El panel se despliega sobre la mitad inferior de la pantalla al pulsar el botón. La mitad superior con el cronómetro queda visible y el cronómetro **no se pausa**. La función del panel es consulta rápida, no interrupción del ejercicio.
-- Se oculta con un nuevo toque al botón o tocando fuera del panel.
-- Si el detalle es largo, permite scroll vertical dentro del panel.
-- Para ejercicios con tempo (ej. "3-1-2"), mostrar el tempo destacado con el componente `.key` ya definido.
+- La caja aparece en ambas pantallas de ejecución (`exercise-reps` y `exercise-timed`).
+- El cronómetro/contador **no se pausa** en ningún caso. La caja es solo visual.
+- Si el detalle es muy largo, la caja permite scroll vertical interno (`max-height: 28vh`). El contenido no debería exceder este límite; si lo hace de forma sistemática, acortar el campo `detail`.
+- Para ejercicios con tempo o marcador "por lado", usar el componente `.key` (ya definido) dentro de la caja.
+
+**Justificación del diseño respecto a v2.1:** el panel expandible exigía un toque para leer la técnica durante la ejecución. La consulta rápida es más eficiente con la información siempre visible que tras una interacción extra. La caja fija no compite visualmente con el cronómetro porque vive en la zona superior-media de la pantalla, y el cronómetro sigue dominando el centro visual.
 
 #### Indicador de progreso de bloque
 
@@ -603,7 +584,7 @@ Antes de entregar un HTML de entrenamiento, verificar:
 - [ ] Probado mentalmente el flujo completo de inicio a fin
 - [ ] Cada step del WORKOUT tiene asignado el campo `block` correspondiente
 - [ ] Los tiempos de prep siguen la nueva tabla diferenciada (5-15s según tipo de transición)
-- [ ] El detalle completo del ejercicio está disponible durante la ejecución mediante botón "Ver técnica"
+- [ ] El detalle completo del ejercicio está visible de forma permanente durante la ejecución en una caja fija entre el nombre y el cronómetro/contador
 - [ ] El indicador de bloque y progreso intra-bloque se muestra en cada ejercicio
 - [ ] Los cambios de bloque incluyen pantalla de transición de 3 segundos
 
