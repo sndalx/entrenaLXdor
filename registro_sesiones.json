@@ -1,0 +1,203 @@
+{
+  "schema_version": "1.0",
+  "proyecto": "recuperacion_fisica_alexander",
+  "fase": "1",
+  "ultima_actualizacion": "2026-04-11",
+  "nota": "Base de datos preliminar de sesiones y datos estructurados del proyecto. Fuente de verdad de datos numéricos y cronológicos. Observaciones cualitativas (decisiones, análisis, reflexiones) en seguimiento_progresion_fase1.md. Migración futura prevista a SQL.",
+
+  "dead_hangs": [
+    {
+      "fecha": "2026-04-04",
+      "sets_segundos": [55, 35, 35],
+      "total_segundos": 125,
+      "notas": "Primera sesión. Limitante: fatiga muscular antebrazos (quemazón), no articular."
+    },
+    {
+      "fecha": "2026-04-06",
+      "momento_dia": "mañana",
+      "sets_segundos": [56, 35, 35],
+      "total_segundos": 126,
+      "notas": "Consistencia confirmada. Post-sesión complementaria mancuernas."
+    },
+    {
+      "fecha": "2026-04-06",
+      "momento_dia": "tarde",
+      "sets_segundos": [65, 40, 35],
+      "total_segundos": 140,
+      "notas": "Progresión clara. Agarre reconectándose."
+    }
+  ],
+
+  "bici_zona2": [
+    {
+      "fecha": "2026-04-03",
+      "duracion_min": 40.23,
+      "fc_media": 132,
+      "fc_max": 145,
+      "min_extrema": 0,
+      "min_anaerobico": 22,
+      "min_aerobico": 13,
+      "min_quema_grasa": 2,
+      "min_calentamiento": 1,
+      "kcal": 299,
+      "hr_recovery_1min": null,
+      "estres_aerobico": null,
+      "tiempo_recuperacion_h": null,
+      "es_referencia": false,
+      "notas": "Demasiado intensa. Test de hablar OK → FC máx real >175. Sesión de calibración inicial."
+    },
+    {
+      "fecha": "2026-04-04",
+      "duracion_min": 40.1,
+      "fc_media": 120,
+      "fc_max": 130,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 31,
+      "min_quema_grasa": 7,
+      "min_calentamiento": 1,
+      "kcal": 264,
+      "hr_recovery_1min": null,
+      "estres_aerobico": null,
+      "tiempo_recuperacion_h": null,
+      "es_referencia": true,
+      "notas": "REFERENCIA CALIBRADA PRINCIPAL. Zona correcta. Calorías estimadas."
+    },
+    {
+      "fecha": "2026-04-06",
+      "duracion_min": 40.1,
+      "fc_media": 123,
+      "fc_max": 135,
+      "min_extrema": 0,
+      "min_anaerobico": 1,
+      "min_aerobico": 34,
+      "min_quema_grasa": 4,
+      "min_calentamiento": 1,
+      "kcal": 264,
+      "hr_recovery_1min": null,
+      "estres_aerobico": null,
+      "tiempo_recuperacion_h": null,
+      "es_referencia": false,
+      "notas": "Correcta. Costó subir pulsaciones → adaptación temprana confirmada."
+    },
+    {
+      "fecha": "2026-04-10",
+      "duracion_min": 45.3,
+      "fc_media": 118,
+      "fc_max": 131,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 34,
+      "min_quema_grasa": 9,
+      "min_calentamiento": null,
+      "kcal": null,
+      "hr_recovery_1min": 11,
+      "estres_aerobico": 1.6,
+      "tiempo_recuperacion_h": 4,
+      "es_referencia": true,
+      "notas": "SEGUNDA REFERENCIA CALIBRADA. Coherente con rol del viernes (sesión corta preparatoria). Estrés aeróbico 1.6 indica recuperación."
+    }
+  ],
+
+  "plancha": [
+    {
+      "fecha": "2026-04-06",
+      "variante": "basica",
+      "ronda": 3,
+      "duracion_segundos": 60,
+      "notas": "Sin dificultad significativa. Insuficiente como estímulo. Decisión: sustituir por plancha con toque de hombro alterno."
+    }
+  ],
+
+  "sesion_mancuernas": [
+    {
+      "fecha": "2026-04-06",
+      "equipo": ["mancuernas_12kg_x2", "kettlebell_12kg"],
+      "rondas": 3,
+      "ejercicios": [
+        {"nombre": "Sentadilla goblet KB", "reps": 10, "series": 3, "tempo": "3-1-2"},
+        {"nombre": "Press de hombro mancuernas de pie", "reps": 8, "series": 3, "tempo": null},
+        {"nombre": "Remo a una mano mancuerna", "reps_por_lado": 8, "series": 3, "tempo": null},
+        {"nombre": "Peso muerto rumano mancuernas", "reps": 10, "series": 3, "tempo": "lento"},
+        {"nombre": "Plancha", "duracion_segundos": 30, "series": 3, "notas": "última >1 min"}
+      ],
+      "notas": "Cómodo. Guiado por HTML interactivo. Cero dolor articular post-sesión. Sesión sustitutoria, no segundo entrenamiento regular."
+    }
+  ],
+
+  "peso_muerto": [
+    {
+      "fecha": "2025-11-15",
+      "fecha_aproximada": true,
+      "peso_kg": 70,
+      "reps": 6,
+      "rm_estimado_kg": 80,
+      "notas": "Referencia histórica CrossFit. Con control y margen de seguridad. 2ª sesión de peso muerto de su vida. 1RM no retestado tras parón de 2.5 meses + 1 mes de funcional."
+    }
+  ],
+
+  "protocolo_tendinoso": [],
+
+  "gimnasio_funcional_asistencia": [
+    {
+      "semana_inicio": "2026-04-07",
+      "semana_fin": "2026-04-13",
+      "martes_asistio": null,
+      "jueves_asistio": null,
+      "sesiones_sustituidas": 1,
+      "notas": "Sesión sustitutoria mancuernas 06/04/2026."
+    }
+  ],
+
+  "sueno_semanal": [
+    {
+      "semana_inicio": "2026-03-30",
+      "semana_fin": "2026-04-06",
+      "noches_7h_o_mas": 4,
+      "porcentaje": 65,
+      "cumple_umbral_80": false,
+      "notas": "Primeras noches de protocolo. Ansiedad paradójica. Despertar 3 AM."
+    }
+  ],
+
+  "episodios_tendinosos": [
+    {
+      "fecha_apertura": "2026-04-07",
+      "fecha_cierre": "2026-04-09",
+      "estado": "cerrado",
+      "estructura": "hombro_izquierdo",
+      "intensidad": "1-2/10",
+      "tipo_sensacion": "no_muscular",
+      "contexto": "Post-funcional martes, tras semana de bici diaria + entrenamiento autodirigido + dead hangs frecuentes durante vacaciones del funcional.",
+      "diagnostico_retrospectivo": "DOMS localizado en trapecio superior / elevador de la escápula.",
+      "resolucion": "Espontánea en ~48h tras retirada de carga.",
+      "lecciones": "Confirmación operativa del riesgo #1 (lesión por exceso de confianza) y del valor del protocolo conservador.",
+      "acciones_tomadas": [
+        "Suspensión dead hangs hasta nuevo aviso",
+        "Evaluación matutina diaria"
+      ],
+      "reincorporacion_prevista": "2026-04-15",
+      "protocolo_reincorporacion": "1 serie × 20-25s, escalonado, NO al nivel previo (55s era cerca del fallo). Evaluación matutina obligatoria antes de cada sesión. Subida condicional a sensación tendinosa cero durante 7 días consecutivos."
+    },
+    {
+      "fecha_apertura": "2026-04-11",
+      "fecha_cierre": null,
+      "estado": "abierto",
+      "estructura": "aquiles_bilateral",
+      "intensidad": "palpitacion_no_dolor",
+      "tipo_sensacion": "palpitacion_sobre_estructura",
+      "contexto": "~18-20h post caminata de 45 min con 95 m de desnivel positivo (2026-04-10 tarde, no planificada en estructura semanal).",
+      "diagnostico_retrospectivo": null,
+      "resolucion": "pendiente",
+      "lecciones": null,
+      "acciones_tomadas": [
+        "Suspendido gemelo isométrico mínimo 5-7 días",
+        "Suspendido senderismo con desnivel",
+        "Bici zona 2 mantenida (no carga aquiles significativamente)",
+        "Evaluación matutina diaria"
+      ],
+      "reincorporacion_prevista": null,
+      "protocolo_reincorporacion": null
+    }
+  ]
+}

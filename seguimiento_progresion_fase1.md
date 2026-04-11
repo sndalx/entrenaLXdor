@@ -1,6 +1,8 @@
 # SEGUIMIENTO DE PROGRESIÓN — Proyecto Recuperación Alexander
 ## Fase 1: Abril – Agosto 2026
 
+> **Migración a JSON (11/04/2026):** los datos estructurados (sesiones, métricas, fechas, reps, tiempos) se han migrado a `registro_sesiones.json`, que es la fuente de verdad de datos numéricos del proyecto. Este archivo se conserva como **companion narrativo**: observaciones cualitativas, decisiones, análisis, hitos. Las tablas de datos incluidas en este MD quedan como snapshot histórico y no se actualizan más desde la fecha de migración. Para añadir datos nuevos de sesión, editar el JSON. Migración futura prevista a SQL cuando esté lista la plataforma Blazor.
+
 ---
 
 ## Dead hangs
