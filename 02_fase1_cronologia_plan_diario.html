@@ -230,12 +230,13 @@ function getDayData(dayOfWeek, weekIndex) {
 
   switch(dayOfWeek) {
     case 0: return {
-      name:'Lunes', type:'bike', typeLabel:'Bici + Tendinoso',
+      name:'Lunes', type:'bike', typeLabel:'Tendinoso + Bici',
       training:[
-        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'std'), detail:'105-122 bpm o test de hablar. Cambio de ropa directo, sin sentarse'},
+        {name:'Calentamiento dinámico', time:'3-5 min', detail:'Sentadillas al aire 10-15 reps · rotaciones de cadera y tobillo · elevaciones de talones. Eleva temperatura intramuscular antes del primer isométrico. OBLIGATORIO desde 13/04/2026 al haber invertido el orden de la sesión (la bici ya no cumple esa función).'},
         {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
-        {name:'Movilidad', time:'10 min', detail:'Psoas 90s/lado · Rotaciones torácicas 10/lado · Apertura pectoral 60s/lado · Tobillo 90s · Sentadilla profunda 90s'},
-        {name:'Dead hangs (día asignado 1/2)', time:'4 min', detail:'90-120s total en 2-3 series. SUSPENDIDOS hasta resolución del episodio del 07/04/2026 (hombro izq). Reincorporar solo tras 7 días sin molestia matutina'}
+        {name:'Movilidad transición', time:'5-7 min', detail:'Psoas 90s/lado · Rotaciones torácicas 10/lado · Apertura pectoral 60s/lado · Tobillo 90s (énfasis lado derecho por asimetría documentada) · Sentadilla profunda 90s'},
+        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'std'), detail:'105-122 bpm o test de hablar. Rol: recuperación activa post-tendinoso + base aeróbica. Recalibración postural cada 10 min (minutos 10, 20, 30, 40, 50): 15s sin pausar pedaleo, enderezar columna, retraer escápulas, dos respiraciones profundas.'},
+        {name:'Dead hangs (día asignado 1/2)', time:'4 min', detail:'Reincorporación escalonada desde 15/04/2026: 1 serie × 20-25s, NO al nivel previo (55s era cerca del fallo). Evaluación matutina obligatoria antes de cada sesión. Subida condicional a sensación tendinosa cero durante 7 días consecutivos.'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
@@ -253,12 +254,13 @@ function getDayData(dayOfWeek, weekIndex) {
       supps:[{name:'Proteína Whey post-entreno', dose:'30g'}]
     };
     case 2: return {
-      name:'Miércoles', type:'bike', typeLabel:'Bici + Tendinoso',
+      name:'Miércoles', type:'bike', typeLabel:'Tendinoso + Bici',
       training:[
-        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'main'), detail:'Sesión principal aeróbica entre semana'},
+        {name:'Calentamiento dinámico', time:'3-5 min', detail:'Sentadillas al aire 10-15 reps · rotaciones de cadera y tobillo · elevaciones de talones. Eleva temperatura intramuscular antes del primer isométrico. OBLIGATORIO desde 13/04/2026 al haber invertido el orden de la sesión.'},
         {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
-        {name:'Movilidad', time:'8 min', detail:'Rutina estándar'},
-        {name:'Dead hangs (día asignado 2/2)', time:'4 min', detail:'90-120s total en 2-3 series. SUSPENDIDOS hasta resolución del episodio del 07/04/2026 (hombro izq). Reincorporar solo tras 7 días sin molestia matutina'}
+        {name:'Movilidad transición', time:'5-7 min', detail:'Rutina estándar. Énfasis en tobillo derecho (asimetría documentada).'},
+        {name:'Bici estática zona 2', time:getBikeDuration(weekIndex,'main'), detail:'Sesión principal aeróbica entre semana. Rol: recuperación activa post-tendinoso + base aeróbica. Recalibración postural cada 10 min.'},
+        {name:'Dead hangs (día asignado 2/2)', time:'4 min', detail:'Reincorporación escalonada desde 15/04/2026: 1 serie × 20-25s, NO al nivel previo. Evaluación matutina obligatoria antes de cada sesión.'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]
@@ -278,10 +280,12 @@ function getDayData(dayOfWeek, weekIndex) {
     case 4: return {
       name:'Viernes', type:'tele', typeLabel:'Teletrabajo + Sesión completa',
       training:[
-        {name:'Bici estática zona 2 — sesión corta', time:getBikeDuration(weekIndex,'std'), detail:'Bici corta para no acumular carga con senderismo del sábado'},
-        {name:'Protocolo tendinoso completo', time:'25 min', detail:'Tren inferior: ' + tl + ' · Tren superior: ' + tu},
-        {name:'Movilidad extendida + Bandas', time:'25 min', detail:'Rotaciones hombro, face pulls, Pallof press, glute bridge con banda. SIN dead hangs (no es día asignado)'},
-        {name:'Foam roller (opcional)', time:'10-15 min', detail:'Cuádriceps, IT band, dorsales, gemelos'}
+        {name:'Calentamiento dinámico', time:'3-5 min', detail:'Sentadillas al aire 10-15 reps · rotaciones de cadera y tobillo · elevaciones de talones. Eleva temperatura intramuscular antes del primer isométrico. OBLIGATORIO desde 13/04/2026 al haber invertido el orden de la sesión.'},
+        {name:'Protocolo tendinoso tren inferior', time:'15 min', detail:tl},
+        {name:'Protocolo tendinoso tren superior', time:'15 min', detail:tu + ' (con calentamiento de hombro incluido)'},
+        {name:'Bandas', time:'10 min', detail:'Rotaciones externas hombro · face pulls · Pallof press · glute bridge con banda'},
+        {name:'Movilidad extendida', time:'15-20 min', detail:'Cadenas posteriores, cadera, torácica. SIN dead hangs (no es día asignado).'},
+        {name:'Bici estática zona 2 — sesión corta', time:getBikeDuration(weekIndex,'std'), detail:'Bici corta para no acumular carga con senderismo del sábado. Rol: recuperación activa post-tendinoso. Recalibración postural cada 10 min.'}
       ],
       meals:{b:BREAKFAST, l:LUNCH, d:DINNER},
       supps:[]

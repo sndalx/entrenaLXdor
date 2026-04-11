@@ -188,17 +188,55 @@ Punto de control: agosto 2026. No se avanza a Fase 1B hasta que todos los criter
 
 **Estructura semanal:**
 
-- Lunes: bici zona 2 + protocolo tendinoso tren inferior + movilidad + dead hangs
+- Lunes: calentamiento dinámico + protocolo tendinoso tren inferior + movilidad transición + bici zona 2 + dead hangs
 - Martes: gimnasio funcional + protocolo tendinoso tren superior + movilidad
-- Miércoles: bici zona 2 + protocolo tendinoso tren inferior + movilidad + dead hangs
+- Miércoles: calentamiento dinámico + protocolo tendinoso tren inferior + movilidad transición + bici zona 2 + dead hangs
 - Jueves: gimnasio funcional + protocolo tendinoso tren superior + movilidad
-- Viernes: bici corta zona 2 + tendinoso completo + bandas + movilidad extendida
+- Viernes: calentamiento dinámico + tendinoso completo (inferior + superior) + bandas + movilidad extendida + bici corta zona 2
 - Sábado: senderismo (Artxanda/Pagasarri) + movilidad ligera post-actividad
 - Domingo: **DESCANSO COMPLETO REAL** — cero entrenamiento, cero movilidad programada, cero "preparación activa". Vida cotidiana normal. Sin excepciones.
 
 **Nota sobre descanso completo:** El descanso completo del domingo no es opcional ni reemplazable por "descanso activo". Es requisito fisiológico para la supercompensación tendinosa, articular y del SNC en fase de reentrenamiento. La preparación de la semana se hace mentalmente o se traslada al lunes por la mañana. La verificación semanal de sueño se hace durante el día sin que cuente como tarea programada.
 
 **Distinción entre actividad y estímulo:** La estructura semanal contempla 5 días con estímulo de entrenamiento (L-V), 1 día de actividad larga (sábado, senderismo) y 1 día de descanso completo real (domingo). La movilidad en días de entrenamiento es complementaria, no entrenamiento adicional.
+
+**Orden de ejecución interno (activo desde 13/04/2026):**
+
+_Días L y X (bici + tendinoso inferior):_
+1. Calentamiento dinámico (3-5 min): sentadillas al aire 10-15 reps, rotaciones de cadera, tobillos, elevaciones de talones
+2. Protocolo tendinoso tren inferior (~15 min)
+3. Movilidad transición (~5-7 min): psoas, rotaciones torácicas, tobillo (énfasis en derecho por asimetría)
+4. Bici zona 2 (45-55 min según semana de progresión)
+5. Dead hangs (cuando se reincorporen, desde 15/04/2026 en protocolo escalonado)
+
+_Día V (bici corta + tendinoso completo + bandas + movilidad):_
+1. Calentamiento dinámico (3-5 min)
+2. Protocolo tendinoso tren inferior (~15 min)
+3. Protocolo tendinoso tren superior (~15 min, con calentamiento de hombro incluido)
+4. Bandas (~10 min)
+5. Movilidad extendida (~15-20 min)
+6. Bici zona 2 corta (45-55 min)
+
+_Justificación del cambio de orden:_
+- **Adherencia conductual:** evita la fricción de "bajarse de la bici para hacer otra cosa"
+- **Tendones frescos para trabajo específico:** los isométricos requieren reclutamiento limpio que se degrada con piernas pre-fatigadas
+- **Bici como recuperación activa post-tendinoso:** lavado metabólico sin añadir carga tendinosa
+- **La bici en zona 2 no requiere músculo fresco:** funciona igual con piernas pre-trabajadas
+
+_Condiciones técnicas:_
+- **Calentamiento dinámico OBLIGATORIO** antes del primer isométrico. La bici ya no cumple esa función al haber invertido el orden.
+- **Protección estructural de la bici:** el componente final NO es recortable por "cansancio acumulado". Si algún día específico no se puede hacer la bici completa, saltar el día o reducir, pero NO convertir en norma el recorte.
+
+**Volumen aeróbico Fase 1:**
+
+- Objetivo: 3 sesiones × 55 min = 165 min/semana de bici zona 2
+- Días asignados: lunes, miércoles, viernes (no añadir cuarto día)
+- Progresión escalonada durante abril 2026:
+  - Semana del 14/04: 45 min/sesión (135 min/sem)
+  - Semana del 21/04: 50 min/sesión (150 min/sem)
+  - Semana del 28/04: 55 min/sesión (165 min/sem)
+  - Desde mayo: mantenimiento estable a 165 min/sem
+- Justificación: 165 min/sem captura ~80% del beneficio realista alcanzable. Pasar de 80% a 95% requiere duplicar volumen para ganar 15 puntos porcentuales; coste-beneficio desfavorable en Fase 1.
 
 **Protocolo tendinoso con calendario fijo:**
 

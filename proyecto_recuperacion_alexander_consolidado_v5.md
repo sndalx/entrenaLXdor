@@ -392,38 +392,55 @@ Mínimo 12 semanas para remodelación de colágeno tendinoso.
 6. Permitir ganancia muscular inicial natural
 7. Obtener analítica de control y composición corporal
 
+### Orden de ejecución (activo desde 13/04/2026)
+
+El orden interno de cada sesión se invirtió: ahora tendinoso → bici, en lugar de bici → tendinoso. Justificación: adherencia conductual (evita fricción de "bajarse de la bici para hacer otra cosa"), tendones frescos para trabajo específico de isométricos, y bici como recuperación activa post-tendinoso. Esto hace **obligatorio** un calentamiento dinámico previo al primer isométrico (la bici ya no cumple esa función).
+
 ### Lunes — 1 hora (oficina, sin gimnasio)
 
-1. **Bici estática zona 2** (25-30 min) — Cambio de ropa directo al llegar, sin sentarse
+1. **Calentamiento dinámico** (3-5 min) — Sentadillas al aire 10-15 reps, rotaciones de cadera y tobillo, elevaciones de talones
 2. **Protocolo tendinoso tren inferior** (15 min) — Wall sit, elevación gemelo isométrica, puente glúteo con pausa
-3. **Movilidad + dead hangs** (12 min) — Psoas 90s/lado, rotaciones torácicas 10/lado, apertura pectoral 60s/lado, estiramiento tobillo 90s, sentadilla profunda sin peso 90s. Dead hangs acumulando 90-120s
+3. **Movilidad transición** (5-7 min) — Psoas 90s/lado, rotaciones torácicas 10/lado, apertura pectoral 60s/lado, tobillo 90s (énfasis lado derecho por asimetría), sentadilla profunda sin peso 90s
+4. **Bici estática zona 2** (45-55 min según semana de progresión) — Recuperación activa post-tendinoso + base aeróbica. Recalibración postural cada 10 min
+5. **Dead hangs** — Reincorporación escalonada desde 15/04/2026 (1 serie × 20-25s, no al nivel previo)
 
 ### Martes — 2 horas (oficina + gimnasio funcional)
 
 1. **Gimnasio funcional con entrenador** (60 min) — Tempo lento, control excéntrico
 2. **Protocolo tendinoso tren superior** (15 min) — Post-funcional. Rotaciones externas isométricas, retracción escapular en barra, flexiones isométricas en pared
-3. **Movilidad + estiramientos** (10 min) — Dead hangs si no hay fatiga de agarre
+3. **Movilidad + estiramientos** (10 min)
 4. **Bici suave** (15 min, opcional)
 
 ### Miércoles — 1 hora (oficina, sin gimnasio)
 
-1. **Bici estática zona 2** (30-35 min) — Sesión principal aeróbica entre semana
+1. **Calentamiento dinámico** (3-5 min)
 2. **Protocolo tendinoso tren inferior** (15 min)
-3. **Movilidad + dead hangs** (10 min)
+3. **Movilidad transición** (5-7 min) — Énfasis en tobillo derecho
+4. **Bici estática zona 2** (45-55 min) — Sesión principal aeróbica entre semana
+5. **Dead hangs** — Reincorporación escalonada desde 15/04/2026
 
 ### Jueves — 2 horas (oficina + gimnasio funcional)
 
 1. **Gimnasio funcional con entrenador** (60 min)
 2. **Protocolo tendinoso tren superior** (15 min)
-3. **Movilidad + estiramientos** (10 min) — Dead hangs opcionales
+3. **Movilidad + estiramientos** (10 min)
 4. **Bici suave** (15 min, opcional)
 
 ### Viernes — ~100 min de ejercicio (teletrabajo 8:00-15:00)
 
-1. **Bici estática zona 2 — Sesión larga** (40-50 min)
-2. **Protocolo tendinoso cuerpo completo** (25 min)
-3. **Movilidad extendida + dead hangs + bandas** (25 min)
-4. **Foam roller** (10-15 min, opcional)
+1. **Calentamiento dinámico** (3-5 min)
+2. **Protocolo tendinoso tren inferior** (15 min)
+3. **Protocolo tendinoso tren superior** (15 min, con calentamiento de hombro incluido)
+4. **Bandas** (10 min) — Rotaciones hombro, face pulls, Pallof press, glute bridge con banda
+5. **Movilidad extendida** (15-20 min)
+6. **Bici estática zona 2 — sesión corta** (45-55 min) — Recuperación activa post-tendinoso. NO recortable por "cansancio acumulado"
+
+### Volumen aeróbico Fase 1
+
+- Objetivo: 3 sesiones × 55 min = 165 min/semana de bici zona 2 (L, X, V)
+- Progresión escalonada abril 2026: 45 min/sesión (sem 14/04) → 50 min (21/04) → 55 min (28/04). Mantenimiento desde mayo.
+- Justificación: 165 min/sem captura ~80% del beneficio realista alcanzable. Duplicar volumen para ganar 15 puntos porcentuales = coste-beneficio desfavorable en Fase 1.
+- Recalibración postural cada 10 min durante sesiones de bici: 15s sin pausar pedaleo, enderezar columna, retraer escápulas, dos respiraciones profundas. Previene colapso postural progresivo en sesiones largas.
 
 ### Sábado — Día libre
 
