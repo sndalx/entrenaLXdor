@@ -287,14 +287,46 @@ Si en ventana de 5-7 días tras retirada aparece cualquiera de los siguientes, d
 
 La sensación subjetiva de bienestar durante o tras el entrenamiento es información sobre el sistema muscular y cardiovascular, NO sobre el sistema tendinoso. Los tendones tienen latencia de respuesta de 24-72 horas y son opacos a la percepción consciente. Confiar en cómo se siente el entrenamiento para regular la carga tendinosa es exactamente el patrón de riesgo #1 documentado. La regulación de la carga tendinosa se hace por calendario y por reglas, no por sensación.
 
-### Episodios tendinosos / articulares registrados
+### Árbol de decisión cuando Alexander menciona molestia
 
-Fuente de verdad estructurada: `registro_sesiones.json` → `episodios_tendinosos`. Esta tabla es un resumen legible, no la fuente canónica.
+Fuente canónica de registro: `registro_sesiones.json → incidencias`. Toda molestia, sensación o síntoma se registra aquí. El SYSTEM_PROMPT solo contiene la tabla-resumen.
 
-| Fecha | Estructura | Intensidad | Contexto | Resolución |
-|-------|------------|------------|----------|------------|
-| 07/04/2026 | Hombro izquierdo | 1-2/10, sensación no muscular | Post-funcional martes, tras semana de bici diaria + entrenamiento autodirigido + dead hangs frecuentes durante vacaciones del funcional | **CERRADO 09/04/2026.** Diagnóstico retrospectivo: DOMS localizado en trapecio superior / elevador de la escápula. Resolución espontánea en ~48h tras retirada de carga. Lecciones: confirmación operativa del riesgo #1 y del valor del protocolo conservador. Reincorporación de dead hangs prevista 15/04/2026 con protocolo escalonado (1 serie × 20-25s, NO al nivel previo). |
-| 11/04/2026 | Tendón de Aquiles bilateral | Sensación tipo "palpitación" (no dolor) localizada sobre la estructura | ~18-20h post caminata de 45 min con 95 m de desnivel positivo (10/04/2026 tarde, no planificada en estructura semanal) | **ABIERTO.** Retirada de carga activa: suspendido gemelo isométrico mínimo 5-7 días · suspendido senderismo con desnivel · bici zona 2 mantenida (no carga aquiles significativamente) · evaluación matutina diaria. |
+**Clasificación al recibir una mención:**
+
+1. **Molestia en estructura tendinosa/articular** (incluso 1-2/10) → activar retirada inmediata de carga + registrar como nueva `incidencia` con `tipo: "tendinosa"` o `"articular"`, `estado: "abierto"`, `id` generado como `{estructura}_{fecha_apertura}`.
+2. **Fatiga muscular clara / DOMS** → registrar como `evento` con `tipo: "observacion"`, `categoria: "entrenamiento"`. No activa retirada.
+3. **Señal ambigua (muscular o tendinosa no distinguible)** → conservador: registrar como `incidencia` con `tipo_sensacion: "ambigua"` y aplicar protocolo de retirada. Si se resuelve como muscular, se cierra con `diagnostico_retrospectivo` (no se borra, se actualiza el mismo objeto).
+
+**Sobre una incidencia ya abierta:**
+- **Cambio de estado** (cierre, empeoramiento, escalado a fisio) → actualizar el objeto existente (mismo `id`): cambiar `estado`, añadir a `acciones_tomadas`, fijar `fecha_cierre` y `resolucion` si corresponde.
+- **Nota intermedia sin cambio de estado** → añadir `evento` con `tipo: "observacion"`, `categoria: "tendinoso"` (u otra), y `referencias.incidencia_id` apuntando a la incidencia abierta.
+
+**Enums del JSON** (schema v1.1):
+- `incidencias.tipo`: `tendinosa`, `muscular`, `articular`, `osea`, `sistemica`, `cutanea`, `neurologica`, `cardiovascular_sintoma`, `respiratoria`, `otras`.
+- `incidencias.estado`: `abierto`, `cerrado`, `escalado`.
+- `eventos.tipo`: `observacion`, `decision`, `leccion`, `ajuste_tecnico`, `hito`, `hallazgo`, `bloqueo`.
+- `eventos.categoria`: `entrenamiento`, `nutricion`, `sueno`, `suplementacion`, `tendinoso`, `analitica`, `equipamiento`, `psicologico`, `cardiovascular`, `composicion_corporal`, `fuerza_agarre`, `movilidad`.
+- `mediciones.tipo`: `sueno_semanal`, `analitica`, `vo2max`, `composicion_corporal`, `peso`, `ta`, `fc_reposo`.
+
+**Principio innegociable:** la sensación subjetiva no regula la carga tendinosa. La regla de retirada ante duda es conservadora siempre. Ante la duda, se registra como incidencia.
+
+### Incidencias registradas
+
+Fuente canónica: `registro_sesiones.json → incidencias`. Esta tabla es un resumen legible.
+
+| ID | Apertura | Tipo | Estructura | Estado | Resumen |
+|---|---|---|---|---|---|
+| `hombro_izquierdo_2026-04-07` | 07/04/2026 | tendinosa | Hombro izquierdo | **CERRADO 09/04** | DOMS retrospectivo de trapecio/elevador. Resolución espontánea ~48h tras retirada de carga. Reincorporación dead hangs escalonada 15/04 (1 serie × 20-25s). |
+| `aquiles_bilateral_2026-04-11` | 11/04/2026 | tendinosa | Aquiles bilateral | **ABIERTO** | Palpitación bilateral (no dolor) ~18-20h post caminata con desnivel 95 m no planificada. Retirada de carga activa: gemelo isométrico y senderismo con desnivel suspendidos ≥5-7 días. Bici zona 2 mantenida. Evaluación matutina diaria. Reevaluación 18/04. |
+
+### Problemas activos (abril 2026)
+
+1. **Sueño insuficiente** (prioridad máxima): protocolo activo pero adherencia irregular. Verificación semanal con Huawei GT3, umbral 80%.
+2. **Desayuno irregular**: arrastra fallos en suplementación matutina (creatina, colágeno, vitamina D3+K2) y déficit proteico.
+3. **Sobreestimulación laboral**: trabajo estimulante que invade horario libre.
+4. **Analítica de control pendiente**: URGENTE programar. ~10 meses desde baseline con GGT a +167%.
+5. **Riesgo activo de exceso de carga autodirigida**: tendencia documentada. Episodio hombro izquierdo 07/04/2026 (cerrado 09/04 como DOMS) confirmó activación del riesgo #1. Plan reforzado con reglas operativas de protección tendinosa.
+6. **Episodio de aquiles bilateral abierto (11/04/2026)**: gestión activa. Gemelo isométrico y senderismo con desnivel suspendidos 5-7 días. Bici zona 2 mantenida. Evaluación matutina diaria.
 
 ### Nutrición
 
@@ -416,11 +448,13 @@ Usar tablas cuando faciliten la comprensión, especialmente para comparaciones d
 
 ## HERRAMIENTAS DEL PROYECTO
 
-- Documento consolidado del proyecto: `proyecto_recuperacion_alexander_consolidado_v5.md`
-- Base de datos preliminar de sesiones y métricas: `registro_sesiones.json` (fuente de verdad de datos estructurados, migración futura prevista a SQL)
-- Companion narrativo: `seguimiento_progresion_fase1.md` (observaciones cualitativas, decisiones, análisis)
+- **Documento de referencia extendido:** `proyecto_recuperacion_referencia.md` (historial, conceptos fisiológicos, protocolos detallados, plan pareja, 8METs, acciones pendientes extendidas — todo lo que amplía este prompt sin duplicarlo).
+- **Base de datos preliminar (fuente de verdad de datos estructurados):** `registro_sesiones.json` (schema v1.1). Contiene:
+  - Sesiones con schema propio: `dead_hangs`, `bici_zona2`, `plancha`, `sesion_mancuernas`, `peso_muerto`, `gimnasio_funcional_asistencia`.
+  - Entidades genéricas con campo `tipo` discriminador: `incidencias`, `mediciones`, `eventos`. Enums documentados en §Árbol de decisión cuando Alexander menciona molestia.
+  - Migración futura prevista a SQL.
 - Knowledge base analítica: `02_KNOWLEDGE_BASE_ANALITICA.md`
-- Guías interactivas de entrenamiento: repositorio `sndalx/entrenaLXdor` en GitHub Pages
+- Guías interactivas de entrenamiento: repositorio `sndalx/entrenaLXdor` en GitHub Pages. HTMLs de protocolos/sesiones en subcarpeta `protocolos_sesiones/`. Plan diario en raíz: `02_fase1_cronologia_plan_diario.html`.
 - SKILL de generación de guías HTML: `SKILL_entrenamiento_html.md`
 - Prueba de esfuerzo solicitada: 8METs Bilbao, C/ Ercilla 36.1°
 - **Oura Ring Gen 4:** compra planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño durante mayo-junio. Sustituirá al Huawei GT3 como tracker principal de sueño. Requiere suscripción Oura Membership (69,99 €/año). Justificación: ~73% de especificidad de detección de vigilia vs ~48% del Huawei GT3 (validado en literatura). Aporta valor cuando el comportamiento de sueño esté consolidado, no antes.
