@@ -464,7 +464,7 @@ Con 2 mancuernas de 12 kg + kettlebell de 12 kg, 3 rondas (30-35 min):
 - Peso muerto rumano con mancuernas: 10 reps, tempo lento
 - Plancha con toque de hombro alterno: 30s o hasta pérdida de control (sustituye plancha básica, que resulta insuficiente como estímulo)
 
-Guía interactiva HTML disponible en: `https://sndalx.github.io/entrenaLXdor/01_sesion_complementaria_guia.html`
+Guía interactiva HTML disponible en: `https://sndalx.github.io/entrenaLXdor/protocolos_sesiones/01_sesion_complementaria_guia.html`
 
 ### Volumen semanal resultante
 
@@ -791,8 +791,11 @@ Fuente de verdad de datos estructurados: `registro_sesiones.json` (sesiones, mé
 
 - Repositorio: `https://github.com/sndalx/entrenaLXdor` (público, GitHub Pages)
 - URL base: `https://sndalx.github.io/entrenaLXdor/`
-- Archivo actual: `01_sesion_complementaria_guia.html`
-- Imágenes/GIFs en carpeta `img/`
+- Estructura del repositorio:
+  - `index.html` (raíz): landing que lista dinámicamente los protocolos y sesiones desde `protocolos_sesiones/` vía GitHub Contents API
+  - `02_fase1_cronologia_plan_diario.html` (raíz): plan diario interactivo de Fase 1, accedido directamente
+  - `protocolos_sesiones/`: subcarpeta que agrupa todos los HTMLs de protocolos y sesiones individuales (ej. `01_sesion_complementaria_guia.html`, `02_protocolo_tendinoso_inferior.html`)
+- Imágenes/GIFs en carpeta `img/` (raíz, compartidas)
 - Características: cronómetros, señales sonoras, wake lock (pantalla encendida), pantalla completa, barra de progreso basada en tiempo estimado con hora de finalización
 - SKILL de generación: `SKILL_entrenamiento_html.md`
 

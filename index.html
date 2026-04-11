@@ -228,7 +228,8 @@
 
     <script>
         const REPO = 'sndalx/entrenaLXdor';
-        const API  = `https://api.github.com/repos/${REPO}/contents/`;
+        const FOLDER = 'protocolos_sesiones';
+        const API  = `https://api.github.com/repos/${REPO}/contents/${FOLDER}`;
         const app  = document.getElementById('app');
 
         function formatName(filename) {
@@ -250,7 +251,7 @@
                 const files = await res.json();
 
                 const htmlFiles = files
-                    .filter(f => f.name.endsWith('.html') && f.name !== 'index.html')
+                    .filter(f => f.name.endsWith('.html'))
                     .sort((a, b) => a.name.localeCompare(b.name));
 
                 if (htmlFiles.length === 0) {
@@ -267,7 +268,7 @@
                     li.style.animationDelay = `${i * 0.06}s`;
 
                     li.innerHTML = `
-                        <a class="file-link" href="${file.name}">
+                        <a class="file-link" href="${FOLDER}/${file.name}">
                             <div class="file-icon">${getIndex(file.name)}</div>
                             <div class="file-info">
                                 <div class="file-name">${formatName(file.name)}</div>

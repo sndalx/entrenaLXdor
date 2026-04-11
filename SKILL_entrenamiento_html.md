@@ -374,15 +374,17 @@ Oculta la barra del navegador para experiencia inmersiva.
 
 ---
 
-## Nomenclatura de archivos
+## Nomenclatura y ubicación de archivos
 
+- Carpeta destino: `protocolos_sesiones/` (en la raíz del repositorio). Los HTMLs de protocolos y sesiones viven aquí. El `index.html` de la raíz los lista automáticamente.
+- Excepciones que NO van en la subcarpeta: `index.html` (raíz) y `02_fase1_cronologia_plan_diario.html` (raíz, plan diario interactivo accedido directamente).
 - Formato: `[número]_[nombre_descriptivo].html`
 - Ejemplos:
-  - `01_sesion_complementaria_guia.html`
-  - `02_protocolo_tendinoso_inferior.html`
-  - `03_sesion_bici_zona2.html`
-  - `04_movilidad_completa.html`
-- Imágenes: `img/[nombre_ejercicio].[gif|jpg|png]`
+  - `protocolos_sesiones/01_sesion_complementaria_guia.html`
+  - `protocolos_sesiones/02_protocolo_tendinoso_inferior.html`
+  - `protocolos_sesiones/03_sesion_bici_zona2.html`
+  - `protocolos_sesiones/04_movilidad_completa.html`
+- Imágenes: `img/[nombre_ejercicio].[gif|jpg|png]` en la raíz (compartidas). Si se añaden imágenes específicas de un protocolo, mantener las rutas relativas desde el HTML teniendo en cuenta la subcarpeta (`../img/...`).
   - Ejemplos: `img/sentadilla_goblet.gif`, `img/dead_hang.jpg`
 
 ---
