@@ -1,9 +1,17 @@
 {
-  "schema_version": "1.0",
+  "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
   "ultima_actualizacion": "2026-04-11",
-  "nota": "Base de datos preliminar de sesiones y datos estructurados del proyecto. Fuente de verdad de datos numéricos y cronológicos. Observaciones cualitativas (decisiones, análisis, reflexiones) en seguimiento_progresion_fase1.md. Migración futura prevista a SQL.",
+  "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL.",
+
+  "enums": {
+    "incidencias_tipo": ["tendinosa", "muscular", "articular", "osea", "sistemica", "cutanea", "neurologica", "cardiovascular_sintoma", "respiratoria", "otras"],
+    "incidencias_estado": ["abierto", "cerrado", "escalado"],
+    "mediciones_tipo": ["sueno_semanal", "analitica", "vo2max", "composicion_corporal", "peso", "ta", "fc_reposo"],
+    "eventos_tipo": ["observacion", "decision", "leccion", "ajuste_tecnico", "hito", "hallazgo", "bloqueo"],
+    "eventos_categoria": ["entrenamiento", "nutricion", "sueno", "suplementacion", "tendinoso", "analitica", "equipamiento", "psicologico", "cardiovascular", "composicion_corporal", "fuerza_agarre", "movilidad"]
+  },
 
   "dead_hangs": [
     {
@@ -105,7 +113,7 @@
       "variante": "basica",
       "ronda": 3,
       "duracion_segundos": 60,
-      "notas": "Sin dificultad significativa. Insuficiente como estímulo. Decisión: sustituir por plancha con toque de hombro alterno."
+      "notas": "Sin dificultad significativa. Insuficiente como estímulo. Ver eventos/decision del 2026-04-06."
     }
   ],
 
@@ -136,8 +144,6 @@
     }
   ],
 
-  "protocolo_tendinoso": [],
-
   "gimnasio_funcional_asistencia": [
     {
       "semana_inicio": "2026-04-07",
@@ -149,22 +155,13 @@
     }
   ],
 
-  "sueno_semanal": [
+  "incidencias": [
     {
-      "semana_inicio": "2026-03-30",
-      "semana_fin": "2026-04-06",
-      "noches_7h_o_mas": 4,
-      "porcentaje": 65,
-      "cumple_umbral_80": false,
-      "notas": "Primeras noches de protocolo. Ansiedad paradójica. Despertar 3 AM."
-    }
-  ],
-
-  "episodios_tendinosos": [
-    {
+      "id": "hombro_izquierdo_2026-04-07",
       "fecha_apertura": "2026-04-07",
       "fecha_cierre": "2026-04-09",
       "estado": "cerrado",
+      "tipo": "tendinosa",
       "estructura": "hombro_izquierdo",
       "intensidad": "1-2/10",
       "tipo_sensacion": "no_muscular",
@@ -180,9 +177,11 @@
       "protocolo_reincorporacion": "1 serie × 20-25s, escalonado, NO al nivel previo (55s era cerca del fallo). Evaluación matutina obligatoria antes de cada sesión. Subida condicional a sensación tendinosa cero durante 7 días consecutivos."
     },
     {
+      "id": "aquiles_bilateral_2026-04-11",
       "fecha_apertura": "2026-04-11",
       "fecha_cierre": null,
       "estado": "abierto",
+      "tipo": "tendinosa",
       "estructura": "aquiles_bilateral",
       "intensidad": "palpitacion_no_dolor",
       "tipo_sensacion": "palpitacion_sobre_estructura",
@@ -198,6 +197,207 @@
       ],
       "reincorporacion_prevista": null,
       "protocolo_reincorporacion": null
+    }
+  ],
+
+  "mediciones": [
+    {
+      "fecha": "2025-06-10",
+      "periodo_fin": null,
+      "tipo": "analitica",
+      "datos": {
+        "got": 40,
+        "gpt": 94,
+        "ggt": 147,
+        "creatinina": 1.27,
+        "filtrado_glomerular": 68,
+        "colesterol_total": 212,
+        "glucosa": 90,
+        "perfil_lipidico_completo": false,
+        "hemograma_normal": true,
+        "orina_normal": true
+      },
+      "notas": "Baseline. Perfil hepático alterado (GGT +167%, GPT +71%, GOT +8%). Patrón compatible con NAFLD. Perfil lipídico incompleto. Analítica de control URGENTE pendiente (~10 meses sin control)."
+    },
+    {
+      "fecha": "2026-03-30",
+      "periodo_fin": "2026-04-06",
+      "tipo": "sueno_semanal",
+      "datos": {
+        "noches_7h_o_mas": 4,
+        "porcentaje": 65,
+        "cumple_umbral_80": false
+      },
+      "notas": "Primeras noches de protocolo. Ansiedad paradójica. Despertar 3 AM."
+    },
+    {
+      "fecha": "2026-04-10",
+      "periodo_fin": null,
+      "tipo": "vo2max",
+      "datos": {
+        "valor": 34,
+        "unidad": "ml/kg/min",
+        "metodo": "huawei_gt3_estimacion",
+        "es_referencia": true
+      },
+      "notas": "Primer dato de serie. Estimación de wearable de muñeca, no medición clínica. Re-estimar trimestralmente para detectar tendencia."
+    },
+    {
+      "fecha": "2026-04-11",
+      "periodo_fin": null,
+      "tipo": "composicion_corporal",
+      "datos": {
+        "porcentaje_graso": 28,
+        "metodo": "estimacion_visual_conservadora",
+        "pendiente_verificacion": true,
+        "distribucion": "androide"
+      },
+      "notas": "Baseline conservador del extremo alto del rango 22-28% estimado previo. Decisión operativa: partir del extremo alto evita inflar ganancias aparentes. Dato a verificar con bioimpedancia o DEXA."
+    }
+  ],
+
+  "eventos": [
+    {
+      "fecha": "2026-04-03",
+      "tipo": "leccion",
+      "categoria": "cardiovascular",
+      "titulo": "Primera sesión de bici fue intensidad excesiva; corregida al día siguiente",
+      "descripcion": "FC media 132 ppm, 22 min anaeróbico. Demasiado intensa. Pero el test de hablar indicaba zona correcta, lo que sugiere que la FC máxima real puede ser superior a 175 (fórmula 220-edad). Pendiente confirmar con prueba de esfuerzo en 8METs.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-03"}
+    },
+    {
+      "fecha": "2026-04-04",
+      "tipo": "observacion",
+      "categoria": "fuerza_agarre",
+      "titulo": "Caída consistente ~40% entre set 1 y set 2 en dead hang",
+      "descripcion": "Patrón observado en 3 sesiones de dead hang (04/04 y 06/04). Fatiga de flexores de antebrazo, no articular. La recuperación entre sets (60-90s) es adecuada. La quemazón muscular evoca el trabajo de agarre del judo (retroalimentación positiva). Cero dolor articular en las 3 sesiones.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "dead_hangs"}
+    },
+    {
+      "fecha": "2026-04-06",
+      "tipo": "observacion",
+      "categoria": "cardiovascular",
+      "titulo": "Adaptación temprana en bici: costó subir pulsaciones a misma resistencia",
+      "descripcion": "Tercera sesión calibrada (06/04): FC media 123 ppm con misma resistencia que las anteriores. Costó subir pulsaciones, sensación de facilidad creciente. Corrección del 04/04 fue inmediata y efectiva.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-06"}
+    },
+    {
+      "fecha": "2026-04-06",
+      "tipo": "decision",
+      "categoria": "entrenamiento",
+      "titulo": "Sustitución de plancha básica por plancha con toque de hombro alterno",
+      "descripcion": "Plancha básica >1 min sin dificultad significativa en ronda 3. Sustituida por plancha con toque de hombro alterno a partir de la siguiente sesión para añadir componente antirrotacional + desestabilización.",
+      "razon": "Insuficiente como estímulo. El core del judo retiene más capacidad de la esperada.",
+      "referencias": {"sesion_tipo": "plancha", "sesion_fecha": "2026-04-06"}
+    },
+    {
+      "fecha": "2026-04-06",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Sesión mancuernas 12 kg: carga apropiada con tempo lento, cero dolor articular",
+      "descripcion": "Primera sesión sustitutoria con mancuernas de 12 kg + kettlebell 12 kg, 3 rondas completas. Cero dolor articular post-sesión → los tendones toleran esta carga. Cómodo, guiado por HTML interactivo. Es sustitutoria de gimnasio perdido, no un segundo entrenamiento regular.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "sesion_mancuernas", "sesion_fecha": "2026-04-06"}
+    },
+    {
+      "fecha": "2026-04-09",
+      "tipo": "leccion",
+      "categoria": "tendinoso",
+      "titulo": "Confirmación operativa del riesgo #1 y del protocolo conservador",
+      "descripcion": "El episodio del hombro izquierdo (07/04) se resolvió espontáneamente como DOMS en ~48h tras retirada de carga. Confirma que la regla de retirada inmediata ante señal ambigua funciona y previene escalado. Diagnóstico retrospectivo: DOMS localizado en trapecio superior / elevador de la escápula.",
+      "razon": null,
+      "referencias": {"incidencia_id": "hombro_izquierdo_2026-04-07"}
+    },
+    {
+      "fecha": "2026-04-07",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Inicio protocolo tendinoso — bloque adaptación",
+      "descripcion": "Arranque de Fase 1. Isométricos sin carga (wall sit, gemelo, puente glúteo, rotación externa, retracción escapular, flexión isométrica).",
+      "estado": "completado",
+      "fecha_prevista": "2026-04-07",
+      "fecha_real": "2026-04-07",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-15",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Reincorporación escalonada de dead hangs post-episodio hombro",
+      "descripcion": "Retorno tras cierre del episodio del 07/04. Protocolo: 1 serie × 20-25s, NO al nivel previo (55s era cerca del fallo). Evaluación matutina obligatoria antes de cada sesión. Subida condicional a sensación tendinosa cero durante 7 días consecutivos.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-04-15",
+      "fecha_real": null,
+      "referencias": {"incidencia_id": "hombro_izquierdo_2026-04-07"}
+    },
+    {
+      "fecha": "2026-04-18",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Reevaluación del episodio aquiles bilateral",
+      "descripcion": "Si al 18/04 el episodio sigue abierto (>7 días desde apertura), escalar a fisioterapeuta deportivo.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-04-18",
+      "fecha_real": null,
+      "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
+    },
+    {
+      "fecha": "2026-05-04",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Fin del bloque adaptación del protocolo tendinoso",
+      "descripcion": "Cierre de semanas 1-4. Transición a bloque de carga progresiva.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-05-04",
+      "fecha_real": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-12",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Añadir carga 2-5 kg a wall sit y gemelo isométrico",
+      "descripcion": "Paso a bloque carga progresiva. Introducción de mochila 2-5 kg, puente monopodal, excéntricas lentas.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-05-12",
+      "fecha_real": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-06-02",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Inicio excéntricas con carga moderada",
+      "descripcion": "Paso a bloque integración. Excéntricas con carga moderada, dominadas negativas.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-06-02",
+      "fecha_real": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-06-30",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Inicio bloque transición — excéntricas con carga significativa",
+      "descripcion": "Preparación directa para criterios de paso de Fase 1. Excéntricas con carga significativa, isométricos como calentamiento.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-06-30",
+      "fecha_real": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-08-01",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Evaluación criterios de paso Fase 1 → Fase 1B",
+      "descripcion": "Punto de control de agosto 2026. Los 6 criterios deben cumplirse para avanzar: tolerancia tendinosa, isométricos con carga, ausencia de dolor, estabilización neuromuscular, adherencia, analítica mejorada.",
+      "estado": "pendiente",
+      "fecha_prevista": "2026-08-01",
+      "fecha_real": null,
+      "referencias": {}
     }
   ]
 }
