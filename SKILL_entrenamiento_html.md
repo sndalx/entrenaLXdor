@@ -1,9 +1,17 @@
 # SKILL — Generador de guías interactivas de entrenamiento HTML
 
-## Versión 2.2 — Abril 2026
+## Versión 2.3 — Abril 2026
 
-Cambios respecto a v2.1:
-- El detalle del ejercicio pasa de panel expandible (botón "Ver técnica" + toast) a caja fija visible permanentemente entre el nombre del ejercicio y el cronómetro/contador. Se retira el componente expandible porque la consulta rápida es más eficiente con la información siempre visible que tras un toque.
+Cambios respecto a v2.2 (consolidación de directrices derivadas de sesiones reales):
+- Nuevo tipo de pantalla #8 "Información intermedia" para notificar omisiones u otras notas puntuales durante el flujo (sin cronómetro, con botón "Continuar"). Formaliza el tipo `info` que hasta ahora se implementaba ad-hoc en cada HTML con adaptaciones.
+- Nuevo componente "Banner de adaptaciones en la intro" para sesiones con desviaciones respecto al protocolo estándar (episodios abiertos, omisiones). Incluye lista de adaptaciones activas y lista visual de NOs.
+- Heurística de mapeo bloque → color de anillo del cronómetro (calentamiento/movilidad → rosa; trabajo específico → naranja; descanso → verde).
+- Pantalla de transición de bloque: se añade shortBeep en cada segundo de la cuenta atrás 3-2-1 (antes solo longBeep al inicio), coherente con el patrón general de cuentas atrás del resto de pantallas.
+- Pantalla final: filas opcionales "Bloques completados" y "Omisiones del día" cuando la sesión tiene adaptaciones.
+- Exercise-timed: aclaración de que el botón "Terminar antes" es estándar en todos los timed (no solo openEnded).
+
+Cambios de v2.1 → v2.2:
+- El detalle del ejercicio pasa de panel expandible (botón "Ver técnica" + toast) a caja fija visible permanentemente entre el nombre del ejercicio y el cronómetro/contador.
 
 Cambios de v2.0 → v2.1:
 - Hora estimada de finalización visible junto a la barra de progreso global
@@ -57,13 +65,14 @@ La app muestra UNA sola pantalla a la vez. Cada pantalla ocupa el 100% del viewp
 
 ### Tipos de pantalla
 
-1. **Intro** — Nombre de la sesión, descripción, botón "Comenzar sesión"
+1. **Intro** — Nombre de la sesión, descripción, botón "Comenzar sesión". Cuando la sesión tiene adaptaciones respecto al protocolo estándar (episodios abiertos, omisiones), incluye además el componente "Banner de adaptaciones" (ver §Componentes).
 2. **Preparación** — Nombre del ejercicio, instrucciones, equipamiento necesario, cuenta atrás de preparación. Botón "Saltar"
-3. **Ejercicio con repeticiones** — Nombre, número de reps, tempo si aplica, indicación "por lado" si aplica. Botón "Hecho"
-4. **Ejercicio cronometrado** — Nombre, cronómetro circular animado (cuenta atrás o cuenta arriba para open-ended). Botón "Soltar" para open-ended
+3. **Ejercicio con repeticiones** — Nombre, número de reps, tempo si aplica, indicación "por lado" si aplica. Caja de detalle visible entre nombre y contador. Botón "Hecho"
+4. **Ejercicio cronometrado** — Nombre, cronómetro circular animado (cuenta atrás o cuenta arriba para open-ended). Caja de detalle visible entre nombre y cronómetro. Botón "Terminar antes" (estándar en todos los timed, permite salir del ejercicio antes del tiempo total). En ejercicios open-ended el botón se llama "Soltar".
 5. **Descanso** — Cronómetro circular, indicación del siguiente ejercicio. Botón "Saltar descanso"
 6. **Final** — Resumen con estadísticas, mensaje del siguiente día del plan
-7. **Transición de bloque** — Pantalla cognitiva de 3 segundos que avisa del cambio entre bloques. Muestra "Comenzando: [nombre del nuevo bloque]" con cuenta atrás visual 3 → 2 → 1. Sin cronómetro interactivo ni botón. Sonido `longBeep` al iniciar. No se cuenta como ejercicio en el progreso global. Se inserta automáticamente cuando el campo `block` cambia entre dos steps consecutivos (ver §Modelo de datos y §Flujo de pantallas).
+7. **Transición de bloque** — Pantalla cognitiva de 3 segundos que avisa del cambio entre bloques. Muestra "Comenzando: [nombre del nuevo bloque]" con cuenta atrás visual 3 → 2 → 1. Sin cronómetro interactivo ni botón. Sonidos: `longBeep` al iniciar, `shortBeep` en cada segundo de la cuenta atrás (3, 2, 1) para mantener el patrón sonoro general del resto de pantallas. No se cuenta como ejercicio en el progreso global. Se inserta automáticamente cuando el campo `block` cambia entre dos steps consecutivos (ver §Modelo de datos y §Flujo de pantallas).
+8. **Información intermedia** — Pantalla para notificar al usuario una omisión puntual u otra nota de contexto durante el flujo (ejemplos: "Gemelo isométrico OMITIDO hoy por episodio de aquiles activo", "Hoy no hacemos dead hangs, en reincorporación día 4/7"). Muestra icono (por convención `⚠` para omisiones, `ⓘ` para info neutral), título corto, cuerpo explicativo, y botón "Continuar". Sin cronómetro. No cuenta hacia el progreso global. Se inserta explícitamente en el array WORKOUT como `{ type: 'info', ... }` cuando hay información específica que el usuario debe ver antes de avanzar.
 
 ---
 
@@ -130,6 +139,29 @@ Tipos de anillo y colores del stroke de progreso:
 - `.exercise` → `#f59e0b` (ejercicios de fuerza, dead hangs)
 - `.rest` → `#10b981` (descanso)
 - Preparación (sin clase extra) → `#818cf8` (acento principal)
+
+**Heurística de mapeo bloque → color de anillo:**
+
+Cuando el step tiene un campo `block` (ver §Modelo de datos), el color del anillo de la pantalla de ejecución se deriva del bloque siguiendo esta regla por defecto:
+
+| `block` contiene... | Clase del anillo | Color |
+|---|---|---|
+| "calentamiento", "movilidad" | `.warmup` | rosa `#ec4899` |
+| "tendinoso", "bandas", "fuerza", "dead hangs", "mancuernas" | `.exercise` | naranja `#f59e0b` |
+| cualquier otro bloque específico | `.exercise` por defecto | naranja `#f59e0b` |
+| (pantalla de descanso) | `.rest` | verde `#10b981` |
+| (pantalla de preparación) | sin clase | azul acento `#818cf8` |
+
+```javascript
+function ringClassForBlock(block) {
+  if (!block) return 'exercise';
+  const b = block.toLowerCase();
+  if (b.includes('calentamiento') || b.includes('movilidad')) return 'warmup';
+  return 'exercise';
+}
+```
+
+Esta regla puede sobrescribirse puntualmente cuando un HTML específico tenga necesidades particulares (ej. una fase de trabajo cardiovascular que prefiera otro color), pero el comportamiento por defecto debe seguirla.
 
 El SVG se rota -90° para que el progreso empiece desde las 12 en punto:
 ```css
@@ -246,6 +278,68 @@ Fondo `#1a1d27`, borde `#2e3345`, border-radius 12px, texto `#8b8fa3`, highlight
   <div class="set-dot"></div>
 </div>
 ```
+
+#### Banner de adaptaciones en la intro
+
+Cuando la sesión tiene desviaciones respecto al protocolo estándar (episodios tendinosos abiertos, omisiones por material no disponible, traslados de día por condiciones externas, ventanas de protocolo de reincorporación), la pantalla de intro debe incluir un banner con las adaptaciones activas y una lista visual de elementos omitidos. Esto es un requisito operativo: el usuario debe ver de un vistazo, antes de pulsar "Comenzar sesión", qué se desvía del estándar y por qué.
+
+**Estructura:**
+
+```html
+<div class="intro-banner">
+  <strong>Adaptaciones activas:</strong><br>
+  · Episodio aquiles bilateral ABIERTO (11/04)<br>
+  · Reincorporación dead hangs día 4/7 (suspendidos hasta 15/04)
+</div>
+
+<div class="intro-list">
+  <span class="no">NO</span> bici zona 2 &nbsp;·&nbsp; <span class="no">NO</span> dead hangs<br>
+  <span class="no">NO</span> gemelo isométrico &nbsp;·&nbsp; <span class="no">NO</span> senderismo<br>
+  <span class="no">NO</span> sentadilla profunda completa
+</div>
+```
+
+**Estilo:**
+
+```css
+.intro-banner {
+  background: #1a1d27;
+  border: 1px solid #2e3345;
+  border-left: 3px solid #ec4899;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 auto 16px;
+  max-width: 420px;
+  font-size: 13px;
+  color: #8b8fa3;
+  line-height: 1.5;
+}
+.intro-banner strong { color: #ec4899; font-weight: 600; }
+
+.intro-list {
+  background: #1a1d27;
+  border: 1px solid #2e3345;
+  border-radius: 10px;
+  padding: 14px 16px;
+  margin: 0 auto 16px;
+  max-width: 420px;
+  font-size: 13px;
+  color: #8b8fa3;
+  line-height: 1.7;
+}
+.intro-list .no {
+  color: #ec4899;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+}
+```
+
+**Reglas de uso:**
+
+- El banner **solo** se incluye cuando hay adaptaciones reales. En una sesión sin desviaciones, la intro lleva solo nombre + descripción + botón de comenzar.
+- La lista de adaptaciones activas describe incidencias abiertas o ventanas de protocolo en curso (episodios tendinosos abiertos, días de reincorporación, ajustes por lluvia/imprevistos).
+- La lista de NOs enumera los elementos del protocolo estándar que se omiten o sustituyen hoy. Uso de `<span class="no">NO</span>` en rosa y fuente mono para contraste visual.
+- El borde izquierdo rosa (`#ec4899`) es el indicador visual unificado de "atención, algo no es estándar hoy".
 
 #### Detalle visible durante ejecución
 
@@ -370,6 +464,9 @@ El entrenamiento se define como un array de objetos `WORKOUT` con los siguientes
 // Descanso
 { type: 'rest', duration: 75, next: 'Nombre del siguiente ejercicio' }
 
+// Información intermedia (omisiones, notas de contexto)
+{ type: 'info', title: 'Gemelo isométrico — OMITIDO', icon: '⚠', body: 'Suspendido hoy por episodio de aquiles bilateral activo. Reincorporación condicional a resolución del episodio.' }
+
 // Pantalla final
 { type: 'finish' }
 ```
@@ -392,6 +489,9 @@ El entrenamiento se define como un array de objetos `WORKOUT` con los siguientes
 | `next` | string | Nombre del siguiente ejercicio (solo rest) |
 | `round` | number | Número de ronda (solo round-header) |
 | `block` | string | Nombre del bloque al que pertenece el ejercicio (opcional). Valores típicos: `"Calentamiento dinámico"`, `"Tendinoso · Tren inferior"`, `"Tendinoso · Tren superior"`, `"Movilidad"`, `"Bandas"`, `"Bici zona 2"`. Si no está presente, el indicador de bloque no se muestra. Cuando el valor cambia entre dos steps consecutivos, se inserta pantalla de transición de 3 segundos (ver §Tipos de pantalla y §Flujo de pantallas). |
+| `title` | string | Título corto de la pantalla informativa (solo `type: 'info'`). |
+| `icon` | string | Icono Unicode de la pantalla informativa, por convención `⚠` para omisiones y `ⓘ` para info neutral (solo `type: 'info'`). |
+| `body` | string | Cuerpo explicativo de la pantalla informativa (solo `type: 'info'`). |
 
 ### Flujo de pantallas
 
@@ -445,11 +545,30 @@ function progressPercent() {
 
 ### Estadísticas finales
 
-La pantalla final muestra:
+La pantalla final muestra como mínimo:
+
 - Duración total de la sesión (desde startSession hasta renderFinish)
 - Número total de ejercicios completados
-- Número de rondas de fuerza
+- Número de rondas de fuerza (cuando aplica)
 - Mensaje con la actividad del día siguiente según el plan semanal
+
+**Filas opcionales cuando aplica:**
+
+- **Bloques completados:** número total de bloques de la sesión (derivado del conjunto de valores únicos del campo `block` entre los steps de ejercicio). Útil como métrica resumida en sesiones estructuradas por bloques.
+- **Omisiones del día:** lista corta de los elementos del protocolo estándar que se omitieron (ej. "Gemelo iso · Sóleo"). Solo presente si la sesión incluyó pantallas tipo `info` por omisión o si el banner de intro enumeraba NOs. Ayuda al registro retrospectivo y a la memoria operativa.
+
+**Estructura sugerida:**
+
+```html
+<div class="finish-stats">
+  <div class="row"><span>Duración</span><strong>45 min</strong></div>
+  <div class="row"><span>Ejercicios</span><strong>37</strong></div>
+  <div class="row"><span>Bloques</span><strong>5</strong></div>
+  <div class="row"><span>Omisiones</span><strong>Gemelo iso · Sóleo</strong></div>
+</div>
+```
+
+El mensaje del día siguiente se renderiza en un bloque separado con borde izquierdo verde (`#10b981`) para distinguirlo de las stats.
 
 ---
 
@@ -598,8 +717,12 @@ Antes de entregar un HTML de entrenamiento, verificar:
 - [ ] Cada step del WORKOUT tiene asignado el campo `block` correspondiente
 - [ ] Los tiempos de prep siguen la nueva tabla diferenciada (5-15s según tipo de transición)
 - [ ] El detalle completo del ejercicio está visible de forma permanente durante la ejecución en una caja fija entre el nombre y el cronómetro/contador
+- [ ] El detalle especifica material con peso/fuerza cuando aplica (ej. "banda de 5 kg", "mancuerna de 12 kg")
 - [ ] El indicador de bloque y progreso intra-bloque se muestra en cada ejercicio
-- [ ] Los cambios de bloque incluyen pantalla de transición de 3 segundos
+- [ ] El color del anillo del cronómetro sigue la heurística de mapeo bloque → clase (warmup/exercise/rest)
+- [ ] Los cambios de bloque incluyen pantalla de transición de 3 segundos con longBeep inicial + shortBeep en cada segundo de la cuenta atrás
+- [ ] Las omisiones puntuales (ejercicios del protocolo que no se hacen hoy) se notifican mediante pantalla `type: 'info'` en el array WORKOUT
+- [ ] Si la sesión tiene adaptaciones respecto al protocolo estándar, la pantalla de intro incluye el banner de adaptaciones con lista de NOs
 
 ---
 
