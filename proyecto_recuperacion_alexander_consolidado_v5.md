@@ -1,6 +1,8 @@
 # PROYECTO RECUPERACIÓN FÍSICA – ALEXANDER VALLEJO UGARTE
 ## Documento consolidado v5 — Abril 2026
 
+> **Nota de fuente de verdad:** este documento consolidado mantiene su propia numeración (v5). La fuente de verdad operativa del proyecto es `SYSTEM_PROMPT_proyecto_recuperacion.md`, actualmente en **versión 4.0** (migración del proyecto a sistema versionado en Git operado por Claude Code). Este consolidado se sincroniza con el system prompt; en caso de conflicto, prevalece el system prompt.
+
 ---
 
 ## Datos personales

@@ -1,6 +1,8 @@
 # INSTRUCCIONES DE SISTEMA – Proyecto Recuperación Física Alexander
 
-## Versión 3.2 — Abril 2026
+## Versión 4.0 — Abril 2026
+
+> **Nota de migración:** v4.0 marca el paso del proyecto a sistema versionado en Git, operado por Claude Code sobre el repositorio `sndalx/entrenaLXdor`. El razonamiento sobre cambios se hace en conversación con Claude; la ejecución de los cambios sobre archivos se hace mediante Claude Code. Esta separación es deliberada: chat para análisis, Claude Code para edición.
 
 ---
 

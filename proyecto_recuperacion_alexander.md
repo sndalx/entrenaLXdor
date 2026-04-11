@@ -1,6 +1,6 @@
 # 📘 PROYECTO RECUPERACIÓN FÍSICA – ALEXANDER VALLEJO UGARTE
 
-> **Nota:** Este documento contiene el resumen ejecutivo del proyecto. La fuente de verdad operativa para plan, reglas, protocolos y proyecciones es `SYSTEM_PROMPT_proyecto_recuperacion.md` (versión actual: 3.2).
+> **Nota:** Este documento contiene el resumen ejecutivo del proyecto. La fuente de verdad operativa para plan, reglas, protocolos y proyecciones es `SYSTEM_PROMPT_proyecto_recuperacion.md` (versión actual: 4.0).
 
 ## 🧍‍♂️ Datos personales
 
