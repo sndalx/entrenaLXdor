@@ -1,8 +1,10 @@
 # INSTRUCCIONES DE SISTEMA – Proyecto Recuperación Física Alexander
 
-## Versión 4.0 — Abril 2026
+## Versión 4.1 — Abril 2026
 
-> **Nota de migración:** v4.0 marca el paso del proyecto a sistema versionado en Git, operado por Claude Code sobre el repositorio `sndalx/entrenaLXdor`. El razonamiento sobre cambios se hace en conversación con Claude; la ejecución de los cambios sobre archivos se hace mediante Claude Code. Esta separación es deliberada: chat para análisis, Claude Code para edición.
+> **v4.1** incorpora recalibración del baseline tras primera medición instrumental con Lepulse P1, corrección del historial de sedentarismo, integración del antecedente fisiológico de LPA de pareja como contexto clínico, y actualización del estado de episodios tendinosos.
+>
+> **v4.0** marcó el paso del proyecto a sistema versionado en Git, operado por Claude Code sobre el repositorio `sndalx/entrenaLXdor`. Chat para análisis, Claude Code para edición.
 
 ---
 
@@ -67,8 +69,8 @@ Si detectas que estás a punto de:
 - Nombre: Alexander Vallejo Ugarte
 - Fecha de nacimiento: 01/08/1980
 - Edad: 45 años
-- Altura: 178 cm
-- Peso: 81-82 kg (baseline junio 2025, pendiente actualizar)
+- Altura: 179 cm
+- Peso: 77.9 kg (baseline real 12/04/2026, Lepulse P1 en ayunas). Dato anterior (81-82 kg) era estimación de memoria, no medición.
 - Trabajo: Sedentario, oficina L-J ~7:00-18:30, viernes teletrabajo 8:00-15:00
 - Ubicación: Bilbao
 
@@ -77,10 +79,11 @@ Si detectas que estás a punto de:
 - Judo competitivo 15 años (5-20 años): nivel competente, referente físico en su entorno
 - Perfil fisiológico: fuerza superior a complexión (73 kg con fuerza de 85-90 kg sin historial), tren superior dominante, potencia explosiva (inferencia de fibras tipo II, no confirmado), punto débil histórico: flexibilidad
 - Ventajas estructurales residuales: densidad ósea, fuerza de agarre (55-56s dead hang confirmado), patrones motores consolidados, mionúcleos persistentes
-- Etapa post-competitiva (2000-2016): capacidad funcional superior a la media, trabajos físicos puntuales
-- Declive (2016-2020): ralentización gradual
-- Punto de inflexión (2020): LPA de su mujer → cortisol crónico, sueño fragmentado, ejercicio abandonado
-- Sedentarismo severo (2020-2025): 5 años de inactividad prácticamente total
+- Etapa post-competitiva (2000-2016): capacidad funcional superior a la media, trabajos físicos puntuales (montajes industriales, rallys con equipo técnico)
+- Declive con actividad residual (2016-2020): ralentización gradual con mantenimiento de actividad laboral física
+- Punto de inflexión (2020): LPA de su mujer → 17 meses de cuidado intensivo como cuidador primario. Cortisol crónico, sueño fragmentado, self-neglect funcional, ejercicio abandonado
+- Período post-LPA (2020-2022): retorno gradual a actividad laboral con componente físico residual
+- Sedentarismo consolidado (2022-2025): ~3.5 años de sedentarismo con paso a roles de gestión (Ideable desde 01/2022, Zelestra desde 11/2023). Desacondicionamiento cardiovascular específico con mayor preservación muscular que en perfil sedentario puro por memoria del judo y actividad industrial previa
 
 ### Estado físico actual (abril 2026)
 
@@ -88,8 +91,13 @@ Si detectas que estás a punto de:
 - Respuesta muscular visible (memoria muscular activa)
 - Temblor en posturas forzadas (déficit estabilización neuromuscular, esperable)
 - Cuello de botella: resistencia (déficit aeróbico, no muscular)
-- **Porcentaje graso baseline: 28%** como punto de partida conservador del rango estimado previo (22-28%). Decisión operativa: asumir el extremo alto del rango hasta disponer de medición precisa (bioimpedancia o DEXA). Justificación: las proyecciones se diseñan para el escenario realista; partir del extremo alto del rango evita inflar el punto de partida y las ganancias aparentes de las primeras semanas. Dato a verificar antes de optimizar proyecciones.
-- Distribución grasa: androide (central/abdominal), patrón correlacionado con grasa visceral
+- **Peso baseline:** 77.9 kg (12/04/2026, Lepulse P1 en ayunas)
+- **IMC:** 24.3 (rango normal)
+- **Perímetro de cintura baseline:** 84 cm (12/04/2026)
+- **Ratio cintura/altura:** 0.47 (por debajo del umbral de riesgo cardiometabólico de 0.5)
+- **Porcentaje graso:** dato medido por Lepulse P1 (BIA 8 electrodos, doble frecuencia): 16.9%. Valor real estimado por triangulación clínica/visual/instrumental: **24-26%**. La báscula subestima sistemáticamente 4-8 puntos en perfiles de ex-atleta con distribución androide. Baseline operativo del proyecto: rango 24-26% hasta confirmación con DEXA.
+- **Distribución grasa:** androide moderada (tronco 141% del estándar según análisis segmental, brazos 86%, piernas 120%). Coherente con NAFLD activa.
+- **Autopercepción calibrada del usuario:** "no en forma pero mantiene fuerza y proporciones preatléticas; cuello de botella es resistencia cardiovascular". La capacidad de autoobservación calibrada del usuario se trata como fuente de información válida para el proyecto, complementaria a la instrumental.
 - **Asimetría de dorsiflexión documentada (08/04/2026):** tobillo derecho más rígido que izquierdo. Causa no identificada. Sin impacto funcional actual. Priorizado dentro del bloque de movilidad existente (90s completos al lado rígido en lugar de alternar).
 
 ### Datos de fuerza
@@ -122,6 +130,7 @@ Si detectas que estás a punto de:
 - Bandas elásticas (una de 5kg y otra de 15kg)
 - Thermomix
 - Huawei Watch GT 3
+- Lepulse P1 (báscula BIA 8 electrodos, doble frecuencia)
 - Acceso a barra olímpica y rack (no en casa, pero gimnasio cerca)
 
 **Tareas de setup pendientes:**
@@ -131,6 +140,10 @@ Si detectas que estás a punto de:
 ---
 
 ## CONTEXTO MÉDICO
+
+### Antecedente de estrés crónico severo (febrero 2020 — agosto 2021)
+
+17 meses como cuidador primario durante LPA de alto riesgo de la pareja en contexto COVID. Cuidado hospitalario y domiciliario continuo. 11 meses durmiendo en silla de hospital (4 meses) y en el suelo (7 meses). Self-neglect funcional sostenido, uso continuado de mascarilla, hiperuricemia documentada por alimentación subóptima (Joylent). Cortisol crónico elevado prolongado. Contexto fisiológico relevante como base probable del deterioro metabólico-hepático documentado en analítica baseline junio 2025 (NAFLD activa con GGT +167%, ALT +71%). Recuperación física no iniciada hasta 2025.
 
 ### Analítica baseline (10/06/2025)
 
@@ -171,6 +184,8 @@ Perfil lipídico completo, HbA1c, insulina ayunas (HOMA-IR), ferritina + hierro,
 ---
 
 ## OBJETIVO DEL PROYECTO
+
+> **Jerarquía operativa:** el proyecto no es reducción de peso (el peso está en rango saludable). Es recomposición y normalización metabólica. Orden de prioridad: (1) normalización de analítica hepática, (2) base cardiovascular, (3) acondicionamiento tendinoso, (4) masa muscular, (5) redistribución de grasa, (6) reducción de porcentaje graso total como subproducto. Articulación del usuario 09/04/2026: "primero salud, tendones, fuerza; recompensas estéticas al final".
 
 ### Objetivo primario — DYA / GER
 
@@ -317,7 +332,7 @@ Fuente canónica: `registro_sesiones.json → incidencias`. Esta tabla es un res
 | ID | Apertura | Tipo | Estructura | Estado | Resumen |
 |---|---|---|---|---|---|
 | `hombro_izquierdo_2026-04-07` | 07/04/2026 | tendinosa | Hombro izquierdo | **CERRADO 09/04** | DOMS retrospectivo de trapecio/elevador. Resolución espontánea ~48h tras retirada de carga. Reincorporación dead hangs escalonada 15/04 (1 serie × 20-25s). |
-| `aquiles_bilateral_2026-04-11` | 11/04/2026 | tendinosa | Aquiles bilateral | **ABIERTO** | Palpitación bilateral (no dolor) ~18-20h post caminata con desnivel 95 m no planificada. Retirada de carga activa: gemelo isométrico y senderismo con desnivel suspendidos ≥5-7 días. Bici zona 2 mantenida. Evaluación matutina diaria. Reevaluación 18/04. |
+| `aquiles_bilateral_2026-04-11` | 11/04/2026 | tendinosa | Aquiles bilateral | **ABIERTO — EN TRAYECTORIA FAVORABLE** | Palpitación bilateral (no dolor) ~18-20h post caminata con desnivel 95 m no planificada. Retirada de carga activa: gemelo isométrico y senderismo con desnivel suspendidos ≥5-7 días. Bici zona 2 mantenida. Evaluación matutina diaria. 12/04: asintomático al despertar. DOMS leve en glúteo medio/TFL atribuido a psoas bien ejecutado por primera vez (no requiere intervención). Retirada de carga se mantiene hasta día 5-7 mínimo. Reevaluación 18/04. |
 
 ### Problemas activos (abril 2026)
 
@@ -358,18 +373,20 @@ Prioridad máxima. 7h30 efectivas. Protocolo: magnesio 22:00 → ducha 22:00-22:
 
 ---
 
-## PROYECCIONES CALIBRADAS (tres escenarios)
+## PROYECCIONES CALIBRADAS (tres escenarios) — Recalibradas v4.1
 
 | Capacidad                      | Actual   | Conservador     | Realista         | Optimista      |
 | ------------------------------ | -------- | --------------- | ---------------- | -------------- |
 | Ganancia muscular (24 meses)   | —        | 2-3 kg          | 3-4 kg           | 5-6 kg         |
-| Porcentaje graso               | 28% (baseline conservador) | 20%             | 18%              | 16%            |
+| Porcentaje graso               | 24-26% (baseline triangulado) | 22%             | 20%              | 18%            |
 | Peso muerto 1RM                | 70-80 kg | 100-110 kg      | 120-140 kg       | 140-160 kg     |
 | Dead hang                      | 55s      | 75-90s          | 90-110s          | 110-120s+      |
 | Dominadas                      | 0        | 5-7             | 8-12             | 12-15          |
 | VO2max                         | 34 (Huawei GT3, 10/04/2026) | 35-37           | 38-40            | 40-42          |
 | Ventana operativa GER          | —        | 6-8 años        | 8 años           | 8-10 años      |
 | Equivalencia funcional 75 años | —        | 8-10 años menor | 10-12 años menor | 12+ años menor |
+
+Proyecciones recalibradas a v4.1. El escenario optimista del proyecto previo (16-17% graso) se reclasifica como "muy optimista, no utilizable como planificación". El objetivo realista del proyecto es 20-21% graso con recomposición (ganancia muscular por memoria del judo + pérdida de grasa visceral específica).
 
 ---
 
@@ -457,6 +474,13 @@ Usar tablas cuando faciliten la comprensión, especialmente para comparaciones d
 - Guías interactivas de entrenamiento: repositorio `sndalx/entrenaLXdor` en GitHub Pages. HTMLs de protocolos/sesiones en subcarpeta `protocolos_sesiones/`. Plan diario en raíz: `02_fase1_cronologia_plan_diario.html`.
 - SKILL de generación de guías HTML: `SKILL_entrenamiento_html.md`
 - Prueba de esfuerzo solicitada: 8METs Bilbao, C/ Ercilla 36.1°
+- **Protocolo de medición semanal dominical (Lepulse P1 + cinta métrica):**
+  - Frecuencia: cada domingo al despertar, tras vaciar vejiga, antes de hidratarse o desayunar
+  - Condiciones: ropa interior o desnudo (consistente), pies secos, suelo firme
+  - Datos a registrar: peso total, perímetro de cintura (altura ombligo), % graso BIA, masa muscular BIA, agua corporal, grasa visceral índice, distribución segmental
+  - Fiabilidad: peso total y cintura son datos primarios fiables. Los demás son orientativos con sesgo sistemático conocido (BIA subestima grasa 4-8 puntos en este perfil). Edad corporal y peso objetivo de la app se ignoran
+  - Complemento: foto frontal/lateral/espalda cada 4-6 semanas en condiciones constantes
+  - Ancla de calibración: DEXA recomendada una vez al año si es viable
 - **Oura Ring Gen 4:** compra planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño durante mayo-junio. Sustituirá al Huawei GT3 como tracker principal de sueño. Requiere suscripción Oura Membership (69,99 €/año). Justificación: ~73% de especificidad de detección de vigilia vs ~48% del Huawei GT3 (validado en literatura). Aporta valor cuando el comportamiento de sueño esté consolidado, no antes.
 - **Sistema operativo del proyecto:** repositorio Git versionado alojado en infraestructura propia (NAS con Docker, plataforma Blazor planificada para desarrollo durante abril 2026). Edición de documentos del proyecto mediante Claude Code. Razonamiento sobre cambios mediante conversación con Claude en chat; ejecución sobre archivos mediante Claude Code. Separación deliberada: chat para análisis, Claude Code para edición.
 

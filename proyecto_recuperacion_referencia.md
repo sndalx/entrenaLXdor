@@ -1,6 +1,6 @@
 # PROYECTO RECUPERACIÓN FÍSICA — Documento de referencia
 
-> **Fuente de verdad operativa:** `SYSTEM_PROMPT_proyecto_recuperacion.md` (v4.0+). Este documento extiende al system prompt con contexto narrativo, conceptos fisiológicos, protocolos detallados e información de soporte. No duplica contenido canónico: donde un tema ya está en el prompt, este archivo incluye una referencia corta (*Fuente canónica: SYSTEM_PROMPT §X*).
+> **Fuente de verdad operativa:** `SYSTEM_PROMPT_proyecto_recuperacion.md` (v4.1+). Este documento extiende al system prompt con contexto narrativo, conceptos fisiológicos, protocolos detallados e información de soporte. No duplica contenido canónico: donde un tema ya está en el prompt, este archivo incluye una referencia corta (*Fuente canónica: SYSTEM_PROMPT §X*).
 >
 > **Datos cuantitativos:** `registro_sesiones.json` (sesiones, incidencias, mediciones, eventos).
 
@@ -32,17 +32,17 @@
 
 Vida civil con capacidad física superior a la media. Trabajo con requerimientos físicos puntualmente intensos: montajes industriales, rallys de alta exigencia.
 
-### Declive progresivo (2016–2020)
+### Declive con actividad residual (2016–2020)
 
-Ralentización gradual durante 3-4 años. Sin entrenamiento estructurado.
+Ralentización gradual durante 3-4 años con mantenimiento de actividad laboral física (trabajo industrial, montajes en planta, rallys con equipo técnico). Sin entrenamiento estructurado, pero componente físico laboral preserva parte de la capacidad funcional.
 
-### Punto de inflexión (2020)
+### Punto de inflexión y cuidado intensivo (2020–2022)
 
-Leucemia promielocítica aguda (LPA) de su mujer. Impacto en el cuidador: cortisol crónico elevado, sueño fragmentado, alimentación secundaria, ejercicio abandonado. Su mujer está en recuperación.
+Leucemia promielocítica aguda (LPA) de su mujer (febrero 2020). 17 meses como cuidador primario en contexto COVID: cuidado hospitalario y domiciliario continuo, 11 meses durmiendo en silla de hospital (4 meses) y en el suelo (7 meses). Self-neglect funcional sostenido, ejercicio abandonado. Retorno gradual a actividad laboral con componente físico residual a partir de 2021. Su mujer está en recuperación.
 
-### Sedentarismo severo (2020–2025)
+### Sedentarismo consolidado (2022–2025)
 
-5 años de inactividad prácticamente total. Pérdida de adaptaciones cardiovasculares, fuerza activa, flexibilidad, composición corporal. Acumulación de grasa visceral, deterioro metabólico progresivo.
+~3.5 años de sedentarismo con paso a roles de gestión (Ideable desde 01/2022, Zelestra desde 11/2023). Desacondicionamiento cardiovascular específico con mayor preservación muscular que en perfil sedentario puro, por memoria del judo y actividad industrial previa. Acumulación de grasa visceral, deterioro metabólico progresivo.
 
 ---
 
@@ -76,13 +76,24 @@ Requisitos específicos del GER no publicados. **Acción pendiente: contactar DY
 
 ---
 
-## Evaluación de composición corporal
+## Evaluación de composición corporal (recalibrada v4.1)
 
-*Fuente canónica del %graso baseline 28%: SYSTEM_PROMPT §Estado físico actual y `registro_sesiones.json` → mediciones (tipo: composicion_corporal).*
+*Fuente canónica: SYSTEM_PROMPT §Estado físico actual y `registro_sesiones.json` → mediciones (tipo: composicion_corporal, fecha: 2026-04-12).*
+
+### Baseline instrumental (12/04/2026, Lepulse P1)
+
+- **Peso:** 77.9 kg en ayunas (sustituye estimación previa de 81-82 kg de memoria)
+- **IMC:** 24.3 (rango normal)
+- **Perímetro de cintura:** 84 cm. Ratio cintura/altura: 0.47 (por debajo del umbral cardiometabólico de 0.5)
+- **% graso BIA:** 16.9% (medido). Valor real estimado por triangulación: **24-26%**. BIA subestima 4-8 puntos en ex-atletas con distribución androide.
+- **Distribución segmental:** tronco 141% del estándar, brazos 86%, piernas 120%. Patrón androide moderado coherente con NAFLD activa.
+- **Grasa visceral índice BIA:** 4.0. Discordante con transaminasas elevadas: las transaminasas son el indicador clínico real.
 
 **Indicadores visuales de acumulación:** grasa abdominal inferior y flancos (patrón androide), pérdida de definición en línea media, pectorales con poco tono y grasa subcutánea inferior.
 
 **Indicadores moderadores:** extremidades delgadas sin acumulación significativa, estructura muscular intuida en deltoides/trapecio, cuello y cara sin redondez excesiva.
+
+**Autopercepción calibrada del usuario:** "no en forma pero mantiene fuerza y proporciones preatléticas; cuello de botella es resistencia cardiovascular". Coincide con el rango 24-26%.
 
 ### Tono muscular
 
@@ -91,25 +102,23 @@ Requisitos específicos del GER no publicados. **Acción pendiente: contactar DY
 - Resolución: hipertrofia + reducción grasa + proteína suficiente
 - Timeline: diferencia al tacto 3-4 meses, inequívoco 6 meses, visible para terceros 12 meses
 
-### Proyección de recomposición corporal — Tres escenarios
+### Proyección de recomposición corporal — Tres escenarios (recalibrada v4.1)
 
-Punto de partida estimado (28% grasa, 81 kg):
-- Masa grasa: ~23 kg
-- Masa magra: ~58 kg
+Punto de partida real (24-26% grasa, 77.9 kg):
+- Masa grasa estimada: ~19-20 kg
+- Masa magra estimada: ~58-59 kg
 
 | Escenario | % graso | Ganancia muscular | Peso final |
 |---|---|---|---|
-| Conservador | 20% | 2-3 kg | 79-81 kg |
-| **Realista** | **18%** | **3-4 kg** | **79-82 kg** |
-| Optimista | 16% | 5-6 kg | 80-82 kg |
+| Conservador | 22% | 2-3 kg | 77-79 kg |
+| **Realista** | **20%** | **3-4 kg** | **77-80 kg** |
+| Optimista | 18% | 5-6 kg | 78-81 kg |
 
-El plan se diseña para el escenario realista. *Tabla completa de proyecciones de capacidades: SYSTEM_PROMPT §Proyecciones calibradas.*
+El escenario optimista previo (16-17%) se reclasifica como "muy optimista, no utilizable como planificación". El objetivo realista es recomposición: ganancia muscular por memoria del judo + pérdida de grasa visceral específica como intervención de primera línea para NAFLD. *Tabla completa de proyecciones de capacidades: SYSTEM_PROMPT §Proyecciones calibradas.*
 
-### Medición pendiente — URGENTE
+### Seguimiento — Protocolo de medición semanal
 
-- Bioimpedancia o DEXA como baseline cuantificable
-- Seguimiento cada 3-4 meses
-- Foto de referencia guardada
+Documentado en SYSTEM_PROMPT §Herramientas del proyecto. Lepulse P1 cada domingo matutino en ayunas + cinta métrica. Ancla de calibración: DEXA recomendada una vez al año. Foto de referencia cada 4-6 semanas.
 
 ---
 
@@ -476,3 +485,19 @@ Documentados para cuando los criterios de paso se cumplan.
 ### Hitos del calendario tendinoso
 
 Fuente canónica: `registro_sesiones.json` → `eventos` (tipo: hito, categoría: tendinoso). Incluye: fin bloque adaptación (04/05/2026), añadir carga a isométricos (12/05/2026), inicio excéntricas (02/06/2026), inicio transición (30/06/2026), evaluación criterios de paso (agosto 2026).
+
+---
+
+## Antecedente fisiológico de estrés crónico (2020–2021)
+
+*Fuente canónica del contexto clínico: SYSTEM_PROMPT §Contexto médico → Antecedente de estrés crónico severo.*
+
+Contexto de cuidado extremo durante LPA de pareja (17 meses: febrero 2020 — agosto 2021). Documentado en cronología vital extensa del usuario (documento externo al proyecto físico). Registrado aquí únicamente en su dimensión fisiológica:
+
+- 17 meses como cuidador primario en contexto COVID
+- 11 meses durmiendo en silla de hospital (4 meses) y en el suelo (7 meses)
+- Self-neglect funcional sostenido: alimentación subóptima (Joylent), hiperuricemia documentada
+- Cortisol crónico elevado prolongado (inferido por contexto, no medido)
+- Uso continuado de mascarilla en fase hospitalaria
+
+Base probable del perfil metabólico-hepático alterado documentado en baseline de junio 2025 (NAFLD activa con GGT +167%, ALT +71%, GOT +8%). La magnitud de la alteración hepática no se explica solo por sedentarismo: el componente de estrés crónico severo y self-neglect nutricional sostenido durante 17 meses es el contexto fisiológico más probable. Recuperación física no iniciada hasta 2025.

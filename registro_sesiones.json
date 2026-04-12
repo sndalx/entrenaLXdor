@@ -193,7 +193,8 @@
         "Suspendido gemelo isométrico mínimo 5-7 días",
         "Suspendido senderismo con desnivel",
         "Bici zona 2 mantenida (no carga aquiles significativamente)",
-        "Evaluación matutina diaria"
+        "Evaluación matutina diaria",
+        "12/04: asintomático al despertar, trayectoria favorable. DOMS leve en glúteo medio/TFL atribuido a psoas bien ejecutado (no requiere intervención). Retirada de carga se mantiene hasta día 5-7 mínimo."
       ],
       "reincorporacion_prevista": null,
       "protocolo_reincorporacion": null
@@ -252,7 +253,43 @@
         "pendiente_verificacion": true,
         "distribucion": "androide"
       },
-      "notas": "Baseline conservador del extremo alto del rango 22-28% estimado previo. Decisión operativa: partir del extremo alto evita inflar ganancias aparentes. Dato a verificar con bioimpedancia o DEXA."
+      "notas": "Baseline conservador del extremo alto del rango 22-28% estimado previo. SUSTITUIDO por medición instrumental del 12/04/2026 (ver entrada siguiente)."
+    },
+    {
+      "fecha": "2026-04-12",
+      "periodo_fin": null,
+      "tipo": "peso",
+      "datos": {
+        "valor_kg": 77.9,
+        "metodo": "lepulse_p1_ayunas_domingo_matutino",
+        "es_baseline": true
+      },
+      "notas": "Baseline real del proyecto. Sustituye a la estimación previa de 81-82 kg que era dato de memoria."
+    },
+    {
+      "fecha": "2026-04-12",
+      "periodo_fin": null,
+      "tipo": "composicion_corporal",
+      "datos": {
+        "porcentaje_graso_medido_bia": 16.9,
+        "porcentaje_graso_estimado_real": "24-26",
+        "metodo": "lepulse_p1_8_electrodos_doble_frecuencia",
+        "peso_kg": 77.9,
+        "altura_cm": 179,
+        "imc": 24.3,
+        "cintura_cm": 84,
+        "ratio_cintura_altura": 0.47,
+        "pecho_cm": 104,
+        "distribucion_tronco_porcentaje_estandar": 141.2,
+        "distribucion_brazos_porcentaje_estandar": 86.5,
+        "distribucion_piernas_porcentaje_estandar": 120.5,
+        "agua_corporal_porcentaje": 60.9,
+        "masa_muscular_bia_kg": 60.3,
+        "grasa_visceral_indice": 4.0,
+        "es_baseline": true,
+        "pendiente_confirmacion_dexa": true
+      },
+      "notas": "Baseline calibrado por triangulación clínica/visual/instrumental. BIA subestima ~4-8 puntos en ex-atletas con distribución androide. Autopercepción del usuario coincide con rango 24-26%. Grasa visceral índice 4.0 discordante con transaminasas elevadas (NAFLD): usar transaminasas como indicador clínico real, no el índice BIA."
     }
   ],
 
@@ -397,6 +434,17 @@
       "estado": "pendiente",
       "fecha_prevista": "2026-08-01",
       "fecha_real": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-12",
+      "tipo": "hito",
+      "categoria": "composicion_corporal",
+      "titulo": "Baseline real de composición corporal establecido",
+      "descripcion": "Primera medición instrumental con protocolo estandarizado (Lepulse P1 domingo matutino ayunas). Baseline real del proyecto documentado con método. Sustituye estimaciones previas (81-82 kg de memoria, 28% conservador visual).",
+      "estado": "completado",
+      "fecha_prevista": "2026-04-12",
+      "fecha_real": "2026-04-12",
       "referencias": {}
     }
   ]
