@@ -336,7 +336,7 @@ Fuente canónica: `registro_sesiones.json → incidencias`. Esta tabla es un res
 
 ### Problemas activos (abril 2026)
 
-1. **Sueño insuficiente** (prioridad máxima): protocolo activo pero adherencia irregular. Verificación semanal con Huawei GT3, umbral 80%.
+1. **Sueño en fase de consolidación** (prioridad máxima): protocolo activo con adherencia consistente desde 30/03/2026 (2 semanas). Trayectoria favorable pero despertares nocturnos 4:00 AM persisten con latencia decreciente. Fase 2-3 de consolidación (8-12 semanas total). Verificación semanal con Huawei GT3, umbral 80%.
 2. **Desayuno irregular**: arrastra fallos en suplementación matutina (creatina, colágeno, vitamina D3+K2) y déficit proteico.
 3. **Sobreestimulación laboral**: trabajo estimulante que invade horario libre.
 4. **Analítica de control pendiente**: URGENTE programar. ~10 meses desde baseline con GGT a +167%.
@@ -369,7 +369,68 @@ Fuente canónica: `registro_sesiones.json → incidencias`. Esta tabla es un res
 
 ### Sueño
 
-Prioridad máxima. 7h30 efectivas. Protocolo: magnesio 22:00 → ducha 22:00-22:15 → alarma corte 22:30 → cama 23:00 → despertar 6:45. Fines de semana: máx 00:00 acostarse, máx 8:15 despertar. Verificación semanal cada domingo con Huawei Watch GT 3. Umbral mínimo: 80% (6 de 7 noches ≥7h). Si <80% dos semanas seguidas: activar protocolo de emergencia (revisar hora de corte, eliminar excepciones, evaluar causa externa).
+Prioridad máxima del proyecto. 7h30 efectivas.
+
+**Protocolo operativo:**
+- 22:00: magnesio 300 mg + ducha
+- 22:30: alarma de corte
+- 23:00-23:15: en cama
+- 07:00: despertar
+- Fines de semana: máx. 00:00 acostarse, máx. 08:15 despertar
+- Variación máxima aceptable del horario: 1 hora
+
+**Estado longitudinal (abril 2026):**
+
+Protocolo iniciado marzo 2026. Desde la semana del 30/03/2026 se mantiene adherencia consistente al horario 23:00-07:00.
+
+Datos del periodo 30/03-12/04/2026:
+- Ventana en cama: 7h45-7h30
+- Sueño reportado por Huawei GT3: 7.4-7.6 horas/noche
+- Despertares nocturnos subjetivos en torno a las 4:00 AM con latencia decreciente a reconciliación del sueño
+- Vigilia intermedia no siempre detectada por el dispositivo (~48% especificidad Huawei GT3)
+- Ansiedad por dormir en descenso progresivo
+
+Interpretación clínica: patrón coherente con transición desde sueño desordenado previo hacia sueño estructurado consolidado. El despertar a las 4:00 AM es compatible con eje HPA en recalibración tras periodo crónico de cortisol elevado prolongado (cuidado LPA 2020-2021 + sedentarismo consolidado 2022-2025).
+
+**Trayectoria esperada de consolidación completa: 8-12 semanas desde inicio del protocolo** (mediados de mayo - mediados de junio 2026). El usuario está actualmente en semana 2-3. Lo esperable:
+- Semanas 4-8: despertares menos frecuentes, retorno al sueño más rápido cuando ocurren
+- Semanas 8-12: sueño continuo en mayoría de noches, despertares residuales breves
+- Semanas 12+: consolidación. Coincide aproximadamente con la ventana de compra del Oura Ring Gen 4 (01/07/2026)
+
+**Verificación semanal (cada domingo con Huawei Watch GT 3):**
+
+Métrica operativa: noches con ≥7 h de sueño reportado / 7. Umbral mínimo: 80% (6 de 7 noches).
+
+Métrica complementaria a registrar subjetivamente: sueño continuo estimado sin despertares nocturnos. Típicamente 20-45 min menor que el dato del reloj por vigilia intermedia no capturada.
+
+**Criterios de progresión correcta** (evaluar cada domingo):
+- Adherencia al horario ≥80% de las noches
+- Ansiedad por dormir estable o en descenso (autovaloración)
+- Duración de despertares nocturnos estable o en descenso
+- Latencia de reconciliación del sueño tras despertar estable o en descenso
+
+**Alerta** (requiere atención pero no cambio de protocolo):
+- 2 semanas con ansiedad por dormir en ascenso
+- 2 semanas con despertares nocturnos aumentando en duración
+- Adherencia <80% puntual en una semana aislada
+
+**Protocolo de emergencia** (revisión del plan):
+- 3 semanas sin progresión o con regresión clara del patrón
+- Activación: revisar hora de corte, eliminar excepciones de fin de semana, evaluar causa externa (carga laboral, estrés agudo, suplementación)
+
+**Lo que NO hacer durante la fase de consolidación:**
+- NO añadir suplementación adicional al magnesio (melatonina, triptófano, glicina adicional) — puede distorsionar la adaptación natural del eje HPA
+- NO introducir alarmas intermedias si aparecen despertares nocturnos
+- NO variar el horario en respuesta a despertares ("hoy me acuesto antes porque no he dormido bien")
+- NO usar benzodiazepinas ni derivados salvo prescripción por episodio claramente disruptivo
+
+**Intervención complementaria condicional (no aplicada aún):**
+
+Si el despertar a las 4:00 AM persiste más de 4 semanas adicionales sin reducción de frecuencia, considerar incorporar exposición a luz natural intensa en los primeros 15-30 minutos del despertar definitivo de las 7:00. Abrir persianas inmediatamente al despertar y pasar 10-15 min cerca de una ventana con luz natural, o caminar brevemente al aire libre. Consolida el reloj circadiano en la posición correcta. Bajo coste, alta eficacia potencial. No incorporar todavía: esperar a ventana de evaluación mediados de mayo 2026.
+
+**Oura Ring Gen 4 (01/07/2026):**
+
+Planificado como sustituto del Huawei GT3 para seguimiento del sueño. Especificidad de detección de vigilia ~73% vs ~48% del GT3. Aporta valor una vez consolidado el protocolo; durante la fase de transición actual (abril-mayo 2026) la precisión diagnóstica adicional no cambia decisiones operativas porque la trayectoria es clara. Compra condicional al cumplimiento del protocolo durante mayo-junio.
 
 ---
 

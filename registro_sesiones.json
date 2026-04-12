@@ -225,11 +225,32 @@
       "periodo_fin": "2026-04-06",
       "tipo": "sueno_semanal",
       "datos": {
-        "noches_7h_o_mas": 4,
-        "porcentaje": 65,
-        "cumple_umbral_80": false
+        "noches_7h_o_mas_reloj": 4,
+        "porcentaje_reloj": 65,
+        "cumple_umbral_80": false,
+        "sueno_continuo_estimado_h": null,
+        "despertares_nocturnos_subjetivos": "presentes, en torno a las 4:00",
+        "ansiedad_por_dormir": "alta",
+        "semana_protocolo": 1
       },
-      "notas": "Primeras noches de protocolo. Ansiedad paradójica. Despertar 3 AM."
+      "notas": "Primera semana de protocolo. Ansiedad paradójica al comienzo. Despertar 3-4 AM con latencia alta a reconciliación."
+    },
+    {
+      "fecha": "2026-04-06",
+      "periodo_fin": "2026-04-12",
+      "tipo": "sueno_semanal",
+      "datos": {
+        "noches_7h_o_mas_reloj": 7,
+        "porcentaje_reloj": 100,
+        "cumple_umbral_80": true,
+        "sueno_reportado_reloj_rango_h": "7.4-7.6",
+        "sueno_continuo_estimado_h": "6.5-7.0",
+        "despertares_nocturnos_subjetivos": "presentes en torno a las 4:00, latencia a reconciliación decreciente",
+        "ansiedad_por_dormir": "en descenso",
+        "semana_protocolo": 2,
+        "horario_aplicado": "23:00-23:15 a 07:00"
+      },
+      "notas": "Segunda semana. Adherencia completa al horario. Reloj marca 7.4-7.6h pero no detecta vigilia intermedia. Sueño continuo real estimado 6.5-7h por vigilia nocturna. Ansiedad por dormir en descenso claro. Patrón coherente con trayectoria esperada de consolidación (8-12 semanas total)."
     },
     {
       "fecha": "2026-04-10",
@@ -445,6 +466,15 @@
       "estado": "completado",
       "fecha_prevista": "2026-04-12",
       "fecha_real": "2026-04-12",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-12",
+      "tipo": "observacion",
+      "categoria": "sueno",
+      "titulo": "Dos semanas de adherencia completa al protocolo de sueño",
+      "descripcion": "Reportado por el usuario el 12/04/2026. Estado: en cama 7h45 (23:00-07:00), sueño reportado por Huawei GT3 7.4-7.6h, despertares nocturnos subjetivos en torno a las 4:00 con latencia decreciente a reconciliación. Ansiedad por dormir en descenso. Patrón coherente con fase 2-3 de proceso de consolidación de 8-12 semanas. Trayectoria favorable.",
+      "razon": null,
       "referencias": {}
     }
   ]

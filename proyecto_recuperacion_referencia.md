@@ -200,11 +200,19 @@ Patrón clásico de cortisol elevado + ansiedad paradójica del sueño. No mirar
 
 Sueño (receptores GABA + glicina calmante), recuperación muscular (cofactor >300 enzimas), regulación cortisol (eje HPA), sensibilidad a insulina, salud cardiovascular, densidad ósea (activa vitamina D), estado de ánimo.
 
-### Verificación semanal
+### Verificación semanal — Dos métricas
 
-Herramienta: Huawei Watch GT 3 (registra sueño automáticamente). Métrica: noches con ≥7h de sueño efectivo / 7. Revisión cada domingo. Umbral mínimo: 80% (6 de 7 noches). Si <80% durante 2 semanas consecutivas: protocolo de emergencia.
+*Fuente canónica del estado longitudinal y criterios de progresión/alerta/emergencia: SYSTEM_PROMPT §Sueño.*
 
-**Datos semanales:** `registro_sesiones.json` → `mediciones` (tipo: sueno_semanal).
+Herramienta: Huawei Watch GT 3 (registra sueño automáticamente, ~48% especificidad en detección de vigilia intermedia).
+
+**Métrica operativa (reloj):** noches con ≥7 h de sueño reportado / 7. Revisión cada domingo. Umbral mínimo: 80% (6 de 7 noches).
+
+**Métrica complementaria (subjetiva):** sueño continuo estimado sin despertares nocturnos. Típicamente 20-45 min menor que el dato del reloj por vigilia intermedia no capturada por el Huawei GT3. Esta métrica es la que el Oura Ring Gen 4 (planificado 01/07/2026) capturará con mayor fiabilidad (~73% especificidad).
+
+**Estado longitudinal (abril 2026):** semana 2-3 de protocolo. Adherencia consistente al horario 23:00-07:00 desde 30/03. Trayectoria favorable: despertares 4:00 AM con latencia decreciente a reconciliación, ansiedad por dormir en descenso. Consolidación completa esperada en 8-12 semanas (mediados mayo - mediados junio 2026).
+
+**Datos semanales:** `registro_sesiones.json` → `mediciones` (tipo: sueno_semanal). Campos extendidos desde v4.1: `noches_7h_o_mas_reloj`, `porcentaje_reloj`, `sueno_continuo_estimado_h`, `despertares_nocturnos_subjetivos`, `ansiedad_por_dormir`, `semana_protocolo`.
 
 ---
 
