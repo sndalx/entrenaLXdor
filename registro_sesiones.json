@@ -104,6 +104,23 @@
       "tiempo_recuperacion_h": 4,
       "es_referencia": true,
       "notas": "SEGUNDA REFERENCIA CALIBRADA. Coherente con rol del viernes (sesión corta preparatoria). Estrés aeróbico 1.6 indica recuperación."
+    },
+    {
+      "fecha": "2026-04-13",
+      "duracion_min": 45.03,
+      "fc_media": 120,
+      "fc_max": 129,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 37,
+      "min_quema_grasa": 4,
+      "min_calentamiento": 2,
+      "kcal": 284,
+      "hr_recovery_1min": 8,
+      "estres_aerobico": 1.8,
+      "tiempo_recuperacion_h": 4,
+      "es_referencia": true,
+      "notas": "TERCERA REFERENCIA CALIBRADA. Primera sesión del nuevo orden tendinoso → bici. FC media idéntica a baseline 120 ppm. 37 min en aeróbica vs 31-34 min de referencias previas: distribución de zonas más madura (adaptación temprana). HR recovery 8 ppm ligeramente inferior a 10/04 (11) atribuible a hora vespertina + piernas pre-trabajadas por tendinoso. Cero anaeróbico. Confirma que el nuevo orden no degrada calidad de la bici."
     }
   ],
 
