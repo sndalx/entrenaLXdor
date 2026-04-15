@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Miércoles 15/04 — Reincorporación dead hangs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #232733;
+    --border: #2e3345;
+    --text: #e4e6ef;
+    --text-dim: #8b8fa3;
+    --accent: #818cf8;
+    --exercise: #f59e0b;
+    --rest: #10b981;
+    --warmup: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+  body { min-height: 100dvh; }
+  #app { width: 100vw; height: 100dvh; display: flex; flex-direction: column; }
+
+  .screen { flex: 1; display: flex; flex-direction: column; padding: 20px; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .progress-bar { width: 100%; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 8px; padding: 0 2px; }
+
+  .block-indicator { padding: 8px 4px 10px; border-bottom: 1px solid #232733; margin-bottom: 16px; }
+  .block-name { font-size: 11px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .block-progress { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+  .phase { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; text-align: center; }
+  .name { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 12px; line-height: 1.2; }
+  .intro-title { font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+
+  .instruction-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text-dim); font-size: 15px; line-height: 1.5; max-width: 400px; width: 100%; margin: 0 auto 16px; }
+  .instruction-box p { margin-bottom: 8px; }
+  .instruction-box p:last-child { margin-bottom: 0; }
+  .key { background: var(--surface-2); color: var(--exercise); padding: 3px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; display: inline-block; }
+
+  /* Detalle visible permanente durante ejecución */
+  .exercise-detail { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text-dim); font-size: 13px; line-height: 1.45; max-width: 420px; width: 100%; margin: 0 auto 12px; max-height: 28vh; overflow-y: auto; }
+  .exercise-detail p { margin-bottom: 6px; }
+  .exercise-detail p:last-child { margin-bottom: 0; }
+
+  .timer-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-ring { position: relative; width: 220px; height: 220px; margin: 8px auto; }
+  .timer-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+  .timer-ring .bg { fill: none; stroke: var(--border); stroke-width: 10; }
+  .timer-ring .progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .timer-ring.warmup .progress { stroke: var(--warmup); }
+  .timer-ring.exercise .progress { stroke: var(--exercise); }
+  .timer-ring.rest .progress { stroke: var(--rest); }
+  .timer-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-seconds { font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 700; color: var(--text); }
+  .timer-seconds.long { font-size: 44px; }
+  .timer-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+
+  .reps-display { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .reps-number { font-family: 'JetBrains Mono', monospace; font-size: 110px; font-weight: 700; color: var(--exercise); line-height: 1; }
+  .reps-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
+  .per-side { color: var(--exercise); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+  .rest-next { margin-top: 12px; font-size: 13px; color: var(--text-dim); text-align: center; padding: 0 20px; }
+  .rest-next strong { color: var(--rest); }
+
+  .btn-row { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px 0 4px; }
+  .btn { padding: 16px 48px; border: none; border-radius: 12px; font-family: 'DM Sans'; font-size: 16px; font-weight: 600; cursor: pointer; touch-action: manipulation; }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; min-width: 220px; }
+  .btn-done { background: var(--rest); color: #fff; width: 100%; max-width: 320px; padding: 20px; }
+  .btn-skip { background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-size: 14px; padding: 12px 32px; }
+  .btn-continue { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); font-size: 15px; padding: 14px 36px; }
+
+  .intro-banner { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--warmup); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .intro-banner strong { color: var(--warmup); font-weight: 600; }
+  .intro-list { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+  .intro-list .no { color: var(--warmup); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  .info-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+  .info-icon-big { font-size: 40px; color: var(--warmup); }
+  .info-title { font-size: 20px; font-weight: 700; color: var(--text); }
+  .info-body { max-width: 360px; font-size: 15px; color: var(--text-dim); line-height: 1.5; padding: 0 20px; }
+
+  .transition-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
+  .transition-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+  .transition-block { font-size: 24px; font-weight: 700; color: var(--accent); padding: 0 20px; }
+  .transition-count { font-family: 'JetBrains Mono', monospace; font-size: 80px; font-weight: 700; color: var(--text); line-height: 1; margin-top: 12px; }
+
+  .finish-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; }
+  .finish-title { font-size: 28px; font-weight: 700; text-align: center; }
+  .finish-stats { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; max-width: 360px; width: 100%; }
+  .finish-stats .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: var(--text-dim); }
+  .finish-stats .row strong { color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  .finish-next { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--rest); border-radius: 10px; padding: 14px 16px; max-width: 360px; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .finish-next strong { color: var(--rest); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =========================================================
+   WORKOUT — Miércoles 15/04/2026
+   Reincorporación dead hangs día 7 · Aquiles día 5/7 · Bici semana 2 (50 min)
+   ========================================================= */
+const WORKOUT = [
+  { type:'intro', name:'Sesión Miércoles 15/04', subtitle:'Reincorporación dead hangs', prepTime:0 },
+
+  /* ---------- BLOQUE 1 · Calentamiento dinámico ---------- */
+  { type:'exercise-reps', phase:'Calentamiento', name:'Sentadillas al aire', reps:12, prepTime:12, block:'Calentamiento dinámico',
+    detail:'Sin carga. De pie, pies a la anchura de caderas o ligeramente más separados, puntas ligeramente hacia fuera. Baja controlado hasta que los muslos estén paralelos al suelo (o hasta donde llegues con talones apoyados). Rodillas alineadas con la dirección de los pies, NO dejes que caigan hacia dentro. Peso distribuido entre mediopié y talones. Columna neutra, mirada al frente. Sube con energía empujando desde los talones. Ombligo hacia dentro durante todo el movimiento. Sin tempo forzado — objetivo: elevar temperatura intramuscular y lubricar cadera/rodilla. 12 repeticiones.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de cadera', reps:8, prepTime:5, perSide:true, block:'Calentamiento dinámico',
+    detail:'De pie, pies anchos a la anchura de hombros, manos en las caderas. Dibuja círculos amplios con la cadera manteniendo el torso y las piernas relativamente fijos — el movimiento viene de la pelvis. Movimiento controlado, sin rebotes. Respiración normal. 8 repeticiones en cada dirección: primero sentido horario, luego antihorario. Activa musculatura profunda y moviliza la articulación coxofemoral.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones tobillo izquierdo', reps:10, prepTime:5, block:'Calentamiento dinámico',
+    detail:'Apoyado en pared o con mano en superficie estable, levanta el pie izquierdo y rota el tobillo. El movimiento debe venir desde la articulación del tobillo, NO desde el dedo gordo trazando círculos en el aire. 10 repeticiones en sentido horario + 10 en antihorario. Lado menos rígido, menor prioridad.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones tobillo derecho', reps:12, prepTime:5, block:'Calentamiento dinámico',
+    detail:'Mismo gesto con el pie derecho. 12 repeticiones en cada dirección (más que el izquierdo porque es el lado rígido y prioritario por asimetría de dorsiflexión documentada el 08/04/2026). Calidad del movimiento por encima de velocidad. Rango máximo cómodo sin forzar. El objetivo es recuperar amplitud de movimiento, no acelerar.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Elevación de talones suave', reps:8, prepTime:5, block:'Calentamiento dinámico',
+    detail:'De pie, pies a la anchura de caderas, peso distribuido uniformemente. Sube a puntillas controladamente hasta el tope de la elevación y baja igual de controlado hasta apoyar el talón. Sin rebotes. Peso repartido entre los 5 dedos del pie. 8 repeticiones bilaterales suaves, sin carga añadida. ⚠ AVISO: episodio de aquiles bilateral activo desde 11/04, día 5 de retirada (trayectoria de cierre). Si aparece CUALQUIER sensación en el tendón de Aquiles durante el movimiento, SALTA este ejercicio inmediatamente pulsando el botón de saltar.' },
+
+  /* ---------- BLOQUE 2 · Tendinoso · Tren inferior ---------- */
+  { type:'exercise-timed', phase:'Wall sit · Set 1 de 3', name:'Wall sit', duration:30, prepTime:10, block:'Tendinoso · Tren inferior',
+    detail:'Sin carga (bloque de adaptación, semanas 1-4). Apoya la espalda completamente contra la pared: zona lumbar, dorsal y cabeza en contacto. Baja deslizándote hasta que las rodillas queden a 60-70° de flexión (la cadera NO más baja que las rodillas). Pies a la anchura de caderas, separados de la pared lo suficiente para que las tibias queden verticales. Peso en los talones y mediopié, no en las puntas. Ombligo hacia dentro, abdomen activo. Mirada al frente. Respiración activa, NO contengas el aire. ⚠ Si aparece dolor rotuliano, sube ligeramente el ángulo (posición más alta). 30 segundos.' },
+  { type:'rest', duration:60, next:'Wall sit · Set 2' },
+  { type:'exercise-timed', phase:'Wall sit · Set 2 de 3', name:'Wall sit', duration:35, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Mismo setup que el set 1: espalda pegada a la pared, rodillas 60-70°, pies a la anchura de caderas. 35 segundos. Las rodillas deben seguir alineadas con la dirección de los pies — NO dejes que caigan hacia dentro (valgo), señal de debilidad del vasto interno o glúteo medio. Si la fatiga empuja las rodillas hacia dentro, sal del ejercicio antes del tiempo total.' },
+  { type:'rest', duration:60, next:'Wall sit · Set 3' },
+  { type:'exercise-timed', phase:'Wall sit · Set 3 de 3', name:'Wall sit', duration:40, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Último set. 40 segundos. Mismo setup. Este es el set más exigente: mantén la respiración estable (nunca contenida), el ombligo hacia dentro y las rodillas alineadas. Si a los 30 segundos empiezas a temblar, es señal esperable (estabilización neuromuscular en déficit). El temblor no es motivo de parada si no hay dolor articular.' },
+
+  { type:'info', title:'Gemelo isométrico — OMITIDO', icon:'⚠',
+    body:'Gemelo isométrico en escalón SUSPENDIDO por episodio de aquiles bilateral activo (11/04, día 5 de retirada de carga). Reincorporación condicional a cierre formal del episodio (previsto sábado 17-18/04 mínimo) y evaluación matutina previa. Se pasa directo al puente de glúteo.' },
+
+  { type:'exercise-reps', phase:'Puente glúteo · Set 1 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:10, block:'Tendinoso · Tren inferior',
+    detail:'Tumbado boca arriba sobre superficie firme. Rodillas flexionadas a 90°, pies apoyados planos en el suelo a la anchura de caderas, talones cerca de los glúteos. Brazos extendidos a los lados, palmas hacia abajo. Omóplatos en contacto con el suelo. Barbilla ligeramente metida (NO hiperextensión cervical). Sube la cadera empujando desde los talones y apretando glúteos hasta formar una línea recta hombros-cadera-rodillas (NO sobreextiendas arqueando la lumbar). Mantén 5 segundos arriba con glúteo activo máximo. Baja controlado en 2 segundos. Espalda neutra todo el tiempo: si sientes la lumbar protagonista, re-activa el glúteo. 10 repeticiones.' },
+  { type:'rest', duration:60, next:'Puente glúteo · Set 2' },
+  { type:'exercise-reps', phase:'Puente glúteo · Set 2 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Mismo setup. 10 repeticiones con pausa isométrica de 5 segundos en el tope de cada una. Foco: la pausa arriba es donde pasa el trabajo tendinoso — glúteo apretado al máximo durante esos 5 segundos. Si la pausa se siente corta, la estás haciendo bien; si se siente fácil, aprieta más fuerte.' },
+  { type:'rest', duration:60, next:'Puente glúteo · Set 3' },
+  { type:'exercise-reps', phase:'Puente glúteo · Set 3 de 3', name:'Puente de glúteo con pausa', reps:10, prepTime:8, block:'Tendinoso · Tren inferior',
+    detail:'Último set del bloque tendinoso inferior. 10 repeticiones con pausa 5s arriba. Control especial en la fase excéntrica (bajada): baja en 2-3 segundos, NO dejes caer. La bajada controlada es la que estimula la adaptación tendinosa. Termina con el glúteo notablemente fatigado — eso es la señal de que el estímulo fue adecuado.' },
+
+  /* ---------- BLOQUE 3 · Movilidad ---------- */
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · izquierdo', duration:90, prepTime:10, block:'Movilidad',
+    detail:'Posición de caballero: rodilla derecha apoyada en el suelo (usa una toalla o esterilla si molesta), pierna izquierda delante con el pie apoyado en el suelo formando 90° (rodilla sobre el tobillo, no adelantada). Pelvis neutra: retroversión ligera (mete el pubis hacia arriba) para anular la tendencia a arquear la lumbar. Aprieta fuerte el GLÚTEO DERECHO (el de la pierna apoyada atrás) — es la clave del estiramiento del psoas. Adelanta la cadera suavemente hacia delante manteniendo la retroversión pélvica y la espalda neutra. NO arquees la lumbar buscando más estiramiento — eso anula el trabajo. Respira profundo. 90 segundos.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · derecho', duration:90, prepTime:6, block:'Movilidad',
+    detail:'Cambia de lado. Posición de caballero: rodilla izquierda en el suelo, pierna derecha delante a 90°. Mismos cues que el lado izquierdo: pelvis neutra con retroversión ligera, GLÚTEO IZQUIERDO apretado fuerte, cadera adelantada sin arquear la espalda. El estiramiento se siente en el frontal de la cadera del lado de la rodilla apoyada. 90 segundos.' },
+
+  { type:'exercise-reps', phase:'Movilidad', name:'Rotaciones torácicas en cuadrupedia', reps:10, prepTime:6, perSide:true, block:'Movilidad',
+    detail:'En cuadrupedia: manos bajo los hombros, rodillas bajo las caderas. Columna neutra. Lleva una mano detrás de la nuca (codo flexionado). Rota el torso abriendo el codo hacia el techo — el movimiento viene de la columna TORÁCICA, no de la lumbar ni de las caderas. Caderas FIJAS apuntando al suelo. Mira el codo que sube al abrir. Exhala al abrir, inhala al cerrar. Controla el movimiento en ambas direcciones. 10 repeticiones por lado.' },
+
+  { type:'exercise-timed', phase:'Movilidad · Prioridad asimetría', name:'Movilidad tobillo derecho', duration:90, prepTime:8, block:'Movilidad',
+    detail:'De pie frente a una pared, pie DERECHO adelantado con los dedos a ~10-15 cm de la pared. Coloca las manos en la pared a la altura del pecho para estabilidad. Lleva la rodilla DERECHA hacia la pared intentando tocarla sin que el talón del pie derecho se levante del suelo. El movimiento debe salir del tobillo (dorsiflexión), no de inclinarte con la cadera. La rodilla viaja recta hacia la pared alineada con el segundo dedo del pie, NO hacia dentro. 90 segundos completos al lado rígido — priorización documentada de la asimetría de dorsiflexión detectada el 08/04/2026. Mantén presión suave continua contra el tope disponible.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Movilidad tobillo izquierdo', duration:30, prepTime:5, block:'Movilidad',
+    detail:'Mismo gesto en el lado izquierdo: pie izquierdo adelantado frente a la pared, rodilla izquierda hacia la pared sin levantar el talón. Movimiento desde el tobillo. Tiempo reducido a 30 segundos (en lugar de 90) porque la asimetría prioriza el derecho.' },
+
+  { type:'exercise-timed', phase:'Movilidad · Reducida', name:'Sentadilla profunda', duration:30, prepTime:8, block:'Movilidad',
+    detail:'Baja a posición de sentadilla profunda: pies a la anchura de hombros o ligeramente más separados, talones en contacto con el suelo. Columna erguida, pecho al frente, codos presionando suavemente contra las rodillas para abrir la cadera. Peso en mediopié. ⚠ Solo 30 segundos en lugar de los 90 habituales por episodio de aquiles bilateral activo (día 5 de retirada). Si aparece CUALQUIER sensación en el tendón de Aquiles, sal antes pulsando el botón de saltar.' },
+
+  /* ---------- BLOQUE 4 · Bici zona 2 ---------- */
+  { type:'exercise-timed', phase:'Bici zona 2 · 50 min', name:'Bici estática zona 2', duration:3000, prepTime:12, block:'Bici zona 2',
+    detail:'Material: bicicleta estática con pulsómetro en manillar. Zona 2: 105-122 bpm (según fórmula; si la FC máxima real es superior, usar test de hablar — conversación fluida = zona correcta). SEMANA 2 de progresión aeróbica abril: 50 minutos (vs 45 de la semana pasada, subirá a 55 la próxima). La bici carga el aquiles mínimamente → mantenida a pesar del episodio abierto. RECALIBRACIÓN POSTURAL cada 10 minutos (minutos 10, 20, 30, 40): 15 segundos sin pausar pedaleo, enderezar columna, retraer escápulas, alejar orejas de hombros, dos respiraciones profundas, continuar. ⚠ CLÁUSULA DE CALIBRACIÓN POR CANSANCIO MATINAL: hoy hay cansancio residual por sueño fragmentado post-funcional del martes. En los primeros 10-15 minutos, la sensación normal en zona 2 es que MEJORA al entrar en calor. Si en su lugar EMPEORA (pesadez progresiva, fatiga desproporcionada), termina la sesión a 40-45 minutos usando el botón "Terminar antes". Es decisión sensata, no abandono del plan.' },
+
+  /* ---------- BLOQUE 5 · Dead hang · Reincorporación ---------- */
+  { type:'exercise-timed', phase:'Reincorporación post-episodio hombro', name:'Dead hang escalonado · Serie única', duration:25, prepTime:15, block:'Dead hang · Reincorporación', buttonLabel:'Soltar',
+    detail:'Material: barra de dominadas de puerta. PRIMER dead hang post-episodio hombro izquierdo (cerrado 09/04 como DOMS). Día 7 de ventana de reincorporación, hombro asintomático confirmado en evaluación matutina. Protocolo escalonado: 1 SERIE ÚNICA, 20-25s máximo. NO intentes los 55-56s previos (era cerca del fallo). Posición PASIVA PURA: cuelgue completo, brazos extendidos, escápulas relajadas, SIN retracción activa, SIN intentar elevarse. Agarre con la fuerza mínima necesaria para sostenerte (recordatorio judo: tu sistema nervioso quiere apretar al máximo desde el primer segundo, RESISTE ese impulso). Bajada controlada: descender pies hasta el suelo de forma deliberada, NO soltarse de golpe. ⚠ Si aparece CUALQUIER sensación en hombro durante el cuelgue: soltar inmediatamente con el botón "Soltar". Si llegas cómodamente a 25s sin síntomas: ese es el techo de hoy, NO añadir segunda serie aunque te sientas fresco. Subida de tiempo condicional a sensación tendinosa cero durante 7 días consecutivos.' },
+
+  { type:'finish' }
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let currentStep = 0;
+let lastBlockShown = null;
+let transitionShownFor = -1;
+let timerInterval = null;
+let timerStart = 0;
+let timerDuration = 0;
+let audioCtx = null;
+let wakeLock = null;
+let sessionStart = null;
+
+const app = document.getElementById('app');
+
+/* =========================================================
+   AUDIO
+   ========================================================= */
+function initAudio() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} } }
+function beep(freq, duration, volume = 0.15) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration);
+}
+function shortBeep() { beep(880, 0.1); }
+function longBeep()  { beep(660, 0.3); }
+function doneBeep()  { beep(1100, 0.15); setTimeout(() => beep(1320, 0.2), 100); }
+
+/* =========================================================
+   WAKE LOCK
+   ========================================================= */
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (err) { console.log('Wake lock failed:', err.message); }
+  }
+}
+function releaseWakeLock() { if (wakeLock) { wakeLock.release(); wakeLock = null; } }
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && sessionStart && !wakeLock) { requestWakeLock(); }
+});
+
+/* =========================================================
+   PROGRESS + ETA
+   ========================================================= */
+function isRealExercise(step) { return step && (step.type === 'exercise-reps' || step.type === 'exercise-timed' || step.type === 'warmup-intro'); }
+function getTotalSteps() { return WORKOUT.filter(isRealExercise).length; }
+function getCompletedSteps() {
+  let n = 0;
+  for (let i = 0; i < currentStep; i++) if (isRealExercise(WORKOUT[i])) n++;
+  return n;
+}
+function progressPercent() { return Math.round((getCompletedSteps() / getTotalSteps()) * 100); }
+
+function getBlockProgress(step) {
+  if (!step || !step.block) return '';
+  const block = step.block;
+  let total = 0, pos = 0;
+  WORKOUT.forEach((s, i) => {
+    if (s.block === block && isRealExercise(s)) {
+      total++;
+      if (i <= currentStep) pos++;
+    }
+  });
+  if (total === 0) return '';
+  return `Ejercicio ${pos} de ${total}`;
+}
+
+function parseTempoSeconds(tempo) {
+  const parts = tempo.split('-').map(Number);
+  const sum = parts.reduce((a, b) => a + b, 0);
+  return sum || 3;
+}
+function estimateRepsTime(step) {
+  const perRep = step.tempo ? parseTempoSeconds(step.tempo) : 3;
+  const reps = step.reps || 10;
+  const multiplier = step.perSide ? 2 : 1;
+  return perRep * reps * multiplier;
+}
+function estimateRemainingSeconds() {
+  let sec = 0;
+  for (let i = currentStep; i < WORKOUT.length; i++) {
+    const s = WORKOUT[i];
+    if (s.prepTime) sec += s.prepTime;
+    if (s.type === 'exercise-timed' || s.type === 'warmup-intro') sec += s.duration || 0;
+    else if (s.type === 'exercise-reps') sec += estimateRepsTime(s);
+    else if (s.type === 'rest') sec += s.duration || 0;
+    else if (s.type === 'info') sec += 10;
+    const next = WORKOUT[i + 1];
+    if (next && s.block && next.block && s.block !== next.block) sec += 3;
+  }
+  return sec;
+}
+function formatETA(remainingSec) {
+  const end = new Date(Date.now() + remainingSec * 1000);
+  return end.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
+function formatTimerDisplay(seconds) {
+  if (timerDuration <= 60) return String(seconds);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+function formatInitial(dur) {
+  if (dur <= 60) return String(dur);
+  const m = Math.floor(dur / 60);
+  const s = dur % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/* =========================================================
+   RENDER DISPATCHER
+   ========================================================= */
+function render() {
+  const step = WORKOUT[currentStep];
+  if (!step) return;
+
+  if (step.block && lastBlockShown && step.block !== lastBlockShown && transitionShownFor !== currentStep) {
+    transitionShownFor = currentStep;
+    renderTransition(step.block);
+    return;
+  }
+  if (step.block) lastBlockShown = step.block;
+
+  switch (step.type) {
+    case 'intro':          renderIntro(step); break;
+    case 'exercise-reps':  renderPrep(step, () => renderExerciseReps(step)); break;
+    case 'exercise-timed': renderPrep(step, () => renderExerciseTimed(step)); break;
+    case 'rest':           renderRest(step); break;
+    case 'info':           renderInfo(step); break;
+    case 'finish':         renderFinish(); break;
+  }
+}
+
+function advance() { currentStep++; render(); }
+
+/* =========================================================
+   SCREENS
+   ========================================================= */
+function headerHTML(step) {
+  const pct = progressPercent();
+  const eta = formatETA(estimateRemainingSeconds());
+  let blockBlock = '';
+  if (step && step.block) {
+    blockBlock = `<div class="block-indicator"><div class="block-name">${step.block}</div><div class="block-progress">${getBlockProgress(step)}</div></div>`;
+  }
+  return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+    <div class="progress-meta"><span class="progress-pct">${pct}%</span><span class="progress-eta">≈ ${eta}</span></div>
+    ${blockBlock}`;
+}
+
+function renderIntro(step) {
+  app.innerHTML = `
+    <div class="screen">
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 20px 0;">
+        <div class="phase">Miércoles 15 · Abril 2026</div>
+        <div class="intro-title">Sesión Miércoles 15/04</div>
+        <div class="phase" style="margin-bottom:20px">Reincorporación dead hangs</div>
+
+        <div class="intro-banner">
+          <strong>Adaptaciones activas:</strong><br>
+          · Aquiles bilateral ABIERTO día 5/7 (trayectoria de cierre)<br>
+          · Reincorporación dead hangs HOY: 1 serie × 20-25s (NO 55s)<br>
+          · Semana 2 progresión aeróbica: bici 50 min<br>
+          · Cansancio matinal documentado: calibrar bici primeros 10-15 min
+        </div>
+
+        <div class="intro-list">
+          <span class="no">NO</span> gemelo isométrico &nbsp;·&nbsp; <span class="no">NO</span> 2ª serie dead hang<br>
+          <span class="no">NO</span> sentadilla profunda completa &nbsp;·&nbsp; <span class="no">NO</span> senderismo con desnivel
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="startSession()">Comenzar sesión</button></div>
+    </div>`;
+}
+
+function renderPrep(step, onComplete) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase} · Preparación</div>
+      <div class="name">${step.name}</div>
+      <div class="instruction-box"><p>${step.detail}</p></div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="prepRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="prepSec">${step.prepTime}</div><div class="timer-label">Preparación</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipPrep()">Saltar preparación</button></div>
+    </div>`;
+  timerDuration = step.prepTime;
+  startCountdown(step.prepTime, 'prepSec', 'prepRing', circumference, () => { longBeep(); onComplete(); });
+}
+window.skipPrep = () => { clearInterval(timerInterval); const step = WORKOUT[currentStep]; if (step.type === 'exercise-reps') renderExerciseReps(step); else if (step.type === 'exercise-timed') renderExerciseTimed(step); };
+
+function exerciseDetailHTML(step) {
+  return `<div class="exercise-detail">
+      <p>${step.detail}</p>
+      ${step.tempo ? `<p><span class="key">Tempo: ${step.tempo}</span></p>` : ''}
+      ${step.perSide ? `<p><span class="key">Por cada lado</span></p>` : ''}
+      ${step.equipment ? `<p><span class="key">Material: ${step.equipment}</span></p>` : ''}
+    </div>`;
+}
+
+function renderExerciseReps(step) {
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${exerciseDetailHTML(step)}
+      <div class="reps-display">
+        <div class="reps-number">${step.reps}</div>
+        <div class="reps-label">Repeticiones</div>
+        ${step.perSide ? `<div class="per-side">Por cada lado</div>` : ''}
+      </div>
+      <div class="btn-row"><button class="btn btn-done" onclick="doneExercise()">Hecho</button></div>
+    </div>`;
+}
+window.doneExercise = () => { doneBeep(); advance(); };
+
+function renderExerciseTimed(step) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  const ringClass = step.block && (step.block.toLowerCase().includes('movilidad') || step.block.toLowerCase().includes('calentamiento')) ? 'warmup' : 'exercise';
+  const secClass = step.duration > 60 ? 'long' : '';
+  const buttonLabel = step.buttonLabel || 'Terminar antes';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${exerciseDetailHTML(step)}
+      <div class="timer-wrap">
+        <div class="timer-ring ${ringClass}">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="exRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds ${secClass}" id="exSec">${formatInitial(step.duration)}</div><div class="timer-label">${step.duration > 60 ? 'Min : Seg' : 'Segundos'}</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipExercise()">${buttonLabel}</button></div>
+    </div>`;
+  timerDuration = step.duration;
+  startCountdown(step.duration, 'exSec', 'exRing', circumference, () => { doneBeep(); advance(); });
+}
+window.skipExercise = () => { clearInterval(timerInterval); doneBeep(); advance(); };
+
+function renderRest(step) {
+  const circumference = 628.318;
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(WORKOUT[currentStep - 1])}
+      <div class="phase">Descanso</div>
+      <div class="name" style="color: var(--rest)">Recupera</div>
+      <div class="timer-wrap">
+        <div class="timer-ring rest">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="restRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="restSec">${step.duration}</div><div class="timer-label">Descanso</div></div>
+        </div>
+        <div class="rest-next">Siguiente: <strong>${step.next}</strong></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipRest()">Saltar descanso</button></div>
+    </div>`;
+  timerDuration = step.duration;
+  startCountdown(step.duration, 'restSec', 'restRing', circumference, () => { longBeep(); advance(); });
+}
+window.skipRest = () => { clearInterval(timerInterval); advance(); };
+
+function renderInfo(step) {
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(null)}
+      <div class="info-screen">
+        <div class="info-icon-big">${step.icon || 'ⓘ'}</div>
+        <div class="info-title">${step.title}</div>
+        <div class="info-body">${step.body}</div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="advance()">Continuar</button></div>
+    </div>`;
+}
+
+function renderTransition(blockName) {
+  let count = 3;
+  app.innerHTML = `
+    <div class="screen">
+      <div class="transition-screen">
+        <div class="transition-label">Comenzando</div>
+        <div class="transition-block">${blockName}</div>
+        <div class="transition-count" id="transCount">${count}</div>
+      </div>
+    </div>`;
+  longBeep();
+  shortBeep();
+  const el = document.getElementById('transCount');
+  const tick = setInterval(() => {
+    count--;
+    if (count >= 1) { el.textContent = count; shortBeep(); }
+    else { clearInterval(tick); render(); }
+  }, 1000);
+}
+
+function renderFinish() {
+  releaseWakeLock();
+  if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+  const totalMin = sessionStart ? Math.round((Date.now() - sessionStart) / 60000) : 0;
+  const totalEx = getTotalSteps();
+  app.innerHTML = `
+    <div class="screen">
+      <div class="finish-screen">
+        <div class="finish-title">Sesión completada</div>
+        <div class="finish-stats">
+          <div class="row"><span>Duración</span><strong>${totalMin} min</strong></div>
+          <div class="row"><span>Ejercicios</span><strong>${totalEx}</strong></div>
+          <div class="row"><span>Bloques</span><strong>5</strong></div>
+          <div class="row"><span>Omisiones</span><strong>Gemelo iso · 2ª serie dead hang</strong></div>
+        </div>
+        <div class="finish-next">
+          <strong>Mañana jueves 16/04:</strong> gimnasio funcional (60 min, tempo lento, control excéntrico) + protocolo tendinoso tren superior + movilidad. Whey 30g post-funcional (día de fuerza real). <br><br>
+          <strong>Evaluación matutina crítica al despertar:</strong> aquiles bilateral (día 6/7 de ventana) + hombro izquierdo (primer dato post-reincorporación dead hangs). Rigidez al primer paso es el dato clave.<br><br>
+          <strong>Analítica de control:</strong> si estaba programada para los próximos días, retrasarla al lunes 20 / martes 21 de abril. La carga lipídica de la comida del 15/04 (cordon bleu + patatas + croquetas) puede distorsionar transaminasas y triglicéridos.
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="location.reload()">Volver al inicio</button></div>
+    </div>`;
+}
+
+/* =========================================================
+   TIMER
+   ========================================================= */
+function startCountdown(seconds, secEl, ringEl, circumference, onDone) {
+  clearInterval(timerInterval);
+  timerStart = Date.now();
+  let beeped = {3:false, 2:false, 1:false};
+  const sec = document.getElementById(secEl);
+  const ring = document.getElementById(ringEl);
+  if (ring) ring.style.strokeDashoffset = 0;
+  timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - timerStart) / 1000;
+    const remaining = Math.max(0, seconds - elapsed);
+    const display = Math.ceil(remaining);
+    if (sec) sec.textContent = formatTimerDisplay(display);
+    if (ring) {
+      const pct = remaining / seconds;
+      ring.style.strokeDashoffset = circumference * (1 - pct);
+    }
+    if (display === 3 && !beeped[3]) { beeped[3] = true; shortBeep(); }
+    if (display === 2 && !beeped[2]) { beeped[2] = true; shortBeep(); }
+    if (display === 1 && !beeped[1]) { beeped[1] = true; shortBeep(); }
+    if (remaining <= 0) { clearInterval(timerInterval); onDone(); }
+  }, 100);
+}
+
+/* =========================================================
+   SESSION LIFECYCLE
+   ========================================================= */
+function startSession() {
+  initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  sessionStart = Date.now();
+  requestWakeLock();
+  if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(()=>{}); }
+  currentStep = 1;
+  render();
+}
+window.startSession = startSession;
+window.advance = advance;
+
+/* Boot */
+render();
+</script>
+</body>
+</html>
