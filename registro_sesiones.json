@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
-  "ultima_actualizacion": "2026-04-11",
+  "ultima_actualizacion": "2026-04-19",
   "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL.",
 
   "enums": {
@@ -33,6 +33,22 @@
       "sets_segundos": [65, 40, 35],
       "total_segundos": 140,
       "notas": "Progresión clara. Agarre reconectándose."
+    },
+    {
+      "fecha": "2026-04-15",
+      "momento_dia": "noche",
+      "sets_segundos": [25],
+      "total_segundos": 25,
+      "tipo": "reincorporacion_post_episodio",
+      "notas": "Primer dead hang post-episodio hombro izquierdo (cerrado 09/04). Día 7 ventana reincorporación. Protocolo escalonado: 1 serie única 25s (techo del rango protocolizado 20-25s), sin molestias, sin dificultad. Posición pasiva pura. Validación de tolerancia inmediata confirmada."
+    },
+    {
+      "fecha": "2026-04-18",
+      "momento_dia": "tarde",
+      "sets_segundos": [30],
+      "total_segundos": 30,
+      "tipo": "reincorporacion_post_episodio",
+      "notas": "Segundo dead hang de reincorporación. Progresión a 25-30s según calendario escalonado. 30s ejecutados sin problema ni para ejecución ni para hombro. Validación completa. Próxima progresión: 2 series × 25-30s el 20/04."
     }
   ],
 
@@ -121,6 +137,40 @@
       "tiempo_recuperacion_h": 4,
       "es_referencia": true,
       "notas": "TERCERA REFERENCIA CALIBRADA. Primera sesión del nuevo orden tendinoso → bici. FC media idéntica a baseline 120 ppm. 37 min en aeróbica vs 31-34 min de referencias previas: distribución de zonas más madura (adaptación temprana). HR recovery 8 ppm ligeramente inferior a 10/04 (11) atribuible a hora vespertina + piernas pre-trabajadas por tendinoso. Cero anaeróbico. Confirma que el nuevo orden no degrada calidad de la bici."
+    },
+    {
+      "fecha": "2026-04-15",
+      "duracion_min": 50.05,
+      "fc_media": 119,
+      "fc_max": 128,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 39,
+      "min_quema_grasa": 9,
+      "min_calentamiento": 1,
+      "kcal": 310,
+      "hr_recovery_1min": 9,
+      "estres_aerobico": 1.8,
+      "tiempo_recuperacion_h": 4,
+      "es_referencia": true,
+      "notas": "CUARTA REFERENCIA CALIBRADA. Primera sesión a 50 min (semana 2 progresión aeróbica). FC media 119 con carga acumulada (DOMS funcional 14/04 + sueño fragmentado). 39 min aeróbica + 9 min quema grasa = 48 min trabajo útil. Cero anaeróbico. Sudoración elevada. Fatiga progresiva hacia glúteos por redistribución (cuádriceps derecho fatigado por DOMS)."
+    },
+    {
+      "fecha": "2026-04-18",
+      "duracion_min": 50.02,
+      "fc_media": 121,
+      "fc_max": 129,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 45,
+      "min_quema_grasa": 3,
+      "min_calentamiento": 1,
+      "kcal": 324,
+      "hr_recovery_1min": 8,
+      "estres_aerobico": 2.0,
+      "tiempo_recuperacion_h": 5,
+      "es_referencia": true,
+      "notas": "QUINTA REFERENCIA. Segunda sesión a 50 min. Máximo de tiempo en zona aeróbica de la serie (45/50 min = 90% trabajo útil). FC media 121 con mayor pre-fatiga acumulada de toda la serie (tendinoso completo + bandas + movilidad + dead hang antes de bici). Estrés aeróbico 2.0 y tiempo recuperación 5h: primer incremento, coherente con sesión más cargada. Reporte subjetivo: mejor soportada que sesión anterior."
     }
   ],
 
@@ -169,6 +219,14 @@
       "jueves_asistio": null,
       "sesiones_sustituidas": 1,
       "notas": "Sesión sustitutoria mancuernas 06/04/2026."
+    },
+    {
+      "semana_inicio": "2026-04-14",
+      "semana_fin": "2026-04-19",
+      "martes_asistio": true,
+      "jueves_asistio": true,
+      "sesiones_sustituidas": 0,
+      "notas": "Ambas sesiones completadas. Martes: primer fueling pre-sesión estructurado, adaptación CV cualitativa observada. Jueves: empuje de trineo provocó reactivación episodio aquiles bilateral."
     }
   ],
 
@@ -212,10 +270,22 @@
         "Bici zona 2 mantenida (no carga aquiles significativamente)",
         "Evaluación matutina diaria",
         "12/04: asintomático al despertar, trayectoria favorable. DOMS leve en glúteo medio/TFL atribuido a psoas bien ejecutado (no requiere intervención). Retirada de carga se mantiene hasta día 5-7 mínimo.",
-        "13/04: asintomático tras sesión completa bici 45 min + tendinoso inferior + movilidad. Trayectoria de cierre confirmada. Mantener retirada de carga sobre estructura hasta día 5-7 mínimo según protocolo (15-18/04). Estado se mantiene abierto por regla operativa, no por sintomatología."
+        "13/04: asintomático tras sesión completa bici 45 min + tendinoso inferior + movilidad. Trayectoria de cierre confirmada. Mantener retirada de carga sobre estructura hasta día 5-7 mínimo según protocolo (15-18/04). Estado se mantiene abierto por regla operativa, no por sintomatología.",
+        "14/04: día 4, asintomático al despertar, tolera funcional sin síntomas",
+        "15/04: día 5, asintomático al despertar, tolera bici 50 min sin síntomas",
+        "16/04: día 6, funcional con empuje de trineo — REACTIVACIÓN de palpitaciones en aquiles. Trineo implica flexión plantar potente contra resistencia, exactamente la carga bajo retirada. Comunicación al entrenador insuficiente sobre restricciones específicas.",
+        "17/04: día 7, sin ejercicio por baja energía. Ventana de retirada REINICIADA desde hoy.",
+        "18/04: sesión completa (tendinoso + bandas + movilidad + dead hang + bici 50 min) con aquiles sin molestias durante ejercicio.",
+        "19/04: evaluación matutina sin rigidez al primer paso. Palpitación residual de fondo percibida sentado (posible hipervigilancia perceptiva vs irritación residual real). Ventana de retirada reiniciada se mantiene hasta 22-24/04 mínimo."
       ],
-      "reincorporacion_prevista": null,
-      "protocolo_reincorporacion": null
+      "reincorporacion_prevista": "2026-04-22",
+      "protocolo_reincorporacion": null,
+      "reactivacion": {
+        "fecha": "2026-04-16",
+        "causa": "Empuje de trineo en funcional. Flexión plantar potente contra resistencia.",
+        "ventana_reiniciada_desde": "2026-04-17",
+        "nueva_ventana_minima": "2026-04-22"
+      }
     }
   ],
 
@@ -329,6 +399,56 @@
         "pendiente_confirmacion_dexa": true
       },
       "notas": "Baseline calibrado por triangulación clínica/visual/instrumental. BIA subestima ~4-8 puntos en ex-atletas con distribución androide. Autopercepción del usuario coincide con rango 24-26%. Grasa visceral índice 4.0 discordante con transaminasas elevadas (NAFLD): usar transaminasas como indicador clínico real, no el índice BIA."
+    },
+    {
+      "fecha": "2026-04-13",
+      "periodo_fin": "2026-04-19",
+      "tipo": "sueno_semanal",
+      "datos": {
+        "noches_7h_o_mas_reloj": 6,
+        "porcentaje_reloj": 86,
+        "cumple_umbral_80": true,
+        "sueno_reportado_reloj_rango_h": "7.0-8.0",
+        "sueno_continuo_estimado_h": "6.5-7.5",
+        "despertares_nocturnos_subjetivos": "presentes pero frecuencia y duración en descenso. Mejor noche: 19/04 con un solo despertar y reconciliación rápida",
+        "ansiedad_por_dormir": "baja",
+        "semana_protocolo": 3,
+        "horario_aplicado": "23:00-23:15 a 07:00",
+        "noche_peor": "14/04: sueño fragmentado por activación adrenérgica post-funcional"
+      },
+      "notas": "Tercera semana. Umbral 80% cumplido. Trayectoria favorable: ansiedad baja, despertares en descenso, primera noche con un solo despertar y reconciliación rápida (19/04). Noche peor: 14/04 post-funcional. Protocolo sin cambios, ventana reevaluación 12/05."
+    },
+    {
+      "fecha": "2026-04-19",
+      "periodo_fin": null,
+      "tipo": "peso",
+      "datos": {
+        "valor_kg": 78.2,
+        "metodo": "lepulse_p1_ayunas_domingo_matutino",
+        "contexto": "sin evacuacion intestinal previa, retencion sodio residual comida fuera plan 15/04"
+      },
+      "notas": "Segunda medición dominical. +0.3 kg vs baseline 77.9 kg. Diferencia explicada por ausencia de evacuación + retención sodio. Peso real comparable probablemente idéntico al baseline."
+    },
+    {
+      "fecha": "2026-04-19",
+      "periodo_fin": null,
+      "tipo": "composicion_corporal",
+      "datos": {
+        "porcentaje_graso_medido_bia": 16.8,
+        "metodo": "lepulse_p1_8_electrodos_doble_frecuencia",
+        "peso_kg": 78.2,
+        "imc": 24.4,
+        "masa_muscular_bia_kg": 60.6,
+        "agua_corporal_porcentaje": 60.9,
+        "grasa_visceral_indice": 4.0,
+        "distribucion_tronco_porcentaje_estandar": 141.1,
+        "distribucion_brazos_porcentaje_estandar_izq": 85.3,
+        "distribucion_brazos_porcentaje_estandar_der": 85.0,
+        "distribucion_piernas_porcentaje_estandar_izq": 120.9,
+        "distribucion_piernas_porcentaje_estandar_der": 120.3,
+        "semana_medicion": 2
+      },
+      "notas": "Segunda medición semanal. Deltas vs baseline dentro de margen de error salvo grasa en brazos (-1.2/-1.5% del estándar), posible señal incipiente coherente con reporte subjetivo de mejora de tono en brazos. Necesita 3-4 semanas más para confirmar tendencia."
     }
   ],
 
@@ -492,6 +612,87 @@
       "categoria": "sueno",
       "titulo": "Dos semanas de adherencia completa al protocolo de sueño",
       "descripcion": "Reportado por el usuario el 12/04/2026. Estado: en cama 7h45 (23:00-07:00), sueño reportado por Huawei GT3 7.4-7.6h, despertares nocturnos subjetivos en torno a las 4:00 con latencia decreciente a reconciliación. Ansiedad por dormir en descenso. Patrón coherente con fase 2-3 de proceso de consolidación de 8-12 semanas. Trayectoria favorable.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-14",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Primera sesión funcional con fueling pre-sesión estructurado",
+      "descripcion": "Fueling implementado por primera vez: manzana + 500 ml agua, 20 min antes. Reporte subjetivo: motor mejor, cardio mejor soportado, fuerza conservadora (correcto Fase 1), terminado bastante entero. Sin molestias en aquiles ni hombro.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-14",
+      "tipo": "observacion",
+      "categoria": "cardiovascular",
+      "titulo": "Desacople estímulo-fatiga: primera señal de adaptación CV cualitativa",
+      "descripcion": "Intensidad de sesión un punto por encima de habitual, pero niveles de energía post-ejercicio sustancialmente superiores a condición base previa. Percepción del peso del entrenamiento sin bajón energético. Mecanismos probables: adaptación mitocondrial/capilar tras 3 semanas zona 2, fueling pre-sesión, consolidación sueño, mejora metabólica temprana. Semana 3 del protocolo.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-14",
+      "tipo": "decision",
+      "categoria": "sueno",
+      "titulo": "Ventana de 4 semanas antes de añadir intervenciones al protocolo de sueño",
+      "descripcion": "Decisión operativa: mantener protocolo actual (23:00-07:00, magnesio 300mg, sin suplementación adicional) durante 4 semanas más. Reevaluación programada hacia 12/05/2026. Justificación: consolidación del eje HPA requiere 8-12 semanas; intervenir en semana 2-3 distorsionaría lectura posterior.",
+      "razon": "Confianza en el tiempo como variable activa del proceso de recalibración del eje HPA.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-15",
+      "tipo": "observacion",
+      "categoria": "sueno",
+      "titulo": "Noche con sueño fragmentado por activación adrenérgica residual post-funcional",
+      "descripcion": "8h en cama, 7h registradas Huawei, despertares irregulares + dificultad para conciliar inicial por estado emocional positivo post-funcional. Cansancio matinal coherente con sueño efectivo reducido (~6-6.5h reales). Patrón a observar en próximos martes/jueves.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-15",
+      "tipo": "observacion",
+      "categoria": "nutricion",
+      "titulo": "Comida fuera no planificada — alta carga lipídica con frituras industriales",
+      "descripcion": "Olvido de comida preparada. Restaurante: cordon bleu + tortilla francesa + patatas fritas + croquetas. ~60g proteína (cubierta), ~80g grasa (elevada, frituras en aceite no controlado). Cae dentro de comida libre semanal. Cena estándar mantenida (pescado + AOVE + fruta, ya ligera por diseño).",
+      "razon": "Olvido logístico, no elección recreativa.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-15",
+      "tipo": "leccion",
+      "categoria": "nutricion",
+      "titulo": "Criterio decisional para comidas de imprevisto fuera de plan",
+      "descripcion": "Jerarquía establecida: (1) restaurante menú variado cercano al plan, (2) plato proteico aunque grasa subóptima, (3) combinación productos conveniencia, (4) ayuno solo en condiciones específicas. Saltarse comida es la peor opción para este perfil (refuerza patrón problemático histórico, compromete sesión vespertina, cortisol). Acción complementaria: stash de emergencia (lata atún AOVE, almendras, fruta) en coche/cajón trabajo.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-18",
+      "tipo": "observacion",
+      "categoria": "tendinoso",
+      "titulo": "Reactivación episodio aquiles bilateral por empuje de trineo en funcional",
+      "descripcion": "Palpitaciones en aquiles reactivadas tras empuje de trineo en funcional del 16/04. Trineo implica flexión plantar potente contra resistencia, exactamente la carga bajo retirada. Confirma que el tendón no había completado adaptación, solo estaba silenciado por ausencia de estímulo. Ventana de retirada reiniciada desde 17/04. Nueva ventana mínima hasta 22-24/04.",
+      "razon": null,
+      "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
+    },
+    {
+      "fecha": "2026-04-18",
+      "tipo": "leccion",
+      "categoria": "tendinoso",
+      "titulo": "Comunicación al entrenador requiere lista específica de ejercicios contraindicados",
+      "descripcion": "La restricción genérica 'episodio de aquiles activo' no fue suficiente para evitar empuje de trineo. Protocolo: antes de cada funcional con episodio abierto, entregar lista explícita de ejercicios contraindicados por nombre (trineo, saltos, lunges con salto, sprints, elevaciones gemelo con carga) y lista de ejercicios permitidos (sentadillas sin salto, peso muerto, press, remo, plancha, tren superior, bici).",
+      "razon": "El entrenador no puede inferir qué ejercicios específicos contraindica un episodio tendinoso sin lista explícita.",
+      "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
+    },
+    {
+      "fecha": "2026-04-18",
+      "tipo": "observacion",
+      "categoria": "composicion_corporal",
+      "titulo": "Primera observación de mejora funcional cotidiana y cambios visuales incipientes",
+      "descripcion": "Dos señales: (1) mejora capacidad de carga funcional percibida (compra cargada 10 min andando hasta casa sin coche), (2) cambios visuales incipientes, máxima evidencia en brazos donde se percibe tono donde antes había flaccidez. Autopercepción calibrada: perceptible por el usuario, no visible para terceros. Mecanismos: reactivación neuromuscular (tono basal), hidratación muscular (creatina + proteína + agua), redistribución incipiente grasa subcutánea en extremidades. NO hipertrofia nueva mensurable (6 semanas es pronto). Adicionalmente reporta mejora en aspecto piel facial, atribuible a hidratación intensificada + vascularización por ejercicio aeróbico + regularización sueño (ventana GH cubierta).",
       "razon": null,
       "referencias": {}
     }
