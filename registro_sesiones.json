@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
-  "ultima_actualizacion": "2026-04-19",
+  "ultima_actualizacion": "2026-04-22",
   "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL.",
 
   "enums": {
@@ -49,6 +49,22 @@
       "total_segundos": 30,
       "tipo": "reincorporacion_post_episodio",
       "notas": "Segundo dead hang de reincorporación. Progresión a 25-30s según calendario escalonado. 30s ejecutados sin problema ni para ejecución ni para hombro. Validación completa. Próxima progresión: 2 series × 25-30s el 20/04."
+    },
+    {
+      "fecha": "2026-04-20",
+      "momento_dia": "tarde",
+      "sets_segundos": [30],
+      "total_segundos": 30,
+      "tipo": "reincorporacion_post_episodio",
+      "notas": "Tercera sesión de reincorporación. Correspondían 2 series × 25-30s pero usuario ejecuta 1 sola serie por error (pensaba que aún estaban a 1 serie). 30s con facilidad, sin síntomas. No se compensa el error: se mantiene el escalón que tocaba para la próxima sesión (2 × 25-30s el miércoles 22/04)."
+    },
+    {
+      "fecha": "2026-04-22",
+      "momento_dia": "tarde",
+      "sets_segundos": [30, 30],
+      "total_segundos": 60,
+      "tipo": "reincorporacion_post_episodio",
+      "notas": "CUARTA SESIÓN DE REINCORPORACIÓN. Primera con 2 series completas. 2×30s ejecutadas sin problema ni para ejecución ni para hombro. Progresión escalonada funcionando según diseño. Próxima sesión viernes 24/04: 2×30-35s condicional a evaluación matutina asintomática."
     }
   ],
 
@@ -171,6 +187,40 @@
       "tiempo_recuperacion_h": 5,
       "es_referencia": true,
       "notas": "QUINTA REFERENCIA. Segunda sesión a 50 min. Máximo de tiempo en zona aeróbica de la serie (45/50 min = 90% trabajo útil). FC media 121 con mayor pre-fatiga acumulada de toda la serie (tendinoso completo + bandas + movilidad + dead hang antes de bici). Estrés aeróbico 2.0 y tiempo recuperación 5h: primer incremento, coherente con sesión más cargada. Reporte subjetivo: mejor soportada que sesión anterior."
+    },
+    {
+      "fecha": "2026-04-20",
+      "duracion_min": 50.25,
+      "fc_media": 121,
+      "fc_max": 130,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 44,
+      "min_quema_grasa": 4,
+      "min_calentamiento": 1,
+      "kcal": 324,
+      "hr_recovery_1min": 10,
+      "estres_aerobico": 2.0,
+      "tiempo_recuperacion_h": 5,
+      "es_referencia": true,
+      "notas": "SEXTA REFERENCIA. Primera sesión a 55 min: hito de volumen aeróbico alcanzado (165 min/sem objetivo Fase 1 si se mantiene L-X-V). HR recovery 10 ppm, mejor dato de la serie hasta esta sesión, tras 55 min. Reporte subjetivo: 'conteniendo para no acelerar, sin fatiga postural'. Control de zona 2 maduro. Progresión escalonada abril (40→45→50→55) completada. Desde mayo mantenimiento estable."
+    },
+    {
+      "fecha": "2026-04-22",
+      "duracion_min": 55.03,
+      "fc_media": 122,
+      "fc_max": 136,
+      "min_extrema": 0,
+      "min_anaerobico": 1,
+      "min_aerobico": 45,
+      "min_quema_grasa": 7,
+      "min_calentamiento": 2,
+      "kcal": 360,
+      "hr_recovery_1min": 12,
+      "estres_aerobico": 2.2,
+      "tiempo_recuperacion_h": 6,
+      "es_referencia": false,
+      "notas": "SÉPTIMA SESIÓN, no referencia por desvío deliberado de zona 2. Usuario subió velocidad y resistencia 10 min deliberadamente tras sensación de 'puedo más'. FC media 122 y <1 min anaeróbico. HR recovery 12 ppm (mejor absoluto de la serie). Día de baja energía documentado + gestión laboral + poco tiempo. Intervención correctiva aplicada: recordatorio del principio operativo 'bajas pulsaciones no es malo, es lo que ahora hace falta'. Regla establecida: mantener resistencia constante hasta que FC media baje de 115 ppm, entonces subir un punto."
     }
   ],
 
@@ -227,6 +277,14 @@
       "jueves_asistio": true,
       "sesiones_sustituidas": 0,
       "notas": "Ambas sesiones completadas. Martes: primer fueling pre-sesión estructurado, adaptación CV cualitativa observada. Jueves: empuje de trineo provocó reactivación episodio aquiles bilateral."
+    },
+    {
+      "semana_inicio": "2026-04-21",
+      "semana_fin": "2026-04-26",
+      "martes_asistio": true,
+      "jueves_asistio": true,
+      "sesiones_sustituidas": 0,
+      "notas": "Martes 21/04: comunicación al entrenador sobre restricciones del aquiles completada (trineo, saltos, sprints, lunges con salto, elevaciones gemelo con carga = NO). Sin incidencias tendinosas. Jueves 22/04: sesión ejecutada, reportada mejora cualitativa en capacidad cardio (recuperación acelerada) y evidencia funcional binaria (hace 2 meses no podía hacer lo que hoy sí)."
     }
   ],
 
@@ -276,7 +334,13 @@
         "16/04: día 6, funcional con empuje de trineo — REACTIVACIÓN de palpitaciones en aquiles. Trineo implica flexión plantar potente contra resistencia, exactamente la carga bajo retirada. Comunicación al entrenador insuficiente sobre restricciones específicas.",
         "17/04: día 7, sin ejercicio por baja energía. Ventana de retirada REINICIADA desde hoy.",
         "18/04: sesión completa (tendinoso + bandas + movilidad + dead hang + bici 50 min) con aquiles sin molestias durante ejercicio.",
-        "19/04: evaluación matutina sin rigidez al primer paso. Palpitación residual de fondo percibida sentado (posible hipervigilancia perceptiva vs irritación residual real). Ventana de retirada reiniciada se mantiene hasta 22-24/04 mínimo."
+        "19/04: evaluación matutina sin rigidez al primer paso. Palpitación residual de fondo percibida sentado (posible hipervigilancia perceptiva vs irritación residual real). Ventana de retirada reiniciada se mantiene hasta 22-24/04 mínimo.",
+        "20/04: día 4 ventana reiniciada, asintomático al despertar",
+        "20/04: tolera bici 55 min + 1 dead hang + tendinoso inferior sin síntomas",
+        "21/04: día 5, asintomático al despertar",
+        "21/04: sesión funcional martes con comunicación al entrenador sobre restricciones (trineo, saltos, sprints, elevaciones gemelo con carga = NO). Sin incidencias tendinosas.",
+        "22/04: día 6, asintomático al despertar",
+        "22/04: tolera bici 55 min + tendinoso inferior + 2 dead hangs sin síntomas"
       ],
       "reincorporacion_prevista": "2026-04-22",
       "protocolo_reincorporacion": null,
@@ -693,6 +757,80 @@
       "categoria": "composicion_corporal",
       "titulo": "Primera observación de mejora funcional cotidiana y cambios visuales incipientes",
       "descripcion": "Dos señales: (1) mejora capacidad de carga funcional percibida (compra cargada 10 min andando hasta casa sin coche), (2) cambios visuales incipientes, máxima evidencia en brazos donde se percibe tono donde antes había flaccidez. Autopercepción calibrada: perceptible por el usuario, no visible para terceros. Mecanismos: reactivación neuromuscular (tono basal), hidratación muscular (creatina + proteína + agua), redistribución incipiente grasa subcutánea en extremidades. NO hipertrofia nueva mensurable (6 semanas es pronto). Adicionalmente reporta mejora en aspecto piel facial, atribuible a hidratación intensificada + vascularización por ejercicio aeróbico + regularización sueño (ventana GH cubierta).",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-20",
+      "tipo": "hito",
+      "categoria": "cardiovascular",
+      "titulo": "Hito de volumen aeróbico Fase 1 alcanzado: primera sesión a 55 min",
+      "descripcion": "Completada la progresión escalonada de abril (40→45→50→55 min/sesión). Objetivo semanal Fase 1: 165 min/semana en 3 sesiones L-X-V. Desde mayo, mantenimiento estable a este volumen hasta revisión de Fase 1. HR recovery 10 ppm en esta sesión, mejor dato hasta la fecha. Control de zona 2 maduro: reporte de 'conteniendo para no acelerar'.",
+      "estado": "completado",
+      "fecha_prevista": "2026-04-28",
+      "fecha_real": "2026-04-20",
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-20"}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "leccion",
+      "categoria": "cardiovascular",
+      "titulo": "Regla operativa: progresión de resistencia en bici por adaptación demostrada, no por sensación",
+      "descripcion": "Usuario subió deliberadamente resistencia 10 min en sesión de bici ante sensación de 'puedo más'. FC media 122 y <1 min en anaeróbico. Intervención correctiva: el objetivo de zona 2 no es rendimiento, es adaptación mitocondrial + movilización de grasa hepática, que se optimizan a FC baja. Regla establecida: mantener resistencia actual constante hasta que FC media baje consistentemente de 115 ppm; en ese punto subir un punto de resistencia para volver a 118-122. Progresión por datos, no por sensación. Mismo principio que aplicado a tendones (regulación por calendario y reglas, no por sensación subjetiva). Usuario internaliza el principio: 'bajas pulsaciones no es malo, es lo que ahora hace falta'.",
+      "razon": "Subir intensidad prematuramente diluye eficacia terapéutica específica sobre NAFLD (combustible pasa de grasa a glucosa).",
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-22"}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "observacion",
+      "categoria": "cardiovascular",
+      "titulo": "HR recovery alcanza 12 ppm: mejor dato absoluto de la serie",
+      "descripcion": "Progresión HR recovery en bici zona 2: 11 (10/04), 8 (13/04), 9 (15/04), 8 (18/04), 10 (20/04), 12 (22/04). Tendencia ascendente clara. 129→105 en 1 min tras 55 min de sesión. HR recovery es indicador más fiable de adaptación cardiovascular real que FC media (menos sensible a variaciones de estado diario). Confirma adaptación del nervio vago + sistema parasimpático tras 3 semanas de zona 2 consistente.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-22"}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "observacion",
+      "categoria": "cardiovascular",
+      "titulo": "Transferencia funcional de adaptación zona 2 a esfuerzos reales",
+      "descripcion": "Usuario reporta mejora de capacidad de correr en emergencias cotidianas (correr para llegar al gimnasio, 5-8 min sostenidos): pasa de 'segundos con parada forzada' hace 2 meses a 'minutos sostenidos' hoy, sin haber entrenado correr específicamente. Primera evidencia cualitativa inequívoca de transferencia de base aeróbica de zona 2 a zonas superiores en condiciones no entrenadas. Cuello de botella metabólico desplazado hacia arriba: umbral de acumulación de lactato mejorado. Dato cualitativo binario (antes no podía, ahora sí) más relevante que métricas incrementales. Confirma diseño correcto de Fase 1: construir base aeróbica en zona 2 produce dividendos transferibles.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Mejora cualitativa en componente cardio del funcional: recuperación acelerada entre esfuerzos",
+      "descripcion": "Usuario reporta en funcional (componente cardio dura 6-9 min): mejor recuperación entre esfuerzos, menos asfixia mantenida tras parar. No aguanta más tiempo integro todavía, pero el sistema recupera más rápido. Fisiológicamente coherente con progresión esperable: primero mejora recuperación (HR recovery), después mejora resistencia sostenida. Estas en fase 1 de adaptación cardiovascular; fase 2 viene con las próximas 4-8 semanas de volumen sostenido.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Evidencia funcional binaria: hace 2 meses no podía, hoy sí",
+      "descripcion": "Sesión funcional del jueves 22/04 reportada: ejecución de ejercicios completos sin saltar repeticiones, incremento de resistencia muy notable respecto a punto de partida, 'hace 2 meses no podía hacer lo que hoy sí'. Las sesiones no son directamente comparables (ejercicios varían) pero el dato cualitativo binario es inequívoco: transición de incapacidad a capacidad. Usuario articula correctamente: 'no estoy en forma, estoy mejorando mi estado de forma'. Resistencia en mejora, fuerza sin crecimiento real aún (reactivación neuromuscular judo), tendones en adaptación. Horizonte propio a 'en forma': 9 meses, coincidente con Fase 1B avanzada.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "decision",
+      "categoria": "entrenamiento",
+      "titulo": "Articulación de la dimensión estética del proyecto: funcional y equilibrada, no hipertrófica",
+      "descripcion": "Usuario articula explícitamente su preferencia estética: funcional y equilibrada, no hipertrófica. Los 3-4 kg de músculo proyectados del escenario realista distribuidos equitativamente se consideran resultado estético suficiente y deseable. Sin objetivos de hipertrofia específica por grupo muscular. La estética se trata como subproducto del trabajo en salud y funcionalidad, no como objetivo independiente. Formulación del usuario: '4 kilos de músculo más distribuidos equitativamente creo que desbordarán cualquier aspiración estética que pueda tener; es un regalo que viene con la salud y la funcionalidad'. Esta calibración reduce riesgo de desviación del plan en Fase 1B/2 hacia entrenamiento estético agresivo (ciclos volumen/definición, técnicas de intensificación hipertrófica, split por grupos musculares) que comprometerían salud hepática, tendones o sostenibilidad.",
+      "razon": "Evitación de desviación hacia objetivos estéticos hipertróficos en Fase 1B/2. Protección de la jerarquía del proyecto: salud → funcionalidad → longevidad → estética como subproducto.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-22",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Patrón estructural: miércoles como día de menor disponibilidad y energía",
+      "descripcion": "Usuario identifica los miércoles como día estructuralmente complicado: día medio, mucha gestión laboral, baja energía, poco tiempo disponible. Además es día previo al funcional del jueves. Observación registrada para anticipar adaptaciones futuras de la carga semanal. En miércoles concretos puede ser necesario recortar volumen manteniendo priorización (bici + dead hangs mantenidos; movilidad completa sacrificable; tendinoso reducible). No requiere cambio estructural del plan por el momento: se registra como patrón a tener presente.",
       "razon": null,
       "referencias": {}
     }

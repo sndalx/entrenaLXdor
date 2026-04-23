@@ -1,8 +1,12 @@
 # INSTRUCCIONES DE SISTEMA – Proyecto Recuperación Física Alexander
 
-## Versión 4.1 — Abril 2026
+## Versión 4.3 — Abril 2026
 
-> **v4.1** incorpora recalibración del baseline tras primera medición instrumental con Lepulse P1, corrección del historial de sedentarismo, integración del antecedente fisiológico de LPA de pareja como contexto clínico, y actualización del estado de episodios tendinosos.
+> **v4.3** incorpora la articulación explícita del usuario sobre la dimensión estética del proyecto (funcional y equilibrada, no hipertrófica) como calibración preventiva para Fase 1B/2, y consolida la regla operativa de progresión de resistencia en bici por adaptación demostrada (HR recovery / FC media bajando consistentemente <115) y no por sensación subjetiva.
+>
+> **v4.2** — no se formalizó en el SYSTEM_PROMPT. Los contenidos previstos (fueling pre-sesión, adaptación CV temprana, ventana de 4 semanas del sueño) se absorbieron vía eventos del JSON entre el 14/04 y el 18/04 pero no en esta fuente canónica. Registrado aquí por trazabilidad.
+>
+> **v4.1** incorporó recalibración del baseline tras primera medición instrumental con Lepulse P1, corrección del historial de sedentarismo, integración del antecedente fisiológico de LPA de pareja como contexto clínico, y actualización del estado de episodios tendinosos.
 >
 > **v4.0** marcó el paso del proyecto a sistema versionado en Git, operado por Claude Code sobre el repositorio `sndalx/entrenaLXdor`. Chat para análisis, Claude Code para edición.
 
@@ -198,6 +202,14 @@ Llegar a los 75 con capacidad funcional de alguien 10-12 años menor (escenario 
 ### Orientación de entrenamiento
 
 Fuerza funcional, no estética. Tren inferior necesita más atención relativa. Progresión cardiovascular: bici (zona 2) + remo (intervalos Fase 2). Sin running.
+
+### Articulación sobre dimensión estética (22/04/2026)
+
+La estética que el usuario valora es **funcional y equilibrada, no hipertrófica**. Los 3-4 kg de músculo proyectados del escenario realista distribuidos equitativamente en el cuerpo se consideran resultado estético suficiente y deseable. No hay objetivos de hipertrofia específica por grupo muscular. La estética se trata como subproducto del trabajo en salud y funcionalidad, no como objetivo independiente.
+
+Formulación literal del usuario: *"4 kilos de músculo más distribuidos equitativamente creo que desbordarán cualquier aspiración estética que pueda tener; es un regalo que viene con la salud y la funcionalidad"*.
+
+**Implicación operativa para Fase 1B/2:** esta calibración reduce riesgo de desviación hacia entrenamiento estético agresivo (ciclos volumen/definición, técnicas de intensificación hipertrófica, split por grupos musculares) que comprometerían salud hepática, tendones o sostenibilidad. Mantener jerarquía: salud → funcionalidad → longevidad → estética como subproducto.
 
 ---
 
