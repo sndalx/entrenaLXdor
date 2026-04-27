@@ -2,7 +2,7 @@
   "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
-  "ultima_actualizacion": "2026-04-22",
+  "ultima_actualizacion": "2026-04-27",
   "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL.",
 
   "enums": {
@@ -221,6 +221,23 @@
       "tiempo_recuperacion_h": 6,
       "es_referencia": false,
       "notas": "SÉPTIMA SESIÓN, no referencia por desvío deliberado de zona 2. Usuario subió velocidad y resistencia 10 min deliberadamente tras sensación de 'puedo más'. FC media 122 y <1 min anaeróbico. HR recovery 12 ppm (mejor absoluto de la serie). Día de baja energía documentado + gestión laboral + poco tiempo. Intervención correctiva aplicada: recordatorio del principio operativo 'bajas pulsaciones no es malo, es lo que ahora hace falta'. Regla establecida: mantener resistencia constante hasta que FC media baje de 115 ppm, entonces subir un punto."
+    },
+    {
+      "fecha": "2026-04-27",
+      "duracion_min": 55.1,
+      "fc_media": 119,
+      "fc_max": 127,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 47,
+      "min_quema_grasa": 4,
+      "min_calentamiento": 2,
+      "kcal": 278,
+      "hr_recovery_1min": 10,
+      "estres_aerobico": 1.1,
+      "tiempo_recuperacion_h": null,
+      "es_referencia": true,
+      "notas": "SÉPTIMA REFERENCIA CALIBRADA. Primera sesión del escalón final de progresión (55 min). Zona 2 mantenida con precisión: 47 min aeróbico (85% sesión), 0 min anaeróbico. FC media 119 vs 120 ppm de la primera referencia (04/04) con +15 min de duración → adaptación cardiovascular temprana confirmada. FC máx 127 (-3 ppm vs 04/04). Estrés aeróbico 1.1 (recuperación, baja desde 1.6 del 10/04). HR recovery 10 ppm consistente con dato del 10/04 (11), normal en perfil desacondicionado en fase inicial; objetivo trimestral 13-15 ppm hacia agosto. Sensación subjetiva: sesión soportada sin problema."
     }
   ],
 
@@ -312,16 +329,16 @@
     {
       "id": "aquiles_bilateral_2026-04-11",
       "fecha_apertura": "2026-04-11",
-      "fecha_cierre": null,
-      "estado": "abierto",
+      "fecha_cierre": "2026-04-27",
+      "estado": "cerrado",
       "tipo": "tendinosa",
       "estructura": "aquiles_bilateral",
       "intensidad": "palpitacion_no_dolor",
       "tipo_sensacion": "palpitacion_sobre_estructura",
       "contexto": "~18-20h post caminata de 45 min con 95 m de desnivel positivo (2026-04-10 tarde, no planificada en estructura semanal).",
       "diagnostico_retrospectivo": null,
-      "resolucion": "pendiente",
-      "lecciones": null,
+      "resolucion": "Resolución espontánea tras retirada de carga ≥5-7 días (con reactivación intermedia 16/04 por empuje de trineo en funcional, ventana reiniciada desde 17/04). Asintomático sostenido desde 17/04. Confirmado el 27/04/2026 tras sesión de bici de 55 min y revisión post-sesión sin sensación. Cierre operativo del seguimiento.",
+      "lecciones": "Confirmación del valor del protocolo de retirada inmediata ante señal ambigua, incluso sin dolor. La caminata no planificada del 10/04 con desnivel de 95 m fue el desencadenante: las actividades con desnivel deben planificarse dentro de la estructura semanal, no añadirse de forma improvisada. La reactivación del 16/04 confirma que la comunicación al entrenador requiere lista específica de ejercicios contraindicados por nombre (ya formalizado).",
       "acciones_tomadas": [
         "Suspendido gemelo isométrico mínimo 5-7 días",
         "Suspendido senderismo con desnivel",
@@ -340,7 +357,8 @@
         "21/04: día 5, asintomático al despertar",
         "21/04: sesión funcional martes con comunicación al entrenador sobre restricciones (trineo, saltos, sprints, elevaciones gemelo con carga = NO). Sin incidencias tendinosas.",
         "22/04: día 6, asintomático al despertar",
-        "22/04: tolera bici 55 min + tendinoso inferior + 2 dead hangs sin síntomas"
+        "22/04: tolera bici 55 min + tendinoso inferior + 2 dead hangs sin síntomas",
+        "27/04: confirmación de cierre tras sesión de bici de 55 min (escalón final progresión aeróbica) y revisión post-sesión sin sensación. Asintomático sostenido desde 17/04 (10 días). Reincorporación de gemelo isométrico al protocolo tendinoso desde miércoles 29/04."
       ],
       "reincorporacion_prevista": "2026-04-22",
       "protocolo_reincorporacion": null,
@@ -833,6 +851,28 @@
       "descripcion": "Usuario identifica los miércoles como día estructuralmente complicado: día medio, mucha gestión laboral, baja energía, poco tiempo disponible. Además es día previo al funcional del jueves. Observación registrada para anticipar adaptaciones futuras de la carga semanal. En miércoles concretos puede ser necesario recortar volumen manteniendo priorización (bici + dead hangs mantenidos; movilidad completa sacrificable; tendinoso reducible). No requiere cambio estructural del plan por el momento: se registra como patrón a tener presente.",
       "razon": null,
       "referencias": {}
+    },
+    {
+      "fecha": "2026-04-27",
+      "tipo": "hito",
+      "categoria": "cardiovascular",
+      "titulo": "Inicio del escalón final de progresión aeróbica (55 min/sesión)",
+      "descripcion": "Primera sesión del escalón 55 min completada. A partir de esta semana, objetivo de mantenimiento estable a 165 min/semana de bici zona 2 (3 sesiones × 55 min, L-X-V). Datos coherentes con adaptación temprana: misma FC media (119 vs 120 ppm) que sesión de referencia del 04/04 con +15 min de duración. Estrés aeróbico baja de 1.6 (10/04) a 1.1, FC máx baja 3 ppm vs referencias previas.",
+      "estado": "completado",
+      "fecha_prevista": "2026-04-27",
+      "fecha_real": "2026-04-27",
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-27"}
+    },
+    {
+      "fecha": "2026-04-27",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Cierre operativo del episodio de aquiles bilateral (apertura 11/04)",
+      "descripcion": "Episodio cerrado tras 16 días desde apertura (con reactivación intermedia 16/04 que reinició la ventana). Asintomático sostenido desde 17/04 (10 días). Confirmación de cierre tras sesión de bici de 55 min del 27/04 sin sensación. Reincorporación de gemelo isométrico al protocolo tendinoso programada para miércoles 29/04. Lección operativa registrada: actividades con desnivel deben planificarse dentro de la estructura semanal, no añadirse improvisadamente; comunicación al entrenador requiere lista específica de ejercicios contraindicados por nombre.",
+      "estado": "completado",
+      "fecha_prevista": "2026-04-22",
+      "fecha_real": "2026-04-27",
+      "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
     }
   ]
 }
