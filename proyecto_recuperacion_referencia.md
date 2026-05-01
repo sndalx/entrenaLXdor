@@ -52,6 +52,8 @@ Leucemia promielocítica aguda (LPA) de su mujer (febrero 2020). 17 meses como c
 
 **Motivación personal declarada:** *"Al final de mi vida, llevar en la culata unas cuantas vidas salvadas con mis propias manos."*
 
+> **Posicionamiento estratégico (mayo 2026):** el objetivo del proyecto es fuerza optimizada (~90% del techo fisiológico) con volumen como subproducto, en banda de peso 78-80 kg. Métrica primaria de éxito: reducción de cintura (84 → 78-82 cm) con peso estable. Detalles operativos en `SYSTEM_PROMPT_proyecto_recuperacion.md` § "Objetivo del proyecto" → "Posicionamiento estratégico (mayo 2026 — DEFINITIVO)".
+
 ### Timeline estimado por fases
 
 | Período | Fase | Foco principal |
@@ -94,6 +96,10 @@ Requisitos específicos del GER no publicados. **Acción pendiente: contactar DY
 **Indicadores moderadores:** extremidades delgadas sin acumulación significativa, estructura muscular intuida en deltoides/trapecio, cuello y cara sin redondez excesiva.
 
 **Autopercepción calibrada del usuario:** "no en forma pero mantiene fuerza y proporciones preatléticas; cuello de botella es resistencia cardiovascular". Coincide con el rango 24-26%.
+
+### Seguimiento 26/04/2026 (medición Lepulse P1)
+
+Peso 78.3 kg (+0.4 kg vs baseline), porcentaje graso BIA 16.3% (-0.6 pp), masa muscular BIA 61.1 kg (+0.8 kg), grasa visceral índice 4.0 (sin cambios), WHR 0.88. Lectura honesta: la dirección es coherente con recomposición pero la magnitud del cambio en masa muscular probablemente refleja mejor hidratación intracelular más que tejido nuevo (en 14 días no se gana 0.8 kg de músculo magro). El baseline operativo del proyecto sigue siendo el rango triangulado 23-25% real hasta confirmación con DEXA.
 
 ### Tono muscular
 
@@ -204,15 +210,15 @@ Sueño (receptores GABA + glicina calmante), recuperación muscular (cofactor >3
 
 *Fuente canónica del estado longitudinal y criterios de progresión/alerta/emergencia: SYSTEM_PROMPT §Sueño.*
 
-Herramienta: Huawei Watch GT 3 (registra sueño automáticamente, ~48% especificidad en detección de vigilia intermedia).
+Herramienta: **Pixel Watch 4** (tracker único 24/7 desde 26/04/2026, Cohen κ 0.4-0.6 en detección de fases). Sustituyó al Huawei GT3 (Cohen κ ~0.2-0.4) que se vendió como parte de la adquisición. Las primeras 4 semanas del protocolo (30/03-26/04) se registraron con el Huawei GT3, contexto histórico relevante para interpretar discrepancia subjetiva persistente reportada en esas semanas (~48% de especificidad del GT3 explicaba parte de la diferencia entre las horas reportadas y las percibidas).
 
 **Métrica operativa (reloj):** noches con ≥7 h de sueño reportado / 7. Revisión cada domingo. Umbral mínimo: 80% (6 de 7 noches).
 
-**Métrica complementaria (subjetiva):** sueño continuo estimado sin despertares nocturnos. Típicamente 20-45 min menor que el dato del reloj por vigilia intermedia no capturada por el Huawei GT3. Esta métrica es la que el Oura Ring Gen 4 (planificado 01/07/2026) capturará con mayor fiabilidad (~73% especificidad).
+**Métrica complementaria (subjetiva):** sueño continuo estimado sin despertares nocturnos. Típicamente 20-45 min menor que el dato del reloj por vigilia intermedia. La especificidad superior del Pixel Watch 4 debería reducir la discrepancia respecto al Huawei.
 
-**Estado longitudinal (abril 2026):** semana 2-3 de protocolo. Adherencia consistente al horario 23:00-07:00 desde 30/03. Trayectoria favorable: despertares 4:00 AM con latencia decreciente a reconciliación, ansiedad por dormir en descenso. Consolidación completa esperada en 8-12 semanas (mediados mayo - mediados junio 2026).
+**Estado longitudinal (mayo 2026):** consolidación cumplida en semana 4 antes de la ventana esperada de 8-12 semanas. Mantener protocolo sin cambios para confirmar estabilidad ante futuro estresor. Detalle completo en SYSTEM_PROMPT §Sueño → Estado longitudinal (mayo 2026).
 
-**Datos semanales:** `registro_sesiones.json` → `mediciones` (tipo: sueno_semanal). Campos extendidos desde v4.1: `noches_7h_o_mas_reloj`, `porcentaje_reloj`, `sueno_continuo_estimado_h`, `despertares_nocturnos_subjetivos`, `ansiedad_por_dormir`, `semana_protocolo`.
+**Datos semanales:** `registro_sesiones.json` → `mediciones` (tipo: sueno_semanal). Campos extendidos desde v4.1: `noches_7h_o_mas_reloj`, `porcentaje_reloj`, `sueno_continuo_estimado_h`, `despertares_nocturnos_subjetivos`, `ansiedad_por_dormir`, `semana_protocolo`, `tracker`.
 
 ---
 
@@ -484,15 +490,15 @@ Documentados para cuando los criterios de paso se cumplan.
 - [ ] Comprar avena (medio plazo)
 - [ ] Comprar pipas sin sal
 - [ ] Preparar salsa picante casera (Thermomix)
-- [ ] Compra de Oura Ring Gen 4 (planificada para 01/07/2026, condicional al cumplimiento del protocolo de sueño en mayo-junio)
 
 ### Sistema continuo
 
-- [ ] Revisar cada domingo las noches ≥7h en Huawei Watch GT 3 y registrar entrada de `mediciones` (tipo: sueno_semanal) en el JSON.
+- [ ] Revisar cada domingo las noches ≥7h en Pixel Watch 4 y registrar entrada de `mediciones` (tipo: sueno_semanal) en el JSON.
+- [ ] Anotar Readiness Score matutino diario durante mayo 2026 (mes de calibración del sistema Fitbit). Sin uso operativo hasta revisión del 31/05/2026.
 
 ### Hitos del calendario tendinoso
 
-Fuente canónica: `registro_sesiones.json` → `eventos` (tipo: hito, categoría: tendinoso). Incluye: fin bloque adaptación (04/05/2026), añadir carga a isométricos (12/05/2026), inicio excéntricas (02/06/2026), inicio transición (30/06/2026), evaluación criterios de paso (agosto 2026).
+Fuente canónica: `registro_sesiones.json` → `eventos` (tipo: hito, categoría: tendinoso). Incluye: fin bloque adaptación (04/05/2026), añadir carga a isométricos (12/05/2026), inicio excéntricas (02/06/2026), inicio transición (30/06/2026), evaluación criterios de paso (agosto 2026). **Completado 26/04/2026:** cierre del episodio aquiles_bilateral_2026-04-11 tras 15 días asintomático.
 
 ---
 

@@ -2,8 +2,8 @@
   "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
-  "ultima_actualizacion": "2026-04-27",
-  "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL.",
+  "ultima_actualizacion": "2026-05-01",
+  "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL. Schema v1.1 con extensiones de mayo 2026 para sesiones bici_zona2: campo 'tracker' (huawei_gt3 | pixel_watch_4), campos de zona Fitbit (zona_pico_min, zona_intensa_min, zona_moderada_min, zona_suave_min), hr_recovery_2min (sustituye/complementa hr_recovery_1min), hora_inicio/hora_fin, pausa_intencional. Sesiones con tracker Pixel Watch 4 pueden tener null en hr_recovery, estres_aerobico, tiempo_recuperacion_h por discontinuidad de instrumentación.",
 
   "enums": {
     "incidencias_tipo": ["tendinosa", "muscular", "articular", "osea", "sistemica", "cutanea", "neurologica", "cardiovascular_sintoma", "respiratoria", "otras"],
@@ -238,6 +238,51 @@
       "tiempo_recuperacion_h": null,
       "es_referencia": true,
       "notas": "SÉPTIMA REFERENCIA CALIBRADA. Primera sesión del escalón final de progresión (55 min). Zona 2 mantenida con precisión: 47 min aeróbico (85% sesión), 0 min anaeróbico. FC media 119 vs 120 ppm de la primera referencia (04/04) con +15 min de duración → adaptación cardiovascular temprana confirmada. FC máx 127 (-3 ppm vs 04/04). Estrés aeróbico 1.1 (recuperación, baja desde 1.6 del 10/04). HR recovery 10 ppm consistente con dato del 10/04 (11), normal en perfil desacondicionado en fase inicial; objetivo trimestral 13-15 ppm hacia agosto. Sensación subjetiva: sesión soportada sin problema."
+    },
+    {
+      "fecha": "2026-04-29",
+      "duracion_min": 55.07,
+      "fc_media": 116,
+      "fc_max": 129,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": 31,
+      "min_quema_grasa": 19,
+      "min_calentamiento": 3,
+      "kcal": 263,
+      "hr_recovery_1min": null,
+      "hr_recovery_2min": 21,
+      "estres_aerobico": null,
+      "tiempo_recuperacion_h": null,
+      "tracker": "huawei_gt3",
+      "es_referencia": true,
+      "notas": "OCTAVA REFERENCIA CALIBRADA. Primera sesión a duración objetivo Fase 1 (55 min) con zona 2 limpia y 19 min en quema de grasa (vs 7-9 min en sesiones previas). Cero anaeróbico. Curva de FC se estabiliza en torno a 18-20 min y se mantiene plana resto de sesión: confirmación operativa de adaptación cardiovascular real. HR Recovery 21 ppm en 2 min (121→100) como nuevo dato de referencia para seguimiento trimestral. ÚLTIMA SESIÓN REGISTRADA CON HUAWEI GT3: el dispositivo se vendió el 26/04 (registro retroactivo de la sesión)."
+    },
+    {
+      "fecha": "2026-05-01",
+      "duracion_min": 55.08,
+      "fc_media": 117,
+      "fc_max": null,
+      "min_extrema": 0,
+      "min_anaerobico": 0,
+      "min_aerobico": null,
+      "min_quema_grasa": null,
+      "min_calentamiento": null,
+      "kcal": 359,
+      "zona_pico_min": 0,
+      "zona_intensa_min": 0,
+      "zona_moderada_min": 56,
+      "zona_suave_min": 18,
+      "hr_recovery_1min": null,
+      "hr_recovery_2min": null,
+      "estres_aerobico": null,
+      "tiempo_recuperacion_h": null,
+      "tracker": "pixel_watch_4",
+      "hora_inicio": "21:03",
+      "hora_fin": "22:16",
+      "pausa_intencional": "Pausa para defecar con cronómetro pausado en min 35-40. Tiempo de pausa no incluido en duración efectiva. La forma rectangular de la caída en la curva refleja correctamente la interrupción y reanudación. Validación operativa de uso correcto del Pixel Watch 4: la función de pausa del dispositivo registra solo el tiempo activo.",
+      "es_referencia": false,
+      "notas": "Primera sesión de bici registrada con Pixel Watch 4. FC media 117 ppm coherente con sesión equivalente del 29/04 con Huawei GT3 (116 ppm): los dos dispositivos producen lecturas comparables en FC sostenida en zona 2. Calorías 359 kcal (Fitbit) vs 263 kcal (Huawei) por algoritmo distinto, no por sesión más intensa; el dato calorías de wearable no es métrica del proyecto. Hora de inicio tardía (21:03) deja margen muy justo para protocolo de sueño 23:00. Nomenclatura Fitbit (Suave/Moderada/Intensa/Pico) sustituye a la del Huawei (Calentamiento/Quema/Aeróbica/Anaeróbica/Extrema)."
     }
   ],
 
@@ -329,16 +374,16 @@
     {
       "id": "aquiles_bilateral_2026-04-11",
       "fecha_apertura": "2026-04-11",
-      "fecha_cierre": "2026-04-27",
+      "fecha_cierre": "2026-04-26",
       "estado": "cerrado",
       "tipo": "tendinosa",
       "estructura": "aquiles_bilateral",
       "intensidad": "palpitacion_no_dolor",
       "tipo_sensacion": "palpitacion_sobre_estructura",
       "contexto": "~18-20h post caminata de 45 min con 95 m de desnivel positivo (2026-04-10 tarde, no planificada en estructura semanal).",
-      "diagnostico_retrospectivo": null,
-      "resolucion": "Resolución espontánea tras retirada de carga ≥5-7 días (con reactivación intermedia 16/04 por empuje de trineo en funcional, ventana reiniciada desde 17/04). Asintomático sostenido desde 17/04. Confirmado el 27/04/2026 tras sesión de bici de 55 min y revisión post-sesión sin sensación. Cierre operativo del seguimiento.",
-      "lecciones": "Confirmación del valor del protocolo de retirada inmediata ante señal ambigua, incluso sin dolor. La caminata no planificada del 10/04 con desnivel de 95 m fue el desencadenante: las actividades con desnivel deben planificarse dentro de la estructura semanal, no añadirse de forma improvisada. La reactivación del 16/04 confirma que la comunicación al entrenador requiere lista específica de ejercicios contraindicados por nombre (ya formalizado).",
+      "diagnostico_retrospectivo": "Sobrecarga tendinosa transitoria por caminata con desnivel no planificada en estructura semanal. Resolución espontánea con retirada de carga >2 semanas, asintomático desde 12/04.",
+      "resolucion": "Espontánea con retirada de carga sostenida durante 15 días.",
+      "lecciones": "El protocolo de retirada inmediata ante señal ambigua (palpitación sin dolor) funciona y previene escalado. La caminata no planificada en estructura semanal es un vector de riesgo a controlar: el senderismo con desnivel debe estar agendado en sábado, no como actividad espontánea.",
       "acciones_tomadas": [
         "Suspendido gemelo isométrico mínimo 5-7 días",
         "Suspendido senderismo con desnivel",
@@ -358,10 +403,11 @@
         "21/04: sesión funcional martes con comunicación al entrenador sobre restricciones (trineo, saltos, sprints, elevaciones gemelo con carga = NO). Sin incidencias tendinosas.",
         "22/04: día 6, asintomático al despertar",
         "22/04: tolera bici 55 min + tendinoso inferior + 2 dead hangs sin síntomas",
-        "27/04: confirmación de cierre tras sesión de bici de 55 min (escalón final progresión aeróbica) y revisión post-sesión sin sensación. Asintomático sostenido desde 17/04 (10 días). Reincorporación de gemelo isométrico al protocolo tendinoso desde miércoles 29/04."
+        "26/04: cierre formal del episodio tras 15 días asintomático",
+        "27/04: reincorporación submáxima del gemelo isométrico iniciada"
       ],
-      "reincorporacion_prevista": "2026-04-22",
-      "protocolo_reincorporacion": null,
+      "reincorporacion_prevista": "2026-04-27",
+      "protocolo_reincorporacion": "Submáxima: 2 series × 20-25s del gemelo isométrico en lugar de 3 × 30-45s habituales. Evaluación matutina obligatoria primeros 7 días. Subida condicional a sensación tendinosa cero durante 7 días consecutivos.",
       "reactivacion": {
         "fecha": "2026-04-16",
         "causa": "Empuje de trineo en funcional. Flexión plantar potente contra resistencia.",
@@ -531,6 +577,63 @@
         "semana_medicion": 2
       },
       "notas": "Segunda medición semanal. Deltas vs baseline dentro de margen de error salvo grasa en brazos (-1.2/-1.5% del estándar), posible señal incipiente coherente con reporte subjetivo de mejora de tono en brazos. Necesita 3-4 semanas más para confirmar tendencia."
+    },
+    {
+      "fecha": "2026-04-20",
+      "periodo_fin": "2026-04-26",
+      "tipo": "sueno_semanal",
+      "datos": {
+        "noches_7h_o_mas_reloj": 7,
+        "porcentaje_reloj": 100,
+        "cumple_umbral_80": true,
+        "sueno_continuo_estimado_h": "discrepancia_subjetiva_persistente",
+        "despertares_nocturnos_subjetivos": "ya_no_frecuentes",
+        "ansiedad_por_dormir": "desaparecida",
+        "semana_protocolo": 4,
+        "horario_aplicado": "23:00-07:00",
+        "tracker": "huawei_gt3"
+      },
+      "notas": "CIERRE DE FASE DE CONSOLIDACIÓN INICIAL. Criterios cumplidos en semana 4 antes de la ventana esperada de 8-12 semanas. Ansiedad por dormir desaparecida (cambio cualitativo). Despertares 4:00 ya no frecuentes. Adherencia 100% al horario. Discrepancia subjetiva persistente (algunas noches el usuario percibe menos de 7h reales por vigilia intermedia no detectada por GT3) consistente con especificidad ~48% del dispositivo. Implicación: mantener protocolo sin cambios; la consolidación temprana no es razón para celebrar afinando. Última semana de seguimiento con Huawei GT3."
+    },
+    {
+      "fecha": "2026-04-26",
+      "periodo_fin": null,
+      "tipo": "peso",
+      "datos": {
+        "valor_kg": 78.3,
+        "metodo": "lepulse_p1_ayunas_domingo_matutino_08:45",
+        "es_baseline": false,
+        "delta_baseline_kg": 0.4,
+        "dias_desde_baseline": 14
+      },
+      "notas": "Segunda medición del protocolo dominical. +0.4 kg respecto a baseline 12/04. Probablemente glucógeno e hidratación, no tejido (en 14 días no se gana 0.8 kg de músculo magro)."
+    },
+    {
+      "fecha": "2026-04-26",
+      "periodo_fin": null,
+      "tipo": "composicion_corporal",
+      "datos": {
+        "porcentaje_graso_medido_bia": 16.3,
+        "porcentaje_graso_estimado_real": "23-25",
+        "metodo": "lepulse_p1_8_electrodos_doble_frecuencia",
+        "peso_kg": 78.3,
+        "imc": 24.4,
+        "masa_grasa_bia_kg": 12.8,
+        "masa_muscular_bia_kg": 61.1,
+        "agua_corporal_kg": 48.0,
+        "agua_corporal_porcentaje": 61.3,
+        "grasa_subcutanea_porcentaje": 11.7,
+        "grasa_visceral_indice": 4.0,
+        "bmr_kcal": 1784,
+        "edad_corporal": 43,
+        "whr": 0.88,
+        "peso_corporal_estandar_kg": 70.5,
+        "es_baseline": false,
+        "delta_porcentaje_graso_bia_pp": -0.6,
+        "delta_masa_muscular_bia_kg": 0.8,
+        "delta_visceral": 0
+      },
+      "notas": "Segunda medición. Δ vs baseline 12/04 muestra patrón de recomposición según BIA (-0.4 kg grasa, +0.8 kg músculo). Magnitud probablemente sobreestima el cambio real: en 14 días no hay hipertrofia estructural significativa. Lectura honesta: la dirección es coherente con recomposición pero la magnitud del cambio en masa muscular probablemente refleja mejor hidratación intracelular (agua corporal 60.9 → 61.3%) más que tejido nuevo. Grasa visceral sin cambios (esperable: se mueve en escala de meses). WHR 0.88: dentro de rango estándar pero sin margen de subida. Mantener triangulación 23-25% como baseline operativo hasta DEXA."
     }
   ],
 
@@ -873,6 +976,129 @@
       "fecha_prevista": "2026-04-22",
       "fecha_real": "2026-04-27",
       "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
+    },
+    {
+      "fecha": "2026-04-26",
+      "tipo": "decision",
+      "categoria": "equipamiento",
+      "titulo": "Sustitución total de Huawei GT3 por Pixel Watch 4 (Huawei vendido)",
+      "descripcion": "El Huawei GT3 se vendió el 26/04/2026 como parte de la adquisición del Pixel Watch 4. La decisión es definitiva: no hay opción de configuración paralela ni de respaldo. Justificación principal del cambio: especificidad superior en sueño (Cohen κ 0.4-0.6 vs ~0.2-0.4) + ecosistema Fitbit con métricas predictivas (Readiness Score, Cardio Load, Target Load, Training Status) que el Huawei no ofrecía. Coste asumido: pérdida de la serie longitudinal de HR Recovery, estrés aeróbico y tiempo de recuperación; estos campos del JSON quedan null para sesiones nuevas. Discontinuidad analítica de ~1 mes (mayo 2026) hasta que el sistema Fitbit complete calibración personal. El descarte previo del Oura Ring Gen 4 (tras prueba con anillo impreso en 3D durante varios días: nivel de molestia incompatible con uso continuo) hizo que el Pixel Watch 4 fuera la opción operativamente viable para la mejora del seguimiento de sueño.",
+      "razon": "Mejora neta en sueño y métricas predictivas asumiendo el coste de discontinuidad post-sesión.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-26",
+      "tipo": "hito",
+      "categoria": "sueno",
+      "titulo": "Cierre de fase de consolidación inicial del protocolo de sueño (semana 4)",
+      "descripcion": "Criterios cumplidos antes de la ventana esperada de 8-12 semanas. Ansiedad por dormir desaparecida. Despertares 4:00 AM ya no frecuentes. 7/7 noches con ≥7h reportadas por el reloj. La consolidación temprana se interpreta como evidencia de adherencia bien diseñada, no como permiso para relajar el protocolo. El verdadero test será mantenerlo a través de un evento estresor.",
+      "estado": "completado",
+      "fecha_prevista": null,
+      "fecha_real": "2026-04-26",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-26",
+      "tipo": "hito",
+      "categoria": "tendinoso",
+      "titulo": "Cierre del episodio aquiles bilateral (formal)",
+      "descripcion": "15 días desde apertura, asintomático desde día 2 tras retirada de carga. Cierre formal con reincorporación submáxima del gemelo isométrico (2×20-25s en lugar de 3×30-45s). Sustituye el cierre operativo del 27/04 previamente registrado: la fecha formal del cierre del seguimiento es 26/04 al cumplir 15 días asintomático; la sesión del 27/04 fue ya con el episodio cerrado (reincorporación submáxima iniciada).",
+      "estado": "completado",
+      "fecha_prevista": null,
+      "fecha_real": "2026-04-26",
+      "referencias": {"incidencia_id": "aquiles_bilateral_2026-04-11"}
+    },
+    {
+      "fecha": "2026-04-29",
+      "tipo": "hito",
+      "categoria": "cardiovascular",
+      "titulo": "Primera sesión de bici a duración objetivo Fase 1 (55 min) con zona 2 limpia",
+      "descripcion": "Cero anaeróbico, 19 min en quema de grasa, curva de FC plana tras estabilización en min 18-20. Confirmación operativa de adaptación cardiovascular real. HR Recovery 21 ppm en 2 min como último dato de referencia con Huawei. Acción derivada: mantener 55 min × 3 días/semana en mayo sin progresión adicional. Consolidar 4-6 semanas antes de añadir cualquier estímulo.",
+      "estado": "completado",
+      "fecha_prevista": null,
+      "fecha_real": "2026-04-29",
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-04-29"}
+    },
+    {
+      "fecha": "2026-04-30",
+      "tipo": "decision",
+      "categoria": "entrenamiento",
+      "titulo": "Descanso preventivo selectivo de cuádriceps viernes-lunes",
+      "descripcion": "Aplicación del principio de retirada preventiva ante carga acumulada antes de aparición de incidencia. Mantenimiento de bici zona 2 (con cadencia mayor / resistencia menor para reducir carga mecánica), suspensión de wall sit + sentadillas + senderismo con desnivel hasta martes. Decisión iniciada por autoobservación calibrada del usuario ('aguanto bien pero necesito cuartelillo'). El usuario distingue correctamente entre fatiga residual con adaptación favorable (lo que tiene) y proximidad a incidencia (lo que no tiene). 4 días sin estímulo de carga adicional sobre cuádriceps son suficientes para procesar carga acumulada sin desentrenamiento neural.",
+      "razon": "Tendencia a 'aguantar bien' como precursor histórico de incidencias. Reconocer la sensación de 'necesito cuartelillo' como dato operativo.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-30",
+      "tipo": "observacion",
+      "categoria": "composicion_corporal",
+      "titulo": "Diferenciación calibrada de fuentes de cambio físico percibido en semana 5 del protocolo",
+      "descripcion": "El usuario distingue cuatro fenómenos concurrentes que se manifiestan como 'estar mejorando': (1) fuerza neural sin hipertrofia, percibida en activación; (2) definición en brazos y pecho atribuible a reducción de grasa subcutánea sobre músculo preexistente; (3) tono basal aumentado en piernas (dureza al tacto) sin ganancia de tamaño; (4) posible ganancia de volumen en gemelos compatible con hipertrofia sarcoplasmática + retención de líquido por estímulo continuo de bici. Lectura compatible con escenario realista para fase de reactivación neural + acondicionamiento, sin estímulo de hipertrofia diseñado en el plan actual. Marca el punto en el que el usuario internaliza la diferencia entre reactivación y construcción.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-04-30",
+      "tipo": "decision",
+      "categoria": "entrenamiento",
+      "titulo": "Posicionamiento estratégico DEFINITIVO: fuerza optimizada como objetivo, volumen como subproducto",
+      "descripcion": "El usuario articula explícitamente que el objetivo del proyecto es alcanzar ~90% de su techo fisiológico de fuerza, con el volumen muscular aceptado únicamente como subproducto natural del trabajo de fuerza. Restricción explícita: no perseguir hipertrofia estética; evitar desproporción. Consolidado en turno posterior con definición de banda operativa 78-80 kg. Implicaciones: Fase 1B reformulada hacia rangos de fuerza (3-6 reps) sobre rangos de hipertrofia, mantenimiento calórico estricto sin superávit, volumen semanal en extremo bajo del rango (8-12 series por grupo muscular). Fase 2 reformulada como 'capacidad de fuerza sostenida + cardiovascular' en lugar de 'hipertrofia + cardiovascular'. Decisión coherente con perfil DYA/GER, longevidad funcional, historial atlético del judo y protección articular/tendinosa a 45+ años. Anclaje contra deriva futura: cuando aparezcan voces externas o internas que sugieran 'meterle más volumen', este registro es el ancla de referencia.",
+      "razon": "Articulación de prioridades en frío. Fuerza relativa (por kilo) más relevante que fuerza absoluta para perfil DYA/GER. Sostenibilidad operativa superior a magnitud teórica.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "decision",
+      "categoria": "composicion_corporal",
+      "titulo": "Cierre de posicionamiento — banda operativa 78-80 kg + cintura como métrica primaria",
+      "descripcion": "Consolidación del posicionamiento iniciado el 30/04. Banda objetivo definitiva 78-80 kg con fluctuación natural aceptada. Métrica primaria de éxito desplazada de 'porcentaje graso' a 'reducción de cintura con peso estable' (firma de recomposición real). Priorización explícita de sostenibilidad operativa sobre magnitud teórica: ejecución al 90% durante 24 meses se considera superior a plan teórico óptimo abandonado al sexto mes — lección destilada del fallo del CrossFit 2025. Banda permite operatividad para rescate (78 kg) y reserva metabólica para fases de carga (80 kg) sin obsesión por punto fijo. Objetivo de cintura: 84 cm (12/04/2026) → 78-82 cm en 24 meses.",
+      "razon": "Concretar la métrica que mejor refleja el objetivo real (recomposición) y eliminar el peso como métrica obsesiva.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "observacion",
+      "categoria": "sueno",
+      "titulo": "Patrón 'jueves euforia → noche mala → viernes paradójicamente energético' — segunda observación",
+      "descripcion": "Segunda observación en dos semanas del mismo patrón. Hipótesis fisiológica: catecolaminas y cortisol residual del funcional vespertino del jueves no terminan de bajar a la hora de dormir, sistema simpático sigue activado a las 23:00, despertar nocturno alrededor de las 3-4 AM. Viernes con energía paradójica que puede ser base de fitness mayor o cortisol compensatorio. Distinguible por curva de energía vespertina del viernes: si se mantiene estable es base de fitness; si aparece bajón claro hacia las 17:00-18:00 era cortisol compensatorio. Plan: observar 2 semanas más. Si se mantiene y los viernes dejan de compensar, intervención escalonada (ducha post-funcional + reducción estímulos cognitivos jueves noche → adelanto del funcional si hay flexibilidad horaria). NO modificar protocolo de sueño base.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "observacion",
+      "categoria": "entrenamiento",
+      "titulo": "Confirmación operativa de transferencia de base aeróbica al funcional",
+      "descripcion": "El usuario reporta capacidad de ejecutar sprints cortos de 8-10 min con ejercicios intercalados sin preocupación por no poder completarlos: 'cardio resuelto con solvencia'. Marca el momento en el que la base aeróbica construida en bici zona 2 transfiere visiblemente al rendimiento en sesiones mixtas. Coherente con adaptación esperada en semana 4-5 de volumen aeróbico consistente. Junto con el dato objetivo de la sesión de bici del 29/04 (curva de FC plana tras estabilización), confirma adaptación real más allá de sensación subjetiva.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "observacion",
+      "categoria": "cardiovascular",
+      "titulo": "Primera sesión de actividad con Pixel Watch 4 — calibración cruzada con Huawei GT3 favorable en FC",
+      "descripcion": "La lectura de FC media (117) coincide casi exactamente con la del Huawei GT3 en sesión equivalente del 29/04 (116). Validación inicial positiva de comparabilidad entre dispositivos para series temporales de FC en zona 2 sostenida. Diferencia significativa solo en gasto calórico (+36% Fitbit vs Huawei) por algoritmos distintos; dato no operativo para el proyecto. Pausa intencional durante la sesión (min 35-40, defecación) con cronómetro pausado, registrada correctamente por el dispositivo. Validación operativa positiva de la función de pausa del Pixel Watch 4.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-05-01"}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "observacion",
+      "categoria": "sueno",
+      "titulo": "Bici del viernes ejecutada en ventana 21:03-22:16, comprime protocolo pre-sueño",
+      "descripcion": "La sesión de bici corta del viernes terminó a las 22:16, dejando 44 min para magnesio + ducha + transición a cama (vs el ideal de >90 min entre fin de ejercicio y conciliación de sueño). Si esta noche se observa patrón similar al 'jueves euforia → noche mala' descrito en eventos previos, se confirma que la ventana vespertina tardía es factor causal. Sugerencia operativa para próximos viernes: aprovechar flexibilidad horaria del teletrabajo para hacer la bici corta del viernes por la mañana o por la tarde temprano (16:00-17:30), dejando la noche para descompresión.",
+      "razon": null,
+      "referencias": {"sesion_tipo": "bici_zona2", "sesion_fecha": "2026-05-01"}
+    },
+    {
+      "fecha": "2026-05-01",
+      "tipo": "decision",
+      "categoria": "equipamiento",
+      "titulo": "Mayo 2026 reconocido como mes de calibración del sistema Fitbit",
+      "descripcion": "El sistema Fitbit (Readiness Score, Cardio Load, Target Load, Training Status) requiere ~4 semanas de uso continuo antes de generar baseline personal fiable. Mayo se trata explícitamente como mes de calibración: las métricas avanzadas se anotan diariamente pero no se usan como input de decisiones operativas hasta finales de mayo / principios de junio. Decisiones operativas en mayo siguen basándose en: protocolo tendinoso por calendario, autoobservación calibrada del usuario, FC media y distribución de zonas durante sesiones (datos que el Pixel Watch da fiables desde día 1). Acción inmediata: anotar Readiness Score matutino diario sin protocolo de uso. Punto de revisión: 31/05/2026, evaluación de qué métricas Fitbit se integran al protocolo dominical y cuáles quedan como dato auxiliar.",
+      "razon": "Aprovechar la discontinuidad analítica para construir nuevo baseline en lugar de pretender continuidad imposible.",
+      "referencias": {}
     }
   ]
 }
