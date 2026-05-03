@@ -2,13 +2,13 @@
   "schema_version": "1.1",
   "proyecto": "recuperacion_fisica_alexander",
   "fase": "1",
-  "ultima_actualizacion": "2026-05-01",
+  "ultima_actualizacion": "2026-05-03",
   "nota": "Base de datos preliminar del proyecto. Dos niveles: (1) sesiones de entrenamiento con schema propio por tipo; (2) entidades genéricas con campo 'tipo' discriminador (incidencias, mediciones, eventos). Migración futura prevista a SQL. Schema v1.1 con extensiones de mayo 2026 para sesiones bici_zona2: campo 'tracker' (huawei_gt3 | pixel_watch_4), campos de zona Fitbit (zona_pico_min, zona_intensa_min, zona_moderada_min, zona_suave_min), hr_recovery_2min (sustituye/complementa hr_recovery_1min), hora_inicio/hora_fin, pausa_intencional. Sesiones con tracker Pixel Watch 4 pueden tener null en hr_recovery, estres_aerobico, tiempo_recuperacion_h por discontinuidad de instrumentación.",
 
   "enums": {
     "incidencias_tipo": ["tendinosa", "muscular", "articular", "osea", "sistemica", "cutanea", "neurologica", "cardiovascular_sintoma", "respiratoria", "otras"],
     "incidencias_estado": ["abierto", "cerrado", "escalado"],
-    "mediciones_tipo": ["sueno_semanal", "analitica", "vo2max", "composicion_corporal", "peso", "ta", "fc_reposo"],
+    "mediciones_tipo": ["sueno_semanal", "sueno_nocturno_individual", "analitica", "vo2max", "composicion_corporal", "peso", "cintura", "ta", "fc_reposo"],
     "eventos_tipo": ["observacion", "decision", "leccion", "ajuste_tecnico", "hito", "hallazgo", "bloqueo"],
     "eventos_categoria": ["entrenamiento", "nutricion", "sueno", "suplementacion", "tendinoso", "analitica", "equipamiento", "psicologico", "cardiovascular", "composicion_corporal", "fuerza_agarre", "movilidad"]
   },
@@ -634,6 +634,100 @@
         "delta_visceral": 0
       },
       "notas": "Segunda medición. Δ vs baseline 12/04 muestra patrón de recomposición según BIA (-0.4 kg grasa, +0.8 kg músculo). Magnitud probablemente sobreestima el cambio real: en 14 días no hay hipertrofia estructural significativa. Lectura honesta: la dirección es coherente con recomposición pero la magnitud del cambio en masa muscular probablemente refleja mejor hidratación intracelular (agua corporal 60.9 → 61.3%) más que tejido nuevo. Grasa visceral sin cambios (esperable: se mueve en escala de meses). WHR 0.88: dentro de rango estándar pero sin margen de subida. Mantener triangulación 23-25% como baseline operativo hasta DEXA."
+    },
+    {
+      "fecha": "2026-05-01",
+      "periodo_fin": "2026-05-02",
+      "tipo": "sueno_nocturno_individual",
+      "datos": {
+        "sueno_total_h": 6.43,
+        "ventana_cama": "23:57-07:30",
+        "vigilia_min": 66,
+        "rem_min": 35,
+        "ligero_min": 252,
+        "profundo_min": 99,
+        "puntuacion_fitbit": 74,
+        "fc_media_nocturna_ppm": 58,
+        "inquietud_porcentaje": 9,
+        "tracker": "pixel_watch_4",
+        "contexto": "Post-bici 21:03-22:16. Ventana entre fin de ejercicio y conciliación: 1h 41min."
+      },
+      "notas": "Primera noche con datos completos del Pixel Watch 4 con sesión vespertina tardía. Vigilia 1h 6min concentrada en franja 5:00-6:30 AM (despertar prolongado). REM bajo (35 min vs 90-120 min normal). Confirmación objetiva del patrón hipotetizado tras observación cualitativa previa: ejercicio vespertino tardío deteriora calidad de sueño."
+    },
+    {
+      "fecha": "2026-05-02",
+      "periodo_fin": "2026-05-03",
+      "tipo": "sueno_nocturno_individual",
+      "datos": {
+        "sueno_total_h": 7.57,
+        "ventana_cama": "23:59-08:55",
+        "vigilia_min": 82,
+        "rem_min": 26,
+        "ligero_min": 312,
+        "profundo_min": 115,
+        "puntuacion_fitbit": 83,
+        "fc_media_nocturna_ppm": 55,
+        "inquietud_porcentaje": 7,
+        "tracker": "pixel_watch_4",
+        "contexto": "Sábado de descanso, sin ejercicio vespertino. Recuperación parcial post-mala-noche del viernes."
+      },
+      "notas": "Mejor calidad general (puntuación 83, FC nocturna 55 ppm) pero REM persiste bajo (26 min): deuda REM del viernes no compensada en noche siguiente. Sugiere que el coste fisiológico de una mala noche post-ejercicio vespertino tardío arrastra al menos al sábado."
+    },
+    {
+      "fecha": "2026-05-03",
+      "periodo_fin": null,
+      "tipo": "peso",
+      "datos": {
+        "valor_kg": 78.4,
+        "metodo": "lepulse_p1_ayunas_domingo_matutino_09:18",
+        "es_baseline": false,
+        "delta_baseline_kg": 0.5,
+        "dias_desde_baseline": 21,
+        "dentro_banda_operativa": true
+      },
+      "notas": "Tercera medición del protocolo dominical. Peso estable en banda operativa 78-80 kg desde definición de la banda el 01/05. +0.5 kg vs baseline en 21 días, +0.1 kg vs medición anterior (dentro del ruido instrumental BIA)."
+    },
+    {
+      "fecha": "2026-05-03",
+      "periodo_fin": null,
+      "tipo": "composicion_corporal",
+      "datos": {
+        "porcentaje_graso_medido_bia": 16.4,
+        "porcentaje_graso_estimado_real": "23-25",
+        "metodo": "lepulse_p1_8_electrodos_doble_frecuencia",
+        "peso_kg": 78.4,
+        "imc": 24.5,
+        "masa_grasa_bia_kg": 12.9,
+        "masa_muscular_bia_kg": 61.1,
+        "agua_corporal_kg": 48.0,
+        "agua_corporal_porcentaje": 61.2,
+        "grasa_subcutanea_porcentaje": 11.8,
+        "grasa_visceral_indice": 4.0,
+        "musculo_esqueletico_porcentaje": 47.7,
+        "bmr_kcal": 1784,
+        "edad_corporal": 43,
+        "whr": 0.88,
+        "distribucion_tronco_porcentaje_estandar": 136.3,
+        "distribucion_brazos_porcentaje_estandar": 79.0,
+        "distribucion_piernas_porcentaje_estandar": 118.3,
+        "es_baseline": false,
+        "delta_distribucion_tronco_pp_vs_baseline": -5,
+        "pendiente_confirmacion_dexa": true
+      },
+      "notas": "Tercera medición. Estabilidad general dentro del margen instrumental BIA. Señal real detectable únicamente en distribución segmental del tronco (-5 pp respecto a baseline 12/04: 141.2 → 136.3). Masa muscular estabilizada tras el 'salto' interpretado como hidratación intracelular en medición previa. Cintura medida con cinta métrica por primera vez en el protocolo: 84 cm (sin cambios vs baseline)."
+    },
+    {
+      "fecha": "2026-05-03",
+      "periodo_fin": null,
+      "tipo": "cintura",
+      "datos": {
+        "cintura_cm": 84,
+        "metodo": "cinta_metrica_altura_ombligo_ayunas",
+        "delta_baseline_cm": 0,
+        "dias_desde_baseline": 21,
+        "es_metrica_primaria": true
+      },
+      "notas": "Primera medición de cintura del protocolo dominical (incorporación formal el 03/05). Estable en 84 cm vs baseline 12/04 (0 cm de cambio en 21 días). Esperado: la métrica primaria del proyecto se mueve en escala de meses, no de semanas. Próximas mediciones cada domingo en mismas condiciones (ayunas, altura ombligo, sin contener abdomen, mismo momento que la báscula)."
     }
   ],
 
@@ -1098,6 +1192,62 @@
       "titulo": "Mayo 2026 reconocido como mes de calibración del sistema Fitbit",
       "descripcion": "El sistema Fitbit (Readiness Score, Cardio Load, Target Load, Training Status) requiere ~4 semanas de uso continuo antes de generar baseline personal fiable. Mayo se trata explícitamente como mes de calibración: las métricas avanzadas se anotan diariamente pero no se usan como input de decisiones operativas hasta finales de mayo / principios de junio. Decisiones operativas en mayo siguen basándose en: protocolo tendinoso por calendario, autoobservación calibrada del usuario, FC media y distribución de zonas durante sesiones (datos que el Pixel Watch da fiables desde día 1). Acción inmediata: anotar Readiness Score matutino diario sin protocolo de uso. Punto de revisión: 31/05/2026, evaluación de qué métricas Fitbit se integran al protocolo dominical y cuáles quedan como dato auxiliar.",
       "razon": "Aprovechar la discontinuidad analítica para construir nuevo baseline en lugar de pretender continuidad imposible.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "decision",
+      "categoria": "entrenamiento",
+      "titulo": "Reordenar bici corta del viernes a horario tarde-temprano (16:00-17:30)",
+      "descripcion": "Confirmación objetiva del patrón 'ejercicio vespertino tardío deteriora sueño' con datos Pixel Watch 4 de la noche del 01/05/2026: 6h 26min de sueño total, vigilia 1h 6min, REM solo 35 min (vs 90-120 min normal), conciliación a las 23:57 tras bici 21:03-22:16. La noche siguiente (sábado descanso) mejoró pero no compensó completamente la deuda REM (REM 26 min). Decisión: la bici corta del viernes pasa a 16:00-17:30, aprovechando que el teletrabajo termina a las 15:00. Deja >5h entre fin de ejercicio y hora de dormir. Mantiene volumen aeróbico semanal de 165 min sin coste sobre sueño. Aplicable desde el viernes 08/05/2026.",
+      "razon": "Los datos objetivos del tracker validan la hipótesis cualitativa registrada en eventos previos. El coste sobre sueño de la bici tardía es mayor que el beneficio de la flexibilidad horaria.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "hito",
+      "categoria": "composicion_corporal",
+      "titulo": "Incorporación formal de medición de cintura al protocolo dominical",
+      "descripcion": "Primera medición con cinta métrica como parte del protocolo: 84 cm (estable vs baseline 12/04). La métrica primaria del proyecto queda formalmente activada en el seguimiento semanal. Próximas mediciones cada domingo en mismas condiciones (ayunas, altura ombligo, sin contener abdomen).",
+      "estado": "completado",
+      "fecha_prevista": "2026-05-10",
+      "fecha_real": "2026-05-03",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "observacion",
+      "categoria": "composicion_corporal",
+      "titulo": "Tercera medición dominical — estabilidad en banda operativa, señal incipiente en distribución del tronco",
+      "descripcion": "Peso 78.4 kg dentro de banda operativa 78-80 kg recién definida. Composición corporal estable dentro del margen instrumental BIA en peso, masa grasa, masa muscular, grasa visceral. Señal real detectable únicamente en distribución segmental del tronco (-5 pp respecto a baseline 12/04). Coherente con dirección esperada del plan (redistribución de grasa visceral por bici zona 2 sostenida) pero pendiente de confirmar con cintura medida con cinta métrica y eventual reducción de transaminasas hepáticas en próxima analítica.",
+      "razon": null,
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "decision",
+      "categoria": "composicion_corporal",
+      "titulo": "Anclaje refinado — construcción de base antes de optimización dirigida de cualquier métrica",
+      "descripcion": "El usuario articula con precisión que el plan de 24 meses tiene como objetivo construir base sólida en todos los dominios fisiológicos antes de aplicar optimización dirigida a métricas específicas. Implicación: durante Fase 1, 1B y 2 (mayo 2026 — septiembre 2027 aproximadamente) NO se persigue activamente optimización de cintura, grasa, masa muscular o fuerza máxima como objetivos específicos. Las mediciones dominicales se mantienen para registro, detección de desviaciones graves, y disfrute personal del seguimiento, pero NO disparan intervenciones específicas. Una vez la base esté construida, se decidirá qué objetivo priorizar y se aplicará intervención dirigida UNA cada vez. Justificación fisiológica: las adaptaciones se contradicen entre sí en simultáneo (hipertrofia vs déficit calórico, resistencia vs fuerza máxima); la secuenciación produce mejores resultados que la multitarea. Lección destilada: optimizar todo a la vez es la receta de fracaso por incompatibilidad de adaptaciones y por carga psicológica insostenible. Implicación para el lenguaje del consultor: reportes de mediciones breves por defecto durante construcción de base; análisis detallado solo cuando hay desviación grave o cuando la cintura muestre cambio sostenido (≥2 cm en 4 semanas).",
+      "razon": "Claridad sobre la naturaleza secuencial del proyecto. Liberar la sensación y los datos del rol de juez del progreso permite mantenerlos como registro neutro.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "decision",
+      "categoria": "equipamiento",
+      "titulo": "Adquisición pendiente de foam roller como respuesta al patrón fatiga acumulada cuádriceps",
+      "descripcion": "El foam roller estaba en la lista de pendientes desde el inicio del proyecto. Con la identificación del patrón 'cuádriceps castigados jueves-viernes' (registrado el 30/04) pasa de pendiente sin urgencia a necesidad activa. Especificaciones: rodillo de espuma densidad media (no blanda ni extra-dura), superficie lisa (sin relieve), ~30-45 cm de largo, 13-15 cm de diámetro. Uso primario: liberación miofascial post-bici y post-funcional de cuádriceps, isquios, glúteos, banda IT. Uso secundario: apertura torácica post-jornada laboral. Coste estimado ~15-20€ (Domyos Decathlon o equivalente). Rutina básica post-sesión: 5-7 min con 30-45s por zona muscular. Reglas operativas: movimiento lento, pausa en zonas tensas, sin dolor agudo, nunca sobre articulaciones ni columna lumbar.",
+      "razon": "Patrón identificado en datos del proyecto: necesidad activa, no compra opcional.",
+      "referencias": {}
+    },
+    {
+      "fecha": "2026-05-03",
+      "tipo": "bloqueo",
+      "categoria": "analitica",
+      "titulo": "Analítica de control sigue pendiente — 11 meses desde baseline con GGT a +167%",
+      "descripcion": "La analítica de control es la pendiente más urgente del proyecto. Marca el punto en el que se confirma si la intervención está actuando sobre la métrica clínica real (estrés hepático). Sin este dato, el seguimiento dominical aporta tendencia pero no confirmación del impacto sobre lo que el plan persigue prioritariamente. Acción: llamar al laboratorio el lunes 04/05/2026 para programar extracción esta semana. Marcadores: perfil lipídico completo, HbA1c, insulina ayunas (HOMA-IR), ferritina + hierro, vitamina D (25-OH), ácido úrico, PCR ultrasensible, testosterona total + SHBG. Extracción antes de las 10:00 AM.",
+      "razon": null,
       "referencias": {}
     }
   ]

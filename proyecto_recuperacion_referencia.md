@@ -101,6 +101,10 @@ Requisitos específicos del GER no publicados. **Acción pendiente: contactar DY
 
 Peso 78.3 kg (+0.4 kg vs baseline), porcentaje graso BIA 16.3% (-0.6 pp), masa muscular BIA 61.1 kg (+0.8 kg), grasa visceral índice 4.0 (sin cambios), WHR 0.88. Lectura honesta: la dirección es coherente con recomposición pero la magnitud del cambio en masa muscular probablemente refleja mejor hidratación intracelular más que tejido nuevo (en 14 días no se gana 0.8 kg de músculo magro). El baseline operativo del proyecto sigue siendo el rango triangulado 23-25% real hasta confirmación con DEXA.
 
+### Seguimiento 03/05/2026 (medición Lepulse P1 + cintura)
+
+Peso 78.4 kg (+0.5 kg vs baseline en 21 días, dentro de banda operativa 78-80 kg), porcentaje graso BIA 16.4%, masa muscular BIA 61.1 kg (estable tras medición previa), grasa visceral índice 4.0 (sin cambios). Distribución tronco bajada de 141% a 136% del estándar (señal incipiente de redistribución). **Cintura: 84 cm (sin cambios vs baseline 12/04)**, primera medición con cinta métrica como parte del protocolo dominical. Lectura: el plan está produciendo el patrón esperado de recomposición lenta sostenida dentro del margen instrumental BIA. La métrica primaria (cintura) no se mueve todavía, lo cual es esperable: cambia en escala de meses, no de semanas.
+
 ### Tono muscular
 
 - Estado actual: flaccidez percibida, ausencia de dureza al tacto
@@ -219,6 +223,17 @@ Herramienta: **Pixel Watch 4** (tracker único 24/7 desde 26/04/2026, Cohen κ 0
 **Estado longitudinal (mayo 2026):** consolidación cumplida en semana 4 antes de la ventana esperada de 8-12 semanas. Mantener protocolo sin cambios para confirmar estabilidad ante futuro estresor. Detalle completo en SYSTEM_PROMPT §Sueño → Estado longitudinal (mayo 2026).
 
 **Datos semanales:** `registro_sesiones.json` → `mediciones` (tipo: sueno_semanal). Campos extendidos desde v4.1: `noches_7h_o_mas_reloj`, `porcentaje_reloj`, `sueno_continuo_estimado_h`, `despertares_nocturnos_subjetivos`, `ansiedad_por_dormir`, `semana_protocolo`, `tracker`.
+
+### Restricciones de horario de ejercicio (mayo 2026)
+
+**Ejercicio vespertino tardío con impacto documentado sobre sueño:** dos observaciones convergentes en mayo 2026 confirman que el ejercicio terminado después de las 21:00 deteriora calidad de sueño esa noche y arrastra recuperación parcial al día siguiente:
+
+- Patrón cualitativo "jueves euforia → noche mala → viernes paradójico" observado las semanas del 20/04 y del 27/04
+- Confirmación objetiva con datos Pixel Watch 4 la noche del 01/05/2026 (post-bici 21:03-22:16): sueño total 6h 26min, vigilia 1h 6min, REM bajo (35 min vs 90-120 min normal)
+
+**Regla operativa:** ninguna sesión de entrenamiento debe terminar después de las 21:00 si la noche siguiente requiere descanso normal. Sesiones del lunes y miércoles (gimnasio funcional) están en horario 19:00, dentro de margen aceptable. Sesión del viernes (bici corta) reordenada a 16:00-17:30 desde el 08/05/2026.
+
+**Mecanismo fisiológico:** las catecolaminas y el cortisol residual del ejercicio vespertino tardan 2-4 horas en bajar. La temperatura corporal central elevada por el ejercicio retrasa el inicio del sueño. La ventana entre fin de ejercicio y conciliación debe ser >90 min ideal, >5h cuando hay tiempo.
 
 ---
 
@@ -469,7 +484,7 @@ Documentados para cuando los criterios de paso se cumplan.
 
 ### URGENTES — Semana 7-11 abril 2026
 
-- [ ] **Analítica de control — llamar y pedir cita.** Marcadores: perfil lipídico completo, HbA1c, insulina ayunas (HOMA-IR), ferritina + hierro, vitamina D (25-OH), ácido úrico, PCR ultrasensible, testosterona total + SHBG. Extracción antes de las 10:00 AM. 10 meses sin control con GGT a +167% es demasiado.
+- [ ] **Analítica de control — llamar y pedir cita.** Pendiente desde abril; renovada urgencia el 03/05/2026: programar llamada al laboratorio el lunes 04/05/2026 para extracción esta misma semana. 11 meses desde baseline con GGT a +167%. Marcadores: perfil lipídico completo, HbA1c, insulina ayunas (HOMA-IR), ferritina + hierro, vitamina D (25-OH), ácido úrico, PCR ultrasensible, testosterona total + SHBG. Extracción antes de las 10:00 AM.
 - [ ] Programar bioimpedancia o DEXA (para cerrar el baseline conservador del 28%).
 
 ### Antes del 18 de abril 2026
@@ -483,7 +498,7 @@ Documentados para cuando los criterios de paso se cumplan.
 
 - [ ] Adquirir omega-3 cápsulas
 - [ ] Adquirir bandas elásticas
-- [ ] Adquirir foam roller
+- [ ] Adquirir foam roller — necesidad activa (rodillo densidad media, lisa, 30-45 cm, ~15-20€). Aprovechar próxima visita a Decathlon. Confirmar disponibilidad de esterilla de yoga 180 cm o adquirir junto al foam roller.
 - [ ] Colocar bici en lugar visible
 - [ ] Contactar DYA Bizkaia (voluntario + requisitos GER)
 - [ ] Planificar primera ruta senderismo (Artxanda)
@@ -495,6 +510,7 @@ Documentados para cuando los criterios de paso se cumplan.
 
 - [ ] Revisar cada domingo las noches ≥7h en Pixel Watch 4 y registrar entrada de `mediciones` (tipo: sueno_semanal) en el JSON.
 - [ ] Anotar Readiness Score matutino diario durante mayo 2026 (mes de calibración del sistema Fitbit). Sin uso operativo hasta revisión del 31/05/2026.
+- [ ] Medición semanal de cintura con cinta métrica como parte del protocolo dominical (incorporada el 03/05/2026). Misma condición: ayunas, altura ombligo, sin contener abdomen, mismo momento que báscula.
 
 ### Hitos del calendario tendinoso
 
