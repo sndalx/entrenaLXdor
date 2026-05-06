@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Miércoles 06/05 — Sesión adaptada · Rodilla en evaluación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface-2: #232733;
+    --border: #2e3345;
+    --text: #e4e6ef;
+    --text-dim: #8b8fa3;
+    --accent: #818cf8;
+    --exercise: #f59e0b;
+    --rest: #10b981;
+    --warmup: #ec4899;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  html, body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+  body { min-height: 100dvh; }
+  #app { width: 100vw; height: 100dvh; display: flex; flex-direction: column; }
+
+  .screen { flex: 1; display: flex; flex-direction: column; padding: 20px; animation: fadeIn 0.25s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+  .progress-bar { width: 100%; height: 4px; background: var(--surface-2); border-radius: 2px; overflow: hidden; margin-bottom: 4px; }
+  .progress-bar .fill { height: 100%; background: var(--accent); transition: width 0.4s ease; }
+  .progress-meta { display: flex; justify-content: space-between; align-items: center; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-dim); margin-bottom: 8px; padding: 0 2px; }
+
+  .block-indicator { padding: 8px 4px 10px; border-bottom: 1px solid #232733; margin-bottom: 16px; }
+  .block-name { font-size: 11px; color: var(--accent); letter-spacing: 1px; text-transform: uppercase; font-weight: 600; }
+  .block-progress { font-size: 10px; color: var(--text-dim); font-family: 'JetBrains Mono', monospace; margin-top: 2px; }
+
+  .phase { font-size: 12px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 8px; text-align: center; }
+  .name { font-size: 26px; font-weight: 700; text-align: center; margin-bottom: 12px; line-height: 1.2; }
+  .intro-title { font-size: 30px; font-weight: 700; text-align: center; margin-bottom: 16px; }
+
+  .instruction-box { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text-dim); font-size: 15px; line-height: 1.5; max-width: 400px; width: 100%; margin: 0 auto 16px; }
+  .instruction-box p { margin-bottom: 8px; }
+  .instruction-box p:last-child { margin-bottom: 0; }
+  .key { background: var(--surface-2); color: var(--exercise); padding: 3px 10px; border-radius: 6px; font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 600; display: inline-block; }
+
+  .exercise-detail { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; color: var(--text-dim); font-size: 13px; line-height: 1.45; max-width: 420px; width: 100%; margin: 0 auto 12px; max-height: 28vh; overflow-y: auto; }
+  .exercise-detail p { margin-bottom: 6px; }
+  .exercise-detail p:last-child { margin-bottom: 0; }
+
+  .timer-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-ring { position: relative; width: 220px; height: 220px; margin: 8px auto; }
+  .timer-ring svg { transform: rotate(-90deg); width: 100%; height: 100%; }
+  .timer-ring .bg { fill: none; stroke: var(--border); stroke-width: 10; }
+  .timer-ring .progress { fill: none; stroke: var(--accent); stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+  .timer-ring.warmup .progress { stroke: var(--warmup); }
+  .timer-ring.exercise .progress { stroke: var(--exercise); }
+  .timer-ring.rest .progress { stroke: var(--rest); }
+  .timer-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .timer-seconds { font-family: 'JetBrains Mono', monospace; font-size: 56px; font-weight: 700; color: var(--text); }
+  .timer-seconds.long { font-size: 44px; }
+  .timer-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; margin-top: 2px; }
+
+  .reps-display { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+  .reps-number { font-family: 'JetBrains Mono', monospace; font-size: 110px; font-weight: 700; color: var(--exercise); line-height: 1; }
+  .reps-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 1.5px; }
+  .per-side { color: var(--exercise); font-size: 13px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 6px; }
+
+  .rest-next { margin-top: 12px; font-size: 13px; color: var(--text-dim); text-align: center; padding: 0 20px; }
+  .rest-next strong { color: var(--rest); }
+
+  .btn-row { display: flex; flex-direction: column; align-items: center; gap: 10px; padding: 12px 0 4px; }
+  .btn { padding: 16px 48px; border: none; border-radius: 12px; font-family: 'DM Sans'; font-size: 16px; font-weight: 600; cursor: pointer; touch-action: manipulation; }
+  .btn:active { transform: scale(0.97); }
+  .btn-primary { background: var(--accent); color: #fff; min-width: 220px; }
+  .btn-done { background: var(--rest); color: #fff; width: 100%; max-width: 320px; padding: 20px; }
+  .btn-skip { background: transparent; color: var(--text-dim); border: 1px solid var(--border); font-size: 14px; padding: 12px 32px; }
+  .btn-continue { background: var(--surface-2); color: var(--text); border: 1px solid var(--border); font-size: 15px; padding: 14px 36px; }
+
+  .intro-banner { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--warmup); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.5; }
+  .intro-banner strong { color: var(--warmup); font-weight: 600; }
+
+  .intro-list { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 14px 16px; margin: 0 auto 16px; max-width: 420px; font-size: 13px; color: var(--text-dim); line-height: 1.7; text-align: center; }
+  .intro-list .no { color: var(--warmup); font-weight: 600; font-family: 'JetBrains Mono', monospace; }
+
+  .info-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; text-align: center; }
+  .info-icon-big { font-size: 40px; color: var(--warmup); }
+  .info-icon-big.neutral { color: var(--accent); }
+  .info-title { font-size: 20px; font-weight: 700; color: var(--text); padding: 0 16px; }
+  .info-body { max-width: 380px; font-size: 15px; color: var(--text-dim); line-height: 1.5; padding: 0 20px; }
+
+  .transition-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; text-align: center; }
+  .transition-label { font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: 2px; }
+  .transition-block { font-size: 24px; font-weight: 700; color: var(--accent); padding: 0 20px; }
+  .transition-count { font-family: 'JetBrains Mono', monospace; font-size: 80px; font-weight: 700; color: var(--text); line-height: 1; margin-top: 12px; }
+
+  .finish-screen { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; padding: 20px; }
+  .finish-title { font-size: 28px; font-weight: 700; text-align: center; }
+  .finish-stats { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px 20px; max-width: 360px; width: 100%; }
+  .finish-stats .row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 14px; color: var(--text-dim); }
+  .finish-stats .row strong { color: var(--text); font-family: 'JetBrains Mono', monospace; }
+  .finish-next { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--rest); border-radius: 10px; padding: 14px 16px; max-width: 380px; font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+  .finish-next strong { color: var(--rest); }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+/* =========================================================
+   WORKOUT — Miércoles 06/05/2026 (tarde)
+   Sesión adaptada · Rodilla derecha en evaluación
+   Sustitución del funcional por sesión casera adaptada
+   Analítica programada viernes 08/05 7:30 → intensidad MODERADA
+   ========================================================= */
+const WORKOUT = [
+  { type:'intro', name:'Sesión Miércoles 06/05', subtitle:'Sesión adaptada · Rodilla en evaluación', prepTime:0 },
+
+  /* ---------- BLOQUE 1 · Calentamiento + Test rodilla ---------- */
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de tobillo', reps:5, prepTime:12, perSide:true, block:'Calentamiento + Test rodilla',
+    detail:'Apoyado en pared o con una mano en superficie estable. Levanta un pie y rota el tobillo describiendo círculos completos. El movimiento debe venir desde la articulación del tobillo, NO desde la punta del pie trazando círculos en el aire. 5 repeticiones por lado en cada dirección (horario y antihorario). Calidad por encima de velocidad. Lubricación articular general antes de cualquier carga.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de cadera', reps:5, prepTime:5, perSide:true, block:'Calentamiento + Test rodilla',
+    detail:'De pie, pies a la anchura de hombros, manos en las caderas. Dibuja círculos amplios con la cadera manteniendo torso y piernas relativamente fijos: el movimiento viene de la pelvis. Movimiento controlado, sin rebotes. 5 repeticiones por lado en cada dirección (sentido horario y antihorario). Activa musculatura profunda y moviliza la articulación coxofemoral.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de hombro', reps:5, prepTime:5, perSide:true, block:'Calentamiento + Test rodilla',
+    detail:'De pie, brazos relajados a los lados. Dibuja círculos amplios con cada hombro hacia delante (5 reps) y hacia atrás (5 reps), un brazo cada vez. El movimiento sale del hombro, no del codo. Calidad por encima de amplitud: si el círculo no es completo, hazlo más pequeño pero limpio. Hombro izquierdo asintomático desde 09/04 — rango completo permitido.' },
+
+  { type:'exercise-reps', phase:'Calentamiento', name:'Rotaciones de cuello', reps:5, prepTime:5, block:'Calentamiento + Test rodilla',
+    detail:'De pie o sentado, hombros relajados. Inclina la cabeza suavemente hacia delante, hacia un lado, hacia atrás y hacia el otro lado, dibujando un círculo lento. 5 repeticiones en cada dirección (horario y antihorario). Movimiento muy controlado: el cuello no se fuerza, se moviliza. Si aparece sensación de tirantez aguda en algún punto, no llegues a ese rango.' },
+
+  { type:'exercise-timed', phase:'Calentamiento · Activación cadera', name:'Marcha en sitio sin elevación', duration:60, prepTime:8, block:'Calentamiento + Test rodilla',
+    detail:'De pie, pies a la anchura de caderas. Marcha en el sitio elevando las rodillas suavemente, NUNCA por encima de los 90° de flexión de cadera (la rodilla NO debe llegar más arriba de la altura de la cadera). Brazos acompañan el movimiento de forma natural. Ritmo cómodo, no de carrera. 60 segundos. Objetivo: elevar temperatura intramuscular sin estresar la rodilla derecha en flexión profunda. Si aparece molestia en la rodilla derecha durante esta marcha: SUSPENDER y pasar directamente a tren superior + core + movilidad.' },
+
+  { type:'info', icon:'⚠', title:'Test de rodilla antes de bici',
+    body:'Vas a hacer dos pruebas controladas para validar que la rodilla tolera la bici. Si en CUALQUIER momento aparece molestia (intensidad cualquiera), SUSPENDER el test, omitir la bici y pasar directamente al tren superior + core + movilidad. La rodilla en evaluación no negocia. Si los dos tests pasan sin sensación: continuar con la bici en configuración modificada.' },
+
+  { type:'exercise-reps', phase:'Test rodilla 1 de 2', name:'Extensión sentado pierna derecha', reps:3, prepTime:8, block:'Calentamiento + Test rodilla',
+    detail:'Sentado en silla con respaldo, espalda apoyada, pies apoyados en el suelo. Extiende lentamente la pierna DERECHA hasta extensión completa de la rodilla (sin bloquear con fuerza, solo llegar a la posición). Mantén 3 segundos en extensión completa. Baja controlado en 2 segundos hasta la posición inicial (rodilla a 90°). 3 repeticiones lentas. ⚠ Si en cualquier momento aparece molestia en la cara externa de la rodilla derecha (zona del antecedente activado): SUSPENDER el test, NO hacer bici, pulsar Hecho y avanzar. Si la pierna izquierda quiere participar, ignórala — el test solo prueba la derecha.' },
+
+  { type:'exercise-reps', phase:'Test rodilla 2 de 2', name:'Sentadilla suave (máx 60° flexión)', reps:3, prepTime:6, block:'Calentamiento + Test rodilla',
+    detail:'De pie, pies a la anchura de caderas, sin carga. Baja en sentadilla MUY suave hasta un máximo de 60° de flexión de rodilla — NUNCA superar este ángulo (referencia: muslos a media bajada, NO paralelos al suelo). Tempo lento: bajada 3s, mantener 1s, subida 2s. 3 repeticiones. ⚠ A cualquier sensación en la rodilla derecha (lateral externa o cualquier otra zona): SUSPENDER, NO hacer bici, pulsar Hecho y avanzar al siguiente bloque. Si los 3 reps pasan sin molestia: rodilla validada para bici en configuración modificada.' },
+
+  /* ---------- BLOQUE 2 · Bici zona 2 ---------- */
+  { type:'info', icon:'⚠', title:'Configuración modificada de bici',
+    body:'ANTES de subir a la bici: 1) Sillín 1-2 cm más bajo que tu posición habitual (reduce flexión de rodilla en el pedaleo). 2) Resistencia BAJA, claramente por debajo de la habitual. 3) Cadencia ALTA, ~85-95 rpm. Primeros 5 min: resistencia mínima como calentamiento. Si en CUALQUIER momento aparece molestia en rodilla, SUSPENDER (botón Soltar antes). A los 25 min hay punto de decisión: si la rodilla está 100% bien, continuar hasta 55 min; si aparece cualquier sensación, terminar en 25-30 min.' },
+
+  { type:'exercise-timed', phase:'Bici zona 2 · 55 min máx', name:'Bici estática zona 2 modificada', duration:3300, prepTime:12, block:'Bici zona 2', buttonLabel:'Soltar antes',
+    detail:'Configuración HOY: sillín 1-2 cm más bajo, resistencia BAJA, cadencia ALTA 85-95 rpm. Material: bicicleta estática + Pixel Watch 4. Zona 2 objetivo 115-122 ppm. CERO anaeróbico. Estructura interna de la sesión: minutos 0-5 → resistencia mínima, calentamiento, observa cualquier señal de la rodilla. Minutos 5-10 → si todo bien, mantén configuración modificada (no subas resistencia aunque la FC esté baja). Minutos 10-25 → zona 2 estable. PUNTO DE DECISIÓN A LOS 25 MIN: si la rodilla está perfecta sin sensación alguna, continúa hasta 55 min como sesión completa; si aparece cualquier sensación (incluso leve), pulsa Soltar antes y termina en 25-30 min. Recalibración postural cada 10 min (a los 10, 20, 30, 40): 15s sin pausar pedaleo, espalda recta, escápulas retraídas, dos respiraciones profundas. Hidratación: 400-500 ml de agua durante la sesión. ⚠ A cualquier molestia en rodilla en cualquier minuto: pulsar Soltar antes inmediatamente. La rodilla en evaluación no negocia.' },
+
+  /* ---------- BLOQUE 3 · Tren superior moderado ---------- */
+  { type:'info', icon:'ⓘ', title:'Intensidad MODERADA por analítica viernes',
+    body:'Hoy NO al fallo, NO progresión. Reps cómodas con descanso amplio. Mañana jueves descanso de intensidad, viernes 7:30 analítica en ayunas. La sesión de hoy debe terminar con sensación de "podía hacer más". La progresión vuelve la próxima semana.' },
+
+  { type:'exercise-reps', phase:'Press militar · Set 1 de 2', name:'Press militar sentado mancuernas 12 kg', reps:8, prepTime:12, tempo:'2-1-2', equipment:'Mancuernas 12 kg', block:'Tren superior moderado',
+    detail:'Setup: sentado en silla con respaldo recto, espalda completamente apoyada, pies firmes en el suelo. Mancuerna de 12 kg en cada mano a la altura de los hombros, codos a unos 90°, palmas hacia delante (agarre pronado). Movimiento: sube las mancuernas hacia el techo extendiendo brazos, sin bloquear codos en el tope. Bajada controlada hasta la altura de los hombros. Tempo 2-1-2: subida 2s, pausa 1s arriba, bajada 2s. Cues: ombligo hacia dentro, espalda apoyada en el respaldo todo el tiempo, NO arquear lumbar. Hombros lejos de las orejas. HOY MODERADO: 8 reps cómodas, NO buscar el fallo. Si los 8 reps se sienten muy fáciles, mantén el peso, NO subas reps. La intensidad de hoy está pactada para no interferir con la analítica del viernes.' },
+  { type:'rest', duration:90, next:'Press militar · Set 2' },
+  { type:'exercise-reps', phase:'Press militar · Set 2 de 2', name:'Press militar sentado mancuernas 12 kg', reps:8, prepTime:8, tempo:'2-1-2', equipment:'Mancuernas 12 kg', block:'Tren superior moderado',
+    detail:'Segundo y último set. Mismo setup: sentado con respaldo, mancuernas 12 kg. 8 reps con tempo 2-1-2. Si en el set 1 las 8 reps salieron cómodas, repite igual. Si notaste fatiga al final del set 1, mantén las 8 reps pero baja el ritmo (tempo más lento). NO al fallo. Cierra el ejercicio con sensación de "podía haber hecho 2-3 más sin esfuerzo".' },
+
+  { type:'exercise-reps', phase:'Pull-over · Set 1 de 2', name:'Pull-over con mancuerna 12 kg', reps:10, prepTime:10, equipment:'Mancuerna 12 kg', block:'Tren superior moderado',
+    detail:'Setup: tumbado boca arriba sobre esterilla, una sola mancuerna de 12 kg agarrada con las dos manos por uno de los discos (palmas formando un cuenco bajo el disco superior). Brazos extendidos sobre el pecho, codos ligeramente flexionados (no rígidos). Pies apoyados, lumbar neutra (NO pegar la lumbar al suelo con fuerza, posición natural). Movimiento: extiende los brazos por encima de la cabeza llevando la mancuerna hacia atrás manteniendo los codos ligeramente flexionados. Llega hasta donde tu movilidad de hombro permita SIN forzar. Vuelve a la posición inicial controlado. Trabajo combinado de dorsal, serrato anterior y core. Cues: glúteo activo para estabilizar pelvis. NO arquees la lumbar buscando más rango.' },
+  { type:'rest', duration:60, next:'Pull-over · Set 2' },
+  { type:'exercise-reps', phase:'Pull-over · Set 2 de 2', name:'Pull-over con mancuerna 12 kg', reps:10, prepTime:8, equipment:'Mancuerna 12 kg', block:'Tren superior moderado',
+    detail:'Segundo y último set. Mismo setup, mancuerna 12 kg con dos manos. 10 reps controladas, arco amplio pero sin sobrepasar tu movilidad. Si notas que la lumbar quiere arquearse al final del rango, reduce el arco. NO al fallo: cierra cómodo.' },
+
+  { type:'exercise-reps', phase:'Curl bíceps · Set 1 de 2', name:'Curl bíceps sentado alternado mancuernas 12 kg', reps:10, prepTime:10, perSide:true, tempo:'2-1-2', equipment:'Mancuernas 12 kg', block:'Tren superior moderado',
+    detail:'Setup: sentado en silla, espalda apoyada, una mancuerna de 12 kg en cada mano colgando a los lados con palmas hacia el cuerpo (agarre neutro). Movimiento alternado: sube una mancuerna cada vez flexionando el codo, supinando ligeramente la palma al final del recorrido (palma hacia el hombro arriba). Bajada controlada en pronación neutra. Mientras un brazo sube, el otro baja o se mantiene quieto — alterna por reps, no por sets. Tempo 2-1-2 por brazo (subida 2s, pausa 1s arriba, bajada 2s). 10 reps por brazo. Cues: codos pegados al torso, NO los muevas hacia delante para ayudar. La carga la hace el bíceps, no el deltoides anterior.' },
+  { type:'rest', duration:60, next:'Curl bíceps · Set 2' },
+  { type:'exercise-reps', phase:'Curl bíceps · Set 2 de 2', name:'Curl bíceps sentado alternado mancuernas 12 kg', reps:10, prepTime:8, perSide:true, tempo:'2-1-2', equipment:'Mancuernas 12 kg', block:'Tren superior moderado',
+    detail:'Segundo y último set. Mismo setup, alternancia por reps con tempo 2-1-2. 10 reps por brazo. Si en el set 1 los últimos reps tiraban de los codos hacia delante, esa es señal de fatiga: en este set, tempo aún más controlado, y si hay que bajar a 8 reps por brazo, hazlo. NO al fallo.' },
+
+  { type:'exercise-reps', phase:'Press francés · Set 1 de 2', name:'Press francés tumbado mancuerna 12 kg', reps:10, prepTime:10, equipment:'Mancuerna 12 kg', block:'Tren superior moderado',
+    detail:'Setup: tumbado boca arriba sobre esterilla, pies apoyados. Mancuerna de 12 kg agarrada con AMBAS MANOS por uno de los discos (las dos manos forman un cuenco bajo el disco superior). Brazos completamente extendidos hacia el techo, codos apuntando al techo. Movimiento: flexiona los codos para bajar la mancuerna hacia detrás de la cabeza (no hacia la frente). Los CODOS PERMANECEN FIJOS apuntando al techo durante todo el movimiento — NO se separan ni se mueven hacia los lados. Vuelve a extensión completa de codos. 10 reps controladas. Cues: si los codos quieren abrirse, la carga es excesiva (no debería serlo con 12 kg, pero si pasa, baja peso). El trabajo lo hace el tríceps.' },
+  { type:'rest', duration:60, next:'Press francés · Set 2' },
+  { type:'exercise-reps', phase:'Press francés · Set 2 de 2', name:'Press francés tumbado mancuerna 12 kg', reps:10, prepTime:8, equipment:'Mancuerna 12 kg', block:'Tren superior moderado',
+    detail:'Segundo y último set. Mismo setup: tumbado, mancuerna con dos manos por el disco, codos al techo fijos. 10 reps. Foco: codos absolutamente fijos, el único movimiento es la flexión-extensión. Si los codos se abren al final por fatiga, suelta antes (con el botón Hecho) sin llegar al fallo.' },
+
+  /* ---------- BLOQUE 4 · Core sin carga sobre rodilla ---------- */
+  { type:'exercise-timed', phase:'Plancha modificada · Set 1 de 2', name:'Plancha frontal con rodillas apoyadas', duration:30, prepTime:12, block:'Core sin carga',
+    detail:'Versión MODIFICADA HOY por incidencia rodilla derecha — apoyo en RODILLAS, NO en pies. Setup: tumbado boca abajo, antebrazos apoyados en el suelo (codos directamente debajo de los hombros, palmas hacia abajo o puños cerrados), rodillas apoyadas sobre la esterilla (toalla doblada bajo las rodillas si la presión molesta). Pies apoyados en el suelo detrás. Cuerpo en LÍNEA RECTA desde rodillas hasta cabeza, NO subir el culo, NO dejar caer la lumbar. Cues: ombligo hacia dentro, glúteos activos, mirada al suelo. 30 segundos. Justificación de la versión modificada: el apoyo en pies con plantarflexión podría tirar mecánicamente de la cadena posterior incluyendo rodilla; con apoyo en rodillas se elimina esa carga.' },
+  { type:'rest', duration:30, next:'Plancha modificada · Set 2' },
+  { type:'exercise-timed', phase:'Plancha modificada · Set 2 de 2', name:'Plancha frontal con rodillas apoyadas', duration:30, prepTime:8, block:'Core sin carga',
+    detail:'Segundo y último set. Mismo setup: antebrazos + rodillas, cuerpo en línea recta desde rodillas hasta cabeza. 30 segundos. Si la lumbar empieza a hundirse antes de los 30s, sal antes (botón Terminar antes) — el ejercicio termina cuando deja de hacerse bien, no cuando llega el cronómetro a 0.' },
+
+  { type:'exercise-reps', phase:'Bird-dog · Set 1 de 2', name:'Bird-dog (extensión brazo + pierna izquierda)', reps:8, prepTime:10, perSide:true, block:'Core sin carga',
+    detail:'Setup: cuadrupedia, manos bajo los hombros, rodillas bajo las caderas. Columna neutra, mirada al suelo. AMBAS RODILLAS APOYADAS de inicio. Movimiento: extiende simultáneamente el brazo derecho hacia delante y la PIERNA IZQUIERDA hacia atrás (la pierna derecha no se extiende — permanece apoyada todo el ejercicio para no cargar la rodilla derecha). Mantén 2 segundos en extensión, vuelve controlado. Alterna lados: ahora extiende brazo izquierdo + pierna derecha... NO: hoy SOLO extender la pierna IZQUIERDA, alternando con el brazo DERECHO o el IZQUIERDO según giro. Cues: cadera estable, NO rotar la pelvis al extender. Glúteo activo del lado que se extiende. 8 repeticiones por brazo (8 con brazo derecho + pierna izquierda, 8 con brazo izquierdo + pierna izquierda). La rodilla derecha permanece apoyada SIEMPRE.' },
+  { type:'rest', duration:30, next:'Bird-dog · Set 2' },
+  { type:'exercise-reps', phase:'Bird-dog · Set 2 de 2', name:'Bird-dog (extensión brazo + pierna izquierda)', reps:8, prepTime:8, perSide:true, block:'Core sin carga',
+    detail:'Segundo y último set. Mismo patrón: rodilla derecha SIEMPRE apoyada (no se extiende hoy), pierna izquierda extiende, brazos alternan. 8 reps por brazo. Foco: estabilidad pélvica, sin rotaciones. Si notas la lumbar arqueada, reduce la altura a la que extiendes la pierna.' },
+
+  { type:'exercise-reps', phase:'Dead bug · Set 1 de 2', name:'Dead bug', reps:8, prepTime:10, perSide:true, block:'Core sin carga',
+    detail:'Setup: tumbado boca arriba, lumbar pegada al suelo, brazos extendidos hacia el techo (perpendiculares al suelo), rodillas y caderas a 90° (espinillas paralelas al suelo). Movimiento: extiende simultáneamente el brazo derecho hacia atrás (hacia el suelo detrás de la cabeza) y la pierna izquierda hacia delante extendida (sin tocar el suelo, mantén unos 5-10 cm de margen). Vuelve a la posición inicial. Alterna lados: brazo izquierdo + pierna derecha. La pierna derecha SÍ se extiende en este ejercicio porque NO carga sobre la rodilla — está en el aire — solo trabaja musculatura abdominal y flexora de cadera. Cue clave: lumbar PEGADA AL SUELO todo el tiempo. Si la lumbar se despega, reduce la amplitud (no extiendas tanto la pierna). 8 reps por lado.' },
+  { type:'rest', duration:30, next:'Dead bug · Set 2' },
+  { type:'exercise-reps', phase:'Dead bug · Set 2 de 2', name:'Dead bug', reps:8, prepTime:8, perSide:true, block:'Core sin carga',
+    detail:'Segundo y último set. Mismo setup: tumbado, brazos al techo, rodillas a 90°. 8 reps por lado alternando. Foco constante: lumbar pegada al suelo. La amplitud es secundaria a la calidad. Si en el set 1 la lumbar se despegó al final, reduce la amplitud de extensión de pierna en este set.' },
+
+  /* ---------- BLOQUE 5 · Movilidad final ---------- */
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · izquierdo', duration:45, prepTime:10, block:'Movilidad final',
+    detail:'Posición de caballero MODIFICADA hoy por rodilla derecha en evaluación: rodilla DERECHA apoyada en el suelo (toalla doblada para amortiguar — la rodilla derecha en posición de DESCARGA, sin flexión profunda y sin presión sobre la cara externa). Pierna izquierda DELANTE con pie apoyado a 90° (rodilla sobre el tobillo, no adelantada). Pelvis neutra con retroversión ligera (pubis hacia arriba). Aprieta fuerte el GLÚTEO DERECHO (el de la pierna apoyada atrás). Adelanta la cadera suavemente sin arquear la lumbar. NO buscar más rango arqueando espalda. 45 segundos. ⚠ Si la rodilla derecha apoyada en el suelo molesta a pesar de la toalla: alternativa = posición de pie con zancada larga, glúteo de atrás apretado, sin que la rodilla toque el suelo.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Estiramiento de psoas · derecho', duration:45, prepTime:8, block:'Movilidad final',
+    detail:'Cambia de lado. Rodilla IZQUIERDA en el suelo (sobre toalla), pie DERECHO delante con la planta apoyada y rodilla derecha sobre el tobillo (a 90°, NO adelantada hacia los dedos). El peso lo llevas en el PIE DERECHO no en la rodilla. Mismos cues: pelvis neutra con retroversión, GLÚTEO IZQUIERDO apretado, cadera adelantada sin arquear. 45 segundos. ⚠ Si al colocar el pie derecho a 90° la rodilla derecha siente cualquier presión interna o lateral: sal de la posición y pasa al siguiente ejercicio. NO insistir.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Figura 4 tumbado · derecha', duration:45, prepTime:8, block:'Movilidad final',
+    detail:'Tumbado boca arriba, rodillas flexionadas, pies apoyados. Cruza el TOBILLO DERECHO sobre la rodilla izquierda formando un 4 con las piernas. Agarra con las dos manos el muslo IZQUIERDO (por detrás de la rodilla izquierda) y atráelo hacia el pecho. La rodilla derecha queda en posición abierta (rotación externa de cadera) sin carga directa — el peso de la pierna derecha cae sobre la izquierda, NO sobre la rodilla derecha. Sentirás estiramiento en el glúteo derecho y piriforme. 45 segundos. Cero carga sobre rodilla derecha en este gesto: ese es precisamente por qué se hace tumbado.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Figura 4 tumbado · izquierda', duration:45, prepTime:6, block:'Movilidad final',
+    detail:'Cambia de lado. Tumbado, cruza el tobillo IZQUIERDO sobre la rodilla DERECHA. ⚠ Aquí la rodilla derecha actúa de soporte para el tobillo izquierdo: la presión es muy ligera (solo el peso del tobillo), pero si notas cualquier sensación en la rodilla derecha al apoyar el tobillo izquierdo, OMITIR este lado. Si todo bien: agarra el muslo derecho por detrás, atráelo hacia el pecho. 45 segundos en el glúteo izquierdo.' },
+
+  { type:'exercise-reps', phase:'Movilidad', name:'Rotaciones torácicas en cuadrupedia', reps:8, prepTime:8, perSide:true, block:'Movilidad final',
+    detail:'Cuadrupedia con AMBAS RODILLAS APOYADAS (sin ninguna rodilla en flexión profunda — esto es seguro para la rodilla derecha). Manos bajo los hombros, rodillas bajo las caderas. Columna neutra. Lleva una mano detrás de la nuca (codo flexionado). Rota el torso abriendo el codo hacia el techo: el movimiento viene de la columna TORÁCICA, no de la lumbar ni de las caderas. Caderas FIJAS apuntando al suelo (sin rotar la pelvis). Mira el codo que sube. Exhala al abrir, inhala al cerrar. Controla en ambas direcciones. 8 reps por lado.' },
+
+  { type:'exercise-timed', phase:'Movilidad', name:'Apertura torácica en posición de oración', duration:45, prepTime:8, block:'Movilidad final',
+    detail:'POSICIÓN POR DEFECTO: sentado sobre los talones (rodillas flexionadas profundamente apoyadas en el suelo), brazos extendidos hacia delante con las palmas planas en el suelo, frente apoyada o cerca del suelo. Pecho cae hacia el suelo, axilas se abren. ⚠ ALTERNATIVA si sentarse sobre los talones provoca cualquier molestia en la rodilla derecha (probable hoy por la flexión profunda): de pie frente a un marco de puerta, antebrazos apoyados en el marco a la altura de la cabeza, codos flexionados a 90°, da un paso ligero hacia delante manteniendo el pecho hacia delante para sentir apertura torácica. La alternativa de pie produce el mismo trabajo torácico sin cargar la rodilla. Elige la que NO genere ninguna molestia en la rodilla. 45 segundos.' },
+
+  { type:'exercise-reps', phase:'Movilidad · Solo izquierdo', name:'Movilidad tobillo izquierdo', reps:8, prepTime:6, block:'Movilidad final',
+    detail:'De pie frente a una pared, pie IZQUIERDO adelantado con los dedos a ~10-15 cm de la pared. Manos en la pared para estabilidad. Lleva la rodilla IZQUIERDA hacia la pared intentando tocarla SIN que el talón del pie izquierdo se levante del suelo. El movimiento sale del tobillo (dorsiflexión), no de inclinarse con la cadera. La rodilla viaja recta hacia la pared, alineada con el segundo dedo del pie. 8 repeticiones controladas en el lado izquierdo. ⚠ HOY NO SE HACE EL LADO DERECHO: la dorsiflexión profunda del tobillo derecho metería la rodilla derecha en flexión cargada, justo lo que estamos evitando. Volverá cuando la rodilla esté validada o el traumatólogo lo autorice.' },
+
+  /* ---------- Cierre ---------- */
+  { type:'info', icon:'ⓘ', title:'Hoy ejecutaste lo correcto',
+    body:'Mañana jueves: descanso de intensidad. Solo movilidad ligera y caminata si quieres. Cena ligera sin alcohol antes de las 21:00. Viernes 7:30 ayuno + analítica. La rodilla sigue en observación, evaluación matutina diaria hasta cita con traumatólogo.' },
+
+  { type:'finish' }
+];
+
+/* =========================================================
+   STATE
+   ========================================================= */
+let currentStep = 0;
+let lastBlockShown = null;
+let transitionShownFor = -1;
+let timerInterval = null;
+let timerStart = 0;
+let timerDuration = 0;
+let audioCtx = null;
+let wakeLock = null;
+let sessionStart = null;
+
+const app = document.getElementById('app');
+
+/* AUDIO */
+function initAudio() { if (!audioCtx) { try { audioCtx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) {} } }
+function beep(freq, duration, volume = 0.15) {
+  if (!audioCtx) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.frequency.value = freq; osc.type = 'sine';
+  gain.gain.setValueAtTime(volume, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+  osc.start(audioCtx.currentTime); osc.stop(audioCtx.currentTime + duration);
+}
+function shortBeep() { beep(880, 0.1); }
+function longBeep()  { beep(660, 0.3); }
+function doneBeep()  { beep(1100, 0.15); setTimeout(() => beep(1320, 0.2), 100); }
+
+/* WAKE LOCK */
+async function requestWakeLock() {
+  if ('wakeLock' in navigator) {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch (err) { console.log('Wake lock failed:', err.message); }
+  }
+}
+function releaseWakeLock() { if (wakeLock) { wakeLock.release(); wakeLock = null; } }
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && sessionStart && !wakeLock) { requestWakeLock(); }
+});
+
+/* PROGRESS + ETA */
+function isRealExercise(step) { return step && (step.type === 'exercise-reps' || step.type === 'exercise-timed' || step.type === 'warmup-intro'); }
+function getTotalSteps() { return WORKOUT.filter(isRealExercise).length; }
+function getCompletedSteps() {
+  let n = 0;
+  for (let i = 0; i < currentStep; i++) if (isRealExercise(WORKOUT[i])) n++;
+  return n;
+}
+function progressPercent() { return Math.round((getCompletedSteps() / getTotalSteps()) * 100); }
+
+function getBlockProgress(step) {
+  if (!step || !step.block) return '';
+  const block = step.block;
+  let total = 0, pos = 0;
+  WORKOUT.forEach((s, i) => {
+    if (s.block === block && isRealExercise(s)) {
+      total++;
+      if (i <= currentStep) pos++;
+    }
+  });
+  if (total === 0) return '';
+  return `Ejercicio ${pos} de ${total}`;
+}
+
+function parseTempoSeconds(tempo) {
+  const parts = tempo.split('-').map(Number);
+  const sum = parts.reduce((a, b) => a + b, 0);
+  return sum || 3;
+}
+function estimateRepsTime(step) {
+  const perRep = step.tempo ? parseTempoSeconds(step.tempo) : 3;
+  const reps = step.reps || 10;
+  const multiplier = step.perSide ? 2 : 1;
+  return perRep * reps * multiplier;
+}
+function estimateRemainingSeconds() {
+  let sec = 0;
+  for (let i = currentStep; i < WORKOUT.length; i++) {
+    const s = WORKOUT[i];
+    if (s.prepTime) sec += s.prepTime;
+    if (s.type === 'exercise-timed' || s.type === 'warmup-intro') sec += s.duration || 0;
+    else if (s.type === 'exercise-reps') sec += estimateRepsTime(s);
+    else if (s.type === 'rest') sec += s.duration || 0;
+    else if (s.type === 'info') sec += 10;
+    const next = WORKOUT[i + 1];
+    if (next && s.block && next.block && s.block !== next.block) sec += 3;
+  }
+  return sec;
+}
+function formatETA(remainingSec) {
+  const end = new Date(Date.now() + remainingSec * 1000);
+  return end.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', hour12: false });
+}
+
+function formatTimerDisplay(seconds) {
+  if (timerDuration <= 60) return String(seconds);
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+function formatInitial(dur) {
+  if (dur <= 60) return String(dur);
+  const m = Math.floor(dur / 60);
+  const s = dur % 60;
+  return `${m}:${String(s).padStart(2, '0')}`;
+}
+
+/* RENDER DISPATCHER */
+function render() {
+  const step = WORKOUT[currentStep];
+  if (!step) return;
+
+  if (step.block && lastBlockShown && step.block !== lastBlockShown && transitionShownFor !== currentStep) {
+    transitionShownFor = currentStep;
+    renderTransition(step.block);
+    return;
+  }
+  if (step.block) lastBlockShown = step.block;
+
+  switch (step.type) {
+    case 'intro':          renderIntro(step); break;
+    case 'exercise-reps':  renderPrep(step, () => renderExerciseReps(step)); break;
+    case 'exercise-timed': renderPrep(step, () => renderExerciseTimed(step)); break;
+    case 'rest':           renderRest(step); break;
+    case 'info':           renderInfo(step); break;
+    case 'finish':         renderFinish(); break;
+  }
+}
+
+function advance() { currentStep++; render(); }
+
+/* SCREENS */
+function headerHTML(step) {
+  const pct = progressPercent();
+  const eta = formatETA(estimateRemainingSeconds());
+  let blockBlock = '';
+  if (step && step.block) {
+    blockBlock = `<div class="block-indicator"><div class="block-name">${step.block}</div><div class="block-progress">${getBlockProgress(step)}</div></div>`;
+  }
+  return `<div class="progress-bar"><div class="fill" style="width:${pct}%"></div></div>
+    <div class="progress-meta"><span class="progress-pct">${pct}%</span><span class="progress-eta">≈ ${eta}</span></div>
+    ${blockBlock}`;
+}
+
+function renderIntro(step) {
+  app.innerHTML = `
+    <div class="screen">
+      <div style="flex:1; display:flex; flex-direction:column; justify-content:center; align-items:center; padding: 20px 0; overflow-y:auto;">
+        <div class="phase">Miércoles 06 · Mayo 2026 · Tarde</div>
+        <div class="intro-title">Sesión adaptada</div>
+        <div class="phase" style="margin-bottom:20px">Rodilla en evaluación · Pre-analítica</div>
+
+        <div class="intro-banner">
+          <strong>Adaptaciones activas:</strong><br>
+          · Incidencia rodilla derecha ABIERTA (cita traumatólogo pendiente). Rodilla hoy NO duele, pero NO se prueba nada que la ponga en riesgo.<br>
+          · Sustitución del funcional por sesión casera adaptada.<br>
+          · Analítica viernes 08/05 7:30: 48h sin ejercicio intenso desde mañana 7:30. La sesión de hoy se ejecuta con intensidad MODERADA.
+        </div>
+
+        <div class="intro-list">
+          <span class="no">NO</span> sentadillas &nbsp;·&nbsp; <span class="no">NO</span> wall sit<br>
+          <span class="no">NO</span> lunges &nbsp;·&nbsp; <span class="no">NO</span> saltos<br>
+          <span class="no">NO</span> senderismo con desnivel<br>
+          <span class="no">NO</span> dead hangs hoy (analítica viernes)<br>
+          <span class="no">NO</span> al fallo en tren superior
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-primary" onclick="startSession()">Comenzar sesión</button></div>
+    </div>`;
+}
+
+function renderPrep(step, onComplete) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase} · Preparación</div>
+      <div class="name">${step.name}</div>
+      <div class="instruction-box"><p>${step.detail}</p></div>
+      <div class="timer-wrap">
+        <div class="timer-ring">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="prepRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="${circumference}"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="prepSec">${step.prepTime}</div><div class="timer-label">Preparación</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipPrep()">Saltar preparación</button></div>
+    </div>`;
+  timerDuration = step.prepTime;
+  startCountdown(step.prepTime, 'prepSec', 'prepRing', circumference, () => { longBeep(); onComplete(); });
+}
+window.skipPrep = () => { clearInterval(timerInterval); const step = WORKOUT[currentStep]; if (step.type === 'exercise-reps') renderExerciseReps(step); else if (step.type === 'exercise-timed') renderExerciseTimed(step); };
+
+function exerciseDetailHTML(step) {
+  return `<div class="exercise-detail">
+      <p>${step.detail}</p>
+      ${step.tempo ? `<p><span class="key">Tempo: ${step.tempo}</span></p>` : ''}
+      ${step.perSide ? `<p><span class="key">Por cada lado</span></p>` : ''}
+      ${step.equipment ? `<p><span class="key">Material: ${step.equipment}</span></p>` : ''}
+    </div>`;
+}
+
+function renderExerciseReps(step) {
+  const phase = step.phase || '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${exerciseDetailHTML(step)}
+      <div class="reps-display">
+        <div class="reps-number">${step.reps}</div>
+        <div class="reps-label">Repeticiones</div>
+        ${step.perSide ? `<div class="per-side">Por cada lado</div>` : ''}
+      </div>
+      <div class="btn-row"><button class="btn btn-done" onclick="doneExercise()">Hecho</button></div>
+    </div>`;
+}
+window.doneExercise = () => { doneBeep(); advance(); };
+
+function renderExerciseTimed(step) {
+  const circumference = 628.318;
+  const phase = step.phase || '';
+  const ringClass = step.block && (step.block.toLowerCase().includes('movilidad') || step.block.toLowerCase().includes('calentamiento')) ? 'warmup' : 'exercise';
+  const secClass = step.duration > 60 ? 'long' : '';
+  const buttonLabel = step.buttonLabel || 'Terminar antes';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(step)}
+      <div class="phase">${phase}</div>
+      <div class="name">${step.name}</div>
+      ${exerciseDetailHTML(step)}
+      <div class="timer-wrap">
+        <div class="timer-ring ${ringClass}">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="exRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds ${secClass}" id="exSec">${formatInitial(step.duration)}</div><div class="timer-label">${step.duration > 60 ? 'Min : Seg' : 'Segundos'}</div></div>
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipExercise()">${buttonLabel}</button></div>
+    </div>`;
+  timerDuration = step.duration;
+  startCountdown(step.duration, 'exSec', 'exRing', circumference, () => { doneBeep(); advance(); });
+}
+window.skipExercise = () => { clearInterval(timerInterval); doneBeep(); advance(); };
+
+function renderRest(step) {
+  const circumference = 628.318;
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(WORKOUT[currentStep - 1])}
+      <div class="phase">Descanso</div>
+      <div class="name" style="color: var(--rest)">Recupera</div>
+      <div class="timer-wrap">
+        <div class="timer-ring rest">
+          <svg viewBox="0 0 220 220">
+            <circle class="bg" cx="110" cy="110" r="100"/>
+            <circle class="progress" id="restRing" cx="110" cy="110" r="100" stroke-dasharray="${circumference}" stroke-dashoffset="0"/>
+          </svg>
+          <div class="timer-text"><div class="timer-seconds" id="restSec">${step.duration}</div><div class="timer-label">Descanso</div></div>
+        </div>
+        <div class="rest-next">Siguiente: <strong>${step.next}</strong></div>
+      </div>
+      <div class="btn-row"><button class="btn btn-skip" onclick="skipRest()">Saltar descanso</button></div>
+    </div>`;
+  timerDuration = step.duration;
+  startCountdown(step.duration, 'restSec', 'restRing', circumference, () => { longBeep(); advance(); });
+}
+window.skipRest = () => { clearInterval(timerInterval); advance(); };
+
+function renderInfo(step) {
+  const iconClass = step.icon === 'ⓘ' ? 'neutral' : '';
+  app.innerHTML = `
+    <div class="screen">
+      ${headerHTML(null)}
+      <div class="info-screen">
+        <div class="info-icon-big ${iconClass}">${step.icon || 'ⓘ'}</div>
+        <div class="info-title">${step.title}</div>
+        <div class="info-body">${step.body}</div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="advance()">Continuar</button></div>
+    </div>`;
+}
+
+function renderTransition(blockName) {
+  let count = 3;
+  app.innerHTML = `
+    <div class="screen">
+      <div class="transition-screen">
+        <div class="transition-label">Comenzando</div>
+        <div class="transition-block">${blockName}</div>
+        <div class="transition-count" id="transCount">${count}</div>
+      </div>
+    </div>`;
+  longBeep();
+  shortBeep();
+  const el = document.getElementById('transCount');
+  const tick = setInterval(() => {
+    count--;
+    if (count >= 1) { el.textContent = count; shortBeep(); }
+    else { clearInterval(tick); render(); }
+  }, 1000);
+}
+
+function renderFinish() {
+  releaseWakeLock();
+  if (document.fullscreenElement) { document.exitFullscreen().catch(()=>{}); }
+  const totalMin = sessionStart ? Math.round((Date.now() - sessionStart) / 60000) : 0;
+  const totalEx = getTotalSteps();
+  app.innerHTML = `
+    <div class="screen">
+      <div class="finish-screen">
+        <div class="finish-title">Sesión completada</div>
+        <div class="finish-stats">
+          <div class="row"><span>Duración</span><strong>${totalMin} min</strong></div>
+          <div class="row"><span>Ejercicios</span><strong>${totalEx}</strong></div>
+          <div class="row"><span>Bloques</span><strong>5</strong></div>
+          <div class="row"><span>Omisiones</span><strong>Sentadillas · Wall sit · Dead hangs</strong></div>
+        </div>
+        <div class="finish-next">
+          <strong>Mañana jueves 07/05:</strong> DESCANSO DE INTENSIDAD por analítica del viernes. Solo movilidad ligera y caminata plana si quieres. Cena ligera sin alcohol antes de las 21:00.<br><br>
+          <strong>Viernes 08/05 7:30:</strong> acudir al laboratorio Lafita en Las Arenas en ayunas (solo agua) con DNI. Mencionar al técnico suplementación habitual: creatina, omega-3, NAC, vitamina D3+K2, magnesio, colágeno hidrolizado.
+        </div>
+      </div>
+      <div class="btn-row"><button class="btn btn-continue" onclick="location.reload()">Volver al inicio</button></div>
+    </div>`;
+}
+
+/* TIMER */
+function startCountdown(seconds, secEl, ringEl, circumference, onDone) {
+  clearInterval(timerInterval);
+  timerStart = Date.now();
+  let beeped = {3:false, 2:false, 1:false};
+  const sec = document.getElementById(secEl);
+  const ring = document.getElementById(ringEl);
+  if (ring) ring.style.strokeDashoffset = 0;
+  timerInterval = setInterval(() => {
+    const elapsed = (Date.now() - timerStart) / 1000;
+    const remaining = Math.max(0, seconds - elapsed);
+    const display = Math.ceil(remaining);
+    if (sec) sec.textContent = formatTimerDisplay(display);
+    if (ring) {
+      const pct = remaining / seconds;
+      ring.style.strokeDashoffset = circumference * (1 - pct);
+    }
+    if (display === 3 && !beeped[3]) { beeped[3] = true; shortBeep(); }
+    if (display === 2 && !beeped[2]) { beeped[2] = true; shortBeep(); }
+    if (display === 1 && !beeped[1]) { beeped[1] = true; shortBeep(); }
+    if (remaining <= 0) { clearInterval(timerInterval); onDone(); }
+  }, 100);
+}
+
+/* SESSION LIFECYCLE */
+function startSession() {
+  initAudio();
+  if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+  sessionStart = Date.now();
+  requestWakeLock();
+  if (document.documentElement.requestFullscreen) { document.documentElement.requestFullscreen().catch(()=>{}); }
+  currentStep = 1;
+  render();
+}
+window.startSession = startSession;
+window.advance = advance;
+
+/* Boot */
+render();
+</script>
+</body>
+</html>
